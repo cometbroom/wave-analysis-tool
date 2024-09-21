@@ -17,4 +17,8 @@ public class WaveformData {
         this.timeStep = timeStep;
         this.totalTime = totalTime;
     }
+
+    public WaveformData getDifference(double frequency) {
+        return new WaveformData(amplitude, frequency, phase, timeStep, totalTime);
+    }
 }

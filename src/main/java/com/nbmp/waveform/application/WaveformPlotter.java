@@ -1,6 +1,8 @@
 package com.nbmp.waveform.application;
 
-import com.nbmp.waveform.SineWaveGenerator;
+import com.nbmp.waveform.Graph.GraphDashboard;
+import com.nbmp.waveform.generation.SineWaveGenerator;
+import com.nbmp.waveform.generation.WaveGenerator;
 import com.nbmp.waveform.models.WaveformData;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,26 +17,15 @@ public class WaveformPlotter extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle(STAGE_TITLE);
-        var xyPair = getXYAxis("Time (s)", "Amplitude");
 
-        var wd = new WaveformData(1.0, 5.0, 0.0, 0.01, 2.0);
-        SineWaveGenerator sineWaveGenerator = new SineWaveGenerator(xyPair.getKey(), xyPair.getValue());
-        var lineChart = sineWaveGenerator.generate(wd);
-        // Setting up the scene
-        Scene scene = new Scene(lineChart, 800, 600);
-        stage.setScene(scene);
-        stage.show();
+        var graph = GraphDashboard.builder().build();
+        var sine1 = SineWaveGenerator.builder().frequency(1).build();
+        var sine2 = SineWaveGenerator.builder().frequency(0.9).build();
+        graph.addSeries(sine1, sine2);
+        graph.view(stage);
     }
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    private Pair<NumberAxis, NumberAxis> getXYAxis(String xLabel, String yLabel) {
-        final NumberAxis xAxis = new NumberAxis(), yAxis = new NumberAxis();
-        xAxis.setLabel(xLabel);
-        yAxis.setLabel(yLabel);
-
-        return new Pair<>(xAxis, yAxis);
     }
 }
