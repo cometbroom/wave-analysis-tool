@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.Graph;
+package com.nbmp.waveform.graph;
 
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -18,7 +18,8 @@ public class GraphDashboard {
 
   @Builder.Default private int width = 800;
   @Builder.Default private int height = 600;
-
+  @Builder.Default private double timeStep = 0.01;
+  @Builder.Default private double totalTime = 10;
   @Builder.Default private String xLabel = "Time (s)";
   @Builder.Default private String yLabel = "Amplitude";
 
@@ -48,6 +49,7 @@ public class GraphDashboard {
     final NumberAxis xAxis = new NumberAxis(), yAxis = new NumberAxis();
     xAxis.setLabel(xLabel);
     yAxis.setLabel(yLabel);
+
     lineChart = new LineChart<>(xAxis, yAxis);
     lineChart.setTitle("Graph");
   }

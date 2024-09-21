@@ -3,29 +3,20 @@ package com.nbmp.waveform.generation;
 
 import javafx.scene.chart.XYChart;
 
-import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 
-@Builder
-public class SineWaveGenerator implements WaveGenerator {
-  @Builder.Default private double amplitude = 1;
-  @Builder.Default private double frequency = 440;
-  @Builder.Default private double phase = 0;
-  @Builder.Default private double timeStep = 0.01;
-  @Builder.Default private double totalTime = 2;
+@SuperBuilder
+public class SineWaveGenerator extends BaseWaveGenerator {
 
-  private final String SINE_WAVE_LABEL = "Sine Wave";
-
+  @Override
   public XYChart.Series<Number, Number> generate() {
-    // Defining a series to display the sine wave
-    XYChart.Series<Number, Number> series = new XYChart.Series<>();
-    series.setName(SINE_WAVE_LABEL);
-    for (double t = 0; t < totalTime; t += timeStep) {
-      series.getData().add(new XYChart.Data<>(t, computeSineWaveValue(t)));
-    }
-    return series;
+    this.WAVE_LABEL = "Sine Wave";
+
+    return super.generate();
   }
 
-  private double computeSineWaveValue(double t) {
+  @Override
+  protected double computeWaveValue(double t) {
     return amplitude * Math.sin(2 * Math.PI * frequency * t + phase);
   }
 }
