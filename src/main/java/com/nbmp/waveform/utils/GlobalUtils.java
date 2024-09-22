@@ -14,4 +14,8 @@ public class GlobalUtils {
 
     return counterPerClass.get(className);
   }
+
+  public static String makeCountLabel(String className) {
+    return className + GlobalUtils.getCounter(className).getAndIncrement();
+  }
 }

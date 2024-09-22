@@ -10,8 +10,7 @@ import com.nbmp.waveform.models.SmartData;
 public class WaveCombiner {
 
   public Function<Double, Double> angularFrequency = (f) -> 2 * Math.PI * f;
-  public SmartData<Double> peak1 = new SmartData<>(Double.NEGATIVE_INFINITY, "peakTime1");
-  public SmartData<Double> peak2 = new SmartData<>(Double.NEGATIVE_INFINITY, "peakTime2");
+  public SmartData<Double> peak1, peak2;
   public SmartData<Pair<Double, Double>> deltaTime =
       new SmartData<>(new Pair<>(0d, 0d), "deltaTime");
 
@@ -24,20 +23,18 @@ public class WaveCombiner {
     var efficientGens = new EfficientWaveGeneration(graph.getTimeStep(), graph.getTotalTime());
     var sine1 =
         SineWaveGenerator.builder()
-            .peakTime(peak1)
             .frequency(frequency1)
-            .peakTime(peak1)
             .graph(graph)
             .frequency(1)
             .build();
     var sine2 =
         SineWaveGenerator.builder()
-            .peakTime(peak2)
             .frequency(frequency2)
-            .peakTime(peak2)
             .graph(graph)
             .frequency(0.9)
             .build();
+    peak1 = sine1.peakTime;
+    peak2 = sine2.peakTime;
     efficientGens.addGenerators(sine1, sine2);
 
     deltaTime.addListener(
@@ -50,8 +47,8 @@ public class WaveCombiner {
           if (isNegative) deltaPhiGraphable = -deltaPhiGraphable;
           lineGraph.addPoint(t.getKey(), deltaPhiGraphable);
         });
-    peak1 = attachEventToPeakTime(peak1, peak2);
-    peak2 = attachEventToPeakTime(peak2, peak1);
+    attachEventToPeakTime(peak1, peak2);
+    attachEventToPeakTime(peak2, peak1);
 
     var seriesList = efficientGens.generate();
 
@@ -59,7 +56,7 @@ public class WaveCombiner {
     return graph;
   }
 
-  private SmartData<Double> attachEventToPeakTime(
+  private void attachEventToPeakTime(
       SmartData<Double> peakTime, SmartData<Double> peakTimeOther) {
     peakTime.addListener(
         t -> {
@@ -67,6 +64,5 @@ public class WaveCombiner {
             deltaTime.setValue(new Pair<>(t, peakTimeOther.get() - peakTime.get()));
           }
         });
-    return peak1;
   }
 }

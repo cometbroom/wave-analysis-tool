@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import com.nbmp.waveform.utils.GlobalUtils;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.graph.GraphDashboard;
@@ -23,7 +25,7 @@ public class BaseWaveGenerator implements Generator {
   @Builder.Default
   protected AtomicReference<Double> maxValue = new AtomicReference<>(Double.NEGATIVE_INFINITY);
 
-  @Builder.Default protected SmartData<Double> peakTime = new SmartData<>(Double.NEGATIVE_INFINITY);
+  @Builder.Default protected SmartData<Double> peakTime = new SmartData<>(Double.NEGATIVE_INFINITY, GlobalUtils.makeCountLabel("peakTime"));
   @Builder.Default private XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
   public GraphDashboard graph;
