@@ -1,10 +1,13 @@
 /* (C)2024 */
 package com.nbmp.waveform.guides;
 
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
 
-@SuperBuilder
 public class SineWaveGuide extends WaveGuide {
+  public SineWaveGuide(double frequency) {
+    super();
+    this.frequency = frequency;
+  }
 
   @Override
   protected Double computeWaveValue(Double t) {

@@ -1,13 +1,15 @@
 /* (C)2024 */
 package com.nbmp.waveform.guides;
 
+import com.nbmp.waveform.generation.EfficientWaveGeneration;
 import org.apache.commons.math3.util.MathUtils;
-
 import lombok.RequiredArgsConstructor;
 
+
 @RequiredArgsConstructor
-public class PhaseDifferenceGuide implements Guide {
+public class PhaseDifferenceGuide extends SmartGuide {
   private final WaveGuide wave1, wave2;
+
 
   @Override
   public Double compute(Double t, Double timeStep) {

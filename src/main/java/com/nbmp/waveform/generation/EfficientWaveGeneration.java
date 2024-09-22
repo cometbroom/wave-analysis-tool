@@ -1,31 +1,44 @@
 /* (C)2024 */
 package com.nbmp.waveform.generation;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.nbmp.waveform.graph.GraphDashboard;
+import com.nbmp.waveform.guides.SmartGuide;
+import com.nbmp.waveform.guides.WaveGuide;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.guides.Guide;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class EfficientWaveGeneration {
+@Getter
+public class EfficientWaveGeneration implements Generator {
   private final double timeStep, totalTime;
+  private final GraphDashboard graph;
 
-  public List<XYChart.Series<Number, Number>> generate(List<Guide> guides) {
-    var listSeries = new ArrayList<XYChart.Series<Number, Number>>();
+  public EfficientWaveGeneration(GraphDashboard graph) {
+    totalTime = graph.getTotalTime();
+    timeStep = graph.getTimeStep();
+    this.graph = graph;
+  }
 
-    guides.forEach(guide -> listSeries.add(new XYChart.Series<>()));
-    int guidesBound = guides.size();
+//  public List<XYChart.Series<Number, Number>> generate(List<Guide> guides) {
+//    return generateWithWrappers(guides.stream().map(guide -> new SmartGuide(this)).toList());
+//  }
 
-    // Loop over the time steps and compute the values
+  public List<XYChart.Series<Number, Number>> generateWithWrappers(List<SmartGuide> guides) {
     for (double t = 0; t < totalTime; t += timeStep) {
-      for (int i = 0; i < guidesBound; i++) {
-        Guide guide = guides.get(i);
-        listSeries.get(i).getData().add(new XYChart.Data<>(t, guide.compute(t, timeStep)));
+      for (var guide : guides) {
+        guide.addPoint(t, timeStep);
       }
     }
-    return listSeries;
+    return guides.stream().map(SmartGuide::getSeries).toList();
+  }
+
+  public void regenerate(SmartGuide guide) {
+    generateWithWrappers(List.of(guide));
   }
 }

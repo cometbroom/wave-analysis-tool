@@ -8,13 +8,13 @@ import com.nbmp.waveform.generation.PhaseAnalyzerApp;
 
 public class WaveformPlotter extends Application {
 
-  private final String STAGE_TITLE = "Sine Wave";
+  private final String STAGE_TITLE = "Waveform Analysis Graph";
 
   @Override
   public void start(Stage stage) {
     stage.setTitle(STAGE_TITLE);
 
-    PhaseAnalyzerApp.analyzePhaseRelationships(stage);
+    PhaseAnalyzerApp.analyzePhaseRelationships(stage, 0.22, 0.44);
   }
 
   public static void main(String[] args) {

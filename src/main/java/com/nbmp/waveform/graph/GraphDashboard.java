@@ -2,10 +2,18 @@
 package com.nbmp.waveform.graph;
 
 import java.util.List;
+import java.util.Map;
+
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import lombok.Builder;
@@ -18,8 +26,8 @@ public class GraphDashboard {
 
   @Builder.Default private int width = 800;
   @Builder.Default private int height = 600;
-  @Builder.Default private double timeStep = 0.01;
-  @Builder.Default private double totalTime = 10;
+  @Builder.Default private double timeStep = 0.1;
+  @Builder.Default private double totalTime = 20;
   @Builder.Default private String xLabel = "Time (s)";
   @Builder.Default private String yLabel = "Amplitude";
 
@@ -42,6 +50,25 @@ public class GraphDashboard {
     stage.show();
     return this;
   }
+
+  public GraphDashboard viewVBox(Stage stage) {
+    // Arrange the UI elements vertically
+    VBox vbox = new VBox();
+    vbox.setAlignment(Pos.CENTER);
+    vbox.setSpacing(10);
+    vbox.getChildren().add(lineChart);
+
+    for (Map.Entry<Label, Slider> entry: SliderBox.sliders.entrySet()) {
+      vbox.getChildren().addAll(entry.getValue(), entry.getKey());
+    }
+
+    // Set up the scene and show the stage
+    Scene scene = new Scene(vbox, 800, 600);
+    stage.setScene(scene);
+    stage.show();
+    return this;
+  }
+
 
   private void setupLineChart() {
     final NumberAxis xAxis = new NumberAxis(), yAxis = new NumberAxis();

@@ -2,6 +2,7 @@
 package com.nbmp.waveform.generation;
 
 import java.util.List;
+
 import javafx.stage.Stage;
 
 import com.nbmp.waveform.graph.GraphDashboard;
@@ -17,13 +18,13 @@ public class PhaseAnalyzerApp {
   public static void analyzePhaseRelationships(
       Stage stage, double frequencyWave1, double frequencyWave2) {
     var graph = GraphDashboard.builder().build();
-    var efficientGens = new EfficientWaveGeneration(graph.getTimeStep(), graph.getTotalTime());
+    var generator = new EfficientWaveGeneration(graph);
 
-    var sine1 = SineWaveGuide.builder().frequency(frequencyWave1).build();
-    var sine2 = SineWaveGuide.builder().frequency(frequencyWave2).build();
+    var sine1 = new SineWaveGuide(frequencyWave1);
+    var sine2 = new SineWaveGuide(frequencyWave2);
 
     var phaseWave = new PhaseDifferenceGuide(sine1, sine2);
-    var seriesList = efficientGens.generate(List.of(sine1, sine2, phaseWave));
+    var seriesList = generator.generateWithWrappers(List.of(sine1, sine2, phaseWave));
 
     graph.addSeries(seriesList).view(stage);
   }
