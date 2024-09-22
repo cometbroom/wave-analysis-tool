@@ -9,7 +9,7 @@ import javafx.scene.chart.XYChart;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class EfficientWaveGenerator {
+public class EfficientWaveGeneration {
   List<Generator> generators = new ArrayList<>();
   private final double timeStep, totalTime;
 

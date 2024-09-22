@@ -49,18 +49,6 @@ public class BaseWaveGenerator implements Generator {
     return List.of(detectFirstPeakTime(this::computeWaveValue, actualTimeStep));
   }
 
-  public XYChart.Series<Number, Number> generate() {
-    double timeStepToUse = this.timeStep == null ? this.graph.getTimeStep() : this.timeStep;
-    this.series =
-        loopAndGenerate(
-            this.graph.getTotalTime(),
-            timeStepToUse,
-            this.WAVE_LABEL,
-            this::computeWaveValue,
-            detectFirstPeakTime(this::computeWaveValue, timeStepToUse));
-
-    return series;
-  }
 
   protected double computeWaveValue(double t) {
     return 1.0;
@@ -79,39 +67,4 @@ public class BaseWaveGenerator implements Generator {
     };
   }
 
-  private void loopAndGenerate(
-      double totalTime, double timeStep, Consumer<Double> computeFunction) {
-    for (double t = 0; t < totalTime; t += timeStep) {
-      computeFunction.accept(t);
-    }
-  }
-
-  private XYChart.Series<Number, Number> loopAndGenerate(
-      double totalTime,
-      double timeStep,
-      String label,
-      Function<Double, Double> computeFunction,
-      Consumer<Double>... eventRuns) {
-    series.setName(label);
-    loopAndGenerate(
-        totalTime,
-        timeStep,
-        (t) -> {
-          this.series.getData().add(new XYChart.Data<>(t, computeFunction.apply(t)));
-          for (Consumer<Double> run : eventRuns) {
-            run.accept(t);
-          }
-        });
-    return series;
-  }
-
-  private XYChart.Series<Number, Number> loopAndGenerate(
-      double totalTime, String label, Function<Double, Double> computeFunction) {
-    return loopAndGenerate(totalTime, 0.01, label, computeFunction);
-  }
-
-  private XYChart.Series<Number, Number> loopAndGenerate(
-      String label, Function<Double, Double> computeFunction) {
-    return loopAndGenerate(10, 0.01, label, computeFunction);
-  }
 }

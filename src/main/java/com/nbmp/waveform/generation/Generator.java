@@ -7,9 +7,6 @@ import java.util.function.Function;
 import javafx.scene.chart.XYChart;
 
 public interface Generator {
-
-  XYChart.Series<Number, Number> generate();
-
   String getName();
 
   XYChart.Series<Number, Number> getSeries();

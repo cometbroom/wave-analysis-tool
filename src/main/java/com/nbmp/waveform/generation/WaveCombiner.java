@@ -21,7 +21,7 @@ public class WaveCombiner {
     var graph = GraphDashboard.builder().build();
     var lineGraph = EventLineGenerator.builder().graph(graph).build();
 
-    var efficientGens = new EfficientWaveGenerator(graph.getTimeStep(), graph.getTotalTime());
+    var efficientGens = new EfficientWaveGeneration(graph.getTimeStep(), graph.getTotalTime());
     var sine1 =
         SineWaveGenerator.builder()
             .peakTime(peak1)
@@ -55,7 +55,7 @@ public class WaveCombiner {
 
     var seriesList = efficientGens.generate();
 
-    graph.addSeries(seriesList).addSeries(lineGraph);
+    graph.addSeries(seriesList).addSeries(lineGraph.getSeries());
     return graph;
   }
 

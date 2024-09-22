@@ -25,17 +25,6 @@ public class GraphDashboard {
   @Builder.Default private String xLabel = "Time (s)";
   @Builder.Default private String yLabel = "Amplitude";
 
-  public GraphDashboard addSeries(Generator... multipleSeries) {
-    for (Generator generator : multipleSeries) {
-      addSeries(generator);
-    }
-    return this;
-  }
-
-  public GraphDashboard addSeries(Generator series) {
-    return addSeries(series.generate());
-  }
-
   public GraphDashboard addSeries(List<XYChart.Series<Number, Number>> multipleSeries) {
     multipleSeries.forEach(this::addSeries);
     return this;

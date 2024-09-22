@@ -40,9 +40,4 @@ public class EventLineGenerator implements Generator {
     return List.of();
   }
 
-  @Override
-  public XYChart.Series<Number, Number> generate() {
-    series.setName(LABEL);
-    return series;
-  }
 }
