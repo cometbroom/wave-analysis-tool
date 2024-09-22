@@ -1,12 +1,14 @@
 /* (C)2024 */
 package com.nbmp.waveform.graph;
 
+import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-import com.nbmp.waveform.generation.WaveGenerator;
+import com.nbmp.waveform.generation.Generator;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -23,18 +25,27 @@ public class GraphDashboard {
   @Builder.Default private String xLabel = "Time (s)";
   @Builder.Default private String yLabel = "Amplitude";
 
-  public GraphDashboard addSeries(WaveGenerator... multipleSeries) {
-    for (var series : multipleSeries) {
-      addSeries(series);
+  public GraphDashboard addSeries(Generator... multipleSeries) {
+    for (Generator generator : multipleSeries) {
+      addSeries(generator);
     }
     return this;
   }
 
-  public GraphDashboard addSeries(WaveGenerator series) {
+  public GraphDashboard addSeries(Generator series) {
+    return addSeries(series.generate());
+  }
+
+  public GraphDashboard addSeries(List<XYChart.Series<Number, Number>> multipleSeries) {
+    multipleSeries.forEach(this::addSeries);
+    return this;
+  }
+
+  public GraphDashboard addSeries(XYChart.Series<Number, Number> series) {
     if (lineChart == null) {
       setupLineChart();
     }
-    lineChart.getData().add(series.generate());
+    lineChart.getData().add(series);
     return this;
   }
 
