@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import com.nbmp.waveform.models.ReactiveData;
 import com.nbmp.waveform.utils.GlobalUtils;
 import javafx.scene.chart.XYChart;
 

@@ -10,18 +10,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class EfficientWaveGeneration {
-  List<Generator> generators = new ArrayList<>();
   private final double timeStep, totalTime;
 
-  public void addGenerator(Generator generator) {
-    generators.add(generator);
-  }
-
-  public void addGenerators(Generator... generators) {
-    this.generators.addAll(Arrays.asList(generators));
-  }
-
-  public List<XYChart.Series<Number, Number>> generate() {
+  public List<XYChart.Series<Number, Number>> generate(Generator... generators) {
     for (double t = 0; t < totalTime; t += timeStep) {
       for (Generator generator : generators) {
         generator.getSeries().setName(generator.getName());
@@ -34,6 +25,6 @@ public class EfficientWaveGeneration {
         }
       }
     }
-    return this.generators.stream().map(Generator::getSeries).toList();
+    return Arrays.stream(generators).map(Generator::getSeries).toList();
   }
 }
