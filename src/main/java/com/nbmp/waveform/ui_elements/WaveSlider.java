@@ -16,6 +16,8 @@ public class WaveSlider extends Slider {
     private final Consumer<Double> sliderChanged;
 
     public WaveSlider(Consumer<Double> sliderChanged) {
+        this.setMin(0);
+        this.setMax(20);
         this.sliderChanged = sliderChanged;
         setSliderGeneralProps(1);
     }
