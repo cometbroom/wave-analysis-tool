@@ -39,5 +39,4 @@ public class EventLineGenerator implements Generator {
   public List<Consumer<Double>> getEventRuns() {
     return List.of();
   }
-
 }

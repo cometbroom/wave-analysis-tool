@@ -8,8 +8,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-import com.nbmp.waveform.generation.Generator;
-
 import lombok.Builder;
 import lombok.Getter;
 

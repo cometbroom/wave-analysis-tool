@@ -1,3 +1,4 @@
+/* (C)2024 */
 package com.nbmp.waveform.guides;
 
 import lombok.experimental.SuperBuilder;
@@ -5,8 +6,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class SineWaveGuide extends WaveGuide {
 
-    @Override
-    protected Double computeWaveValue(Double t) {
-        return amplitude * Math.sin(2 * Math.PI * frequency * t + phase);
-    }
+  @Override
+  protected Double computeWaveValue(Double t) {
+    return amplitude * Math.sin(2 * Math.PI * frequency * t + phaseRadians);
+  }
 }

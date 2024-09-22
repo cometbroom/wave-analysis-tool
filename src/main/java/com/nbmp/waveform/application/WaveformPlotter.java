@@ -4,7 +4,7 @@ package com.nbmp.waveform.application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import com.nbmp.waveform.generation.WaveCombiner;
+import com.nbmp.waveform.generation.PhaseAnalyzerApp;
 
 public class WaveformPlotter extends Application {
 
@@ -14,9 +14,7 @@ public class WaveformPlotter extends Application {
   public void start(Stage stage) {
     stage.setTitle(STAGE_TITLE);
 
-    var waveCombiner = new WaveCombiner();
-    var graph = waveCombiner.drawOnGraph();
-    graph.view(stage);
+    PhaseAnalyzerApp.analyzePhaseRelationships(stage);
   }
 
   public static void main(String[] args) {
