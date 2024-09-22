@@ -19,7 +19,7 @@ public class WaveCombiner {
 
   public GraphDashboard drawOnGraph() {
     var graph = GraphDashboard.builder().build();
-    var lineGraph = LineGenerator.builder().graph(graph).build();
+    var lineGraph = EventLineGenerator.builder().graph(graph).build();
 
     var efficientGens = new EfficientWaveGenerator(graph.getTimeStep(), graph.getTotalTime());
     var sine1 =
