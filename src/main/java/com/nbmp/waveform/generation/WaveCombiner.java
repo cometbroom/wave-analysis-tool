@@ -1,8 +1,10 @@
 /* (C)2024 */
 package com.nbmp.waveform.generation;
 
+import java.util.List;
 import java.util.function.BiFunction;
 
+import com.nbmp.waveform.guides.SineWaveGuide;
 import com.nbmp.waveform.utils.MathConstants;
 import javafx.util.Pair;
 
@@ -35,15 +37,13 @@ public class WaveCombiner {
 
     var efficientGens = new EfficientWaveGeneration(graph.getTimeStep(), graph.getTotalTime());
     var sine1 =
-        SineWaveGenerator.builder()
+        SineWaveGuide.builder()
             .frequency(frequency1)
-            .graph(graph)
             .frequency(1)
             .build();
     var sine2 =
-        SineWaveGenerator.builder()
+        SineWaveGuide.builder()
             .frequency(frequency2)
-            .graph(graph)
             .frequency(0.9)
             .build();
     var differenceMonitor = differenceMonitor(sine1.peakTime, sine2.peakTime, (a, b) -> b - a);
@@ -59,7 +59,7 @@ public class WaveCombiner {
           lineGraph.addPoint(t.getKey(), deltaPhiGraphable);
         });
 
-    var seriesList = efficientGens.generate(sine1, sine2);
+    var seriesList = efficientGens.generate(List.of(sine1, sine2));
 
     graph.addSeries(seriesList).addSeries(lineGraph.getSeries());
     return graph;
