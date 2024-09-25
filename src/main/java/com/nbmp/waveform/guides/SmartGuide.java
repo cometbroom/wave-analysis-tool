@@ -16,7 +16,7 @@ public class SmartGuide implements Guide {
 
   protected XYChart.Series<Number, Number> series = new XYChart.Series<>();
   protected EfficientWaveGeneration generator;
-  private boolean isInteractive = false;
+  protected boolean isInteractive = false;
 
   @Override
   public Double compute(Double t, Double timeStep) {
@@ -30,9 +30,5 @@ public class SmartGuide implements Guide {
 
   public void addPoint(Double t, Double timeStep) {
     series.getData().add(new XYChart.Data<>(t, compute(t, timeStep)));
-  }
-
-  public void makeReactive() {
-    this.isInteractive = true;
   }
 }

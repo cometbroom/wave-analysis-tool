@@ -14,7 +14,7 @@ public class WaveformPlotter extends Application {
   public void start(Stage stage) {
     stage.setTitle(STAGE_TITLE);
 
-    PhaseAnalyzerApp.analyzePhaseRelationships(stage, 0.22, 0.44);
+    PhaseAnalyzerApp.analyzePhaseRelationships(stage, 2, 5);
   }
 
   public static void main(String[] args) {

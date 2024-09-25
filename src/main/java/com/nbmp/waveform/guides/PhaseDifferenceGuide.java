@@ -2,6 +2,7 @@
 package com.nbmp.waveform.guides;
 
 import org.apache.commons.math3.util.MathUtils;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,8 +15,8 @@ public class PhaseDifferenceGuide extends SmartGuide {
   }
 
   public Double compute(Double t) {
-    double deltaPhi = MathUtils.normalizeAngle(
-            wave2.cumulativePhaseRadians - wave1.cumulativePhaseRadians, 0.0);
+    double deltaPhi =
+        MathUtils.normalizeAngle(wave2.cumulativePhaseRadians - wave1.cumulativePhaseRadians, 0.0);
     return deltaPhi / Math.PI;
   }
 

@@ -24,10 +24,6 @@ public class EfficientWaveGeneration {
     this.graph = graph;
   }
 
-  public List<XYChart.Series<Number, Number>> generate() {
-    return generateWithWrappers(guidesRegister);
-  }
-
   public List<XYChart.Series<Number, Number>> generateWithWrappers(List<SmartGuide> guides) {
     for (double t = 0; t < totalTime; t += timeStep) {
       for (var guide : guidesRegister) {

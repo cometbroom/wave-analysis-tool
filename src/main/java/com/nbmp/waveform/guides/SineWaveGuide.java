@@ -7,12 +7,13 @@ import com.nbmp.waveform.models.SliderTarget;
 public class SineWaveGuide extends WaveGuide implements Sliderable {
   private double changeTime = 0, startingFrequency, targetFrequency, cumulativePhaseRadians;
 
-  public SineWaveGuide(double frequency) {
+  public SineWaveGuide(double frequency, WaveOptions... options) {
     super();
     this.frequency = frequency;
     this.startingFrequency = frequency;
     this.targetFrequency = frequency;
     this.cumulativePhaseRadians = phaseRadians;
+    setupOptions(options);
   }
 
   @Override
@@ -38,10 +39,18 @@ public class SineWaveGuide extends WaveGuide implements Sliderable {
       case PHASE -> this.phaseRadians = value;
     }
     this.series.getData().clear();
-    this.generator.regenerate();
+    if (this.isInteractive()) this.generator.regenerate();
   }
 
   protected Double computeWaveValue() {
     return amplitude * Math.sin(cumulativePhaseRadians);
+  }
+
+  private void setupOptions(WaveOptions[] options) {
+    for (WaveOptions option : options) {
+      switch (option) {
+        case REGENERATION -> this.setInteractive(true);
+      }
+    }
   }
 }
