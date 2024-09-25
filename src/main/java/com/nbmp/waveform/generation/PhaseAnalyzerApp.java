@@ -19,8 +19,6 @@ public class PhaseAnalyzerApp {
     var sine2 = new SineWaveGuide(frequencyWave2, WaveOptions.REGENERATION);
     var phaseWave = new PhaseDifferenceGuide(sine1, sine2, WaveOptions.REGENERATION);
 
-    sine2.addFrequencyChange(frequencyWave1, 0.5);
-
     var gen = EfficientWaveGeneration.generatorOf(graph, sine1, sine2, phaseWave);
     var slider =
         new WaveSlider(

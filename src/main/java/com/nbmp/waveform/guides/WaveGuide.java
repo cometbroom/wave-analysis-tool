@@ -30,9 +30,4 @@ public class WaveGuide extends SmartGuide {
     }
     return computedValue;
   }
-
-  @Override
-  protected Double computeWaveValue(Double t) {
-    return 0.0;
-  }
 }
