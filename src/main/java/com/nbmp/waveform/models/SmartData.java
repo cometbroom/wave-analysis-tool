@@ -10,7 +10,6 @@ import com.nbmp.waveform.utils.GlobalUtils;
 
 public class SmartData<T> extends AtomicReference<T> {
   private PropertyChangeSupport support = new PropertyChangeSupport(this);
-
   private String propertyName;
 
   public SmartData(T value) {

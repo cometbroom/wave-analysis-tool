@@ -1,23 +1,19 @@
 /* (C)2024 */
 package com.nbmp.waveform.generation;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.graph.GraphDashboard;
 import com.nbmp.waveform.guides.SmartGuide;
-import com.nbmp.waveform.guides.WaveGuide;
-import javafx.scene.chart.XYChart;
-
-import com.nbmp.waveform.guides.Guide;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class EfficientWaveGeneration implements Generator {
+public class EfficientWaveGeneration {
   private final double timeStep, totalTime;
   private final GraphDashboard graph;
   private List<SmartGuide> guidesRegister = new LinkedList<>();
@@ -34,7 +30,7 @@ public class EfficientWaveGeneration implements Generator {
 
   public List<XYChart.Series<Number, Number>> generateWithWrappers(List<SmartGuide> guides) {
     for (double t = 0; t < totalTime; t += timeStep) {
-      for (var guide : guides) {
+      for (var guide : guidesRegister) {
         guide.addPoint(t, timeStep);
       }
     }
@@ -44,7 +40,7 @@ public class EfficientWaveGeneration implements Generator {
 
   public EfficientWaveGeneration addGuide(SmartGuide guide) {
     guidesRegister.add(guide);
-  return this;
+    return this;
   }
 
   public static EfficientWaveGeneration generatorOf(GraphDashboard graph, SmartGuide... guides) {

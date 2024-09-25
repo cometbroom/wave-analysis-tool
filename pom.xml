@@ -8,6 +8,14 @@
   <url>http://maven.apache.org</url>
 
 
+
+  <repositories>
+    <repository>
+      <id>bitwig</id>
+      <name>Bitwig Maven Repository</name>
+      <url>https://maven.bitwig.com</url>
+    </repository>
+  </repositories>
   <properties>
     <javafx-sdk.path>C:/Users/alawi/Downloads/Compressed/openjfx-22.0.2_windows-x64_bin-sdk/javafx-sdk-22.0.2</javafx-sdk.path>
     <maven.compiler.source>21</maven.compiler.source>
@@ -23,6 +31,13 @@
       <artifactId>commons-math3</artifactId>
       <version>3.6.1</version>
     </dependency>
+
+
+      <dependency>
+        <groupId>com.bitwig</groupId>
+        <artifactId>extension-api</artifactId>
+        <version>19</version>
+      </dependency>
 
     <dependency>
           <groupId>org.projectlombok</groupId>

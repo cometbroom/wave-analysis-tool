@@ -3,14 +3,11 @@ package com.nbmp.waveform.graph;
 
 import java.util.List;
 import java.util.Map;
-
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
@@ -26,8 +23,8 @@ public class GraphDashboard {
 
   @Builder.Default private int width = 800;
   @Builder.Default private int height = 600;
-  @Builder.Default private double timeStep = 0.1;
-  @Builder.Default private double totalTime = 20;
+  @Builder.Default private double timeStep = 0.01;
+  @Builder.Default private double totalTime = 5;
   @Builder.Default private String xLabel = "Time (s)";
   @Builder.Default private String yLabel = "Amplitude";
 
@@ -58,7 +55,7 @@ public class GraphDashboard {
     vbox.setSpacing(10);
     vbox.getChildren().add(lineChart);
 
-    for (Map.Entry<Label, Slider> entry: SliderBox.sliders.entrySet()) {
+    for (Map.Entry<Label, Slider> entry : SliderBox.sliders.entrySet()) {
       vbox.getChildren().addAll(entry.getValue(), entry.getKey());
     }
 
@@ -69,13 +66,13 @@ public class GraphDashboard {
     return this;
   }
 
-
   private void setupLineChart() {
     final NumberAxis xAxis = new NumberAxis(), yAxis = new NumberAxis();
     xAxis.setLabel(xLabel);
     yAxis.setLabel(yLabel);
 
     lineChart = new LineChart<>(xAxis, yAxis);
+    lineChart.setCreateSymbols(false);
     lineChart.setTitle("Graph");
   }
 }

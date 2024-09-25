@@ -1,9 +1,6 @@
 /* (C)2024 */
 package com.nbmp.waveform.generation;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.graph.GraphDashboard;
