@@ -5,22 +5,23 @@ import java.util.LinkedList;
 import java.util.List;
 import javafx.scene.chart.XYChart;
 
-import com.nbmp.waveform.graph.GraphDashboard;
 import com.nbmp.waveform.guides.Guide;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
-public class EfficientWaveGeneration {
-  private final double timeStep, totalTime;
-  private final GraphDashboard graph;
+@NoArgsConstructor
+public class EfficientWaveGeneration extends Generator {
+  protected List<Guide> allGuides = new LinkedList<>();
   private List<Guide> dynamicGuides = new LinkedList<>();
-  private List<Guide> allGuides = new LinkedList<>();
 
-  private EfficientWaveGeneration(GraphDashboard graph) {
-    this(graph.getTimeStep(), graph.getTotalTime(), graph);
+  public EfficientWaveGeneration(double timeStep, double totalTime) {
+    super(timeStep, totalTime);
+  }
+
+  public EfficientWaveGeneration(Guide... guides) {
+    bindGuides(guides);
   }
 
   public List<XYChart.Series<Number, Number>> generate() {
@@ -33,22 +34,23 @@ public class EfficientWaveGeneration {
     return allGuides.stream().map(Guide::getSeries).toList();
   }
 
-  public void addGuide(Guide guide) {
+  public void populateSeriesList(Guide guide) {
     dynamicGuides.add(guide);
     allGuides.add(guide);
-  }
-
-  public static EfficientWaveGeneration generatorOf(GraphDashboard graph, Guide... guides) {
-    var gen = new EfficientWaveGeneration(graph);
-    for (var guide : guides) {
-      guide.setGenerator(gen);
-      gen.addGuide(guide);
-    }
-    return gen;
+    guide.bindForRegeneration(this);
   }
 
   public void regenerate() {
-    dynamicGuides.forEach(guide -> guide.getSeries().getData().clear());
+    dynamicGuides.forEach(
+        guide -> {
+          if (guide.isInteractive()) guide.getSeries().getData().clear();
+        });
     generate();
+  }
+
+  private void bindGuides(Guide[] guides) {
+    for (var guide : guides) {
+      populateSeriesList(guide);
+    }
   }
 }
