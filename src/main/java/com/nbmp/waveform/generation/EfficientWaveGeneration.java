@@ -16,27 +16,26 @@ import lombok.RequiredArgsConstructor;
 public class EfficientWaveGeneration {
   private final double timeStep, totalTime;
   private final GraphDashboard graph;
-  private List<SmartGuide> guidesRegister = new LinkedList<>();
+  private List<SmartGuide> dynamicGuides = new LinkedList<>();
+  private List<SmartGuide> allGuides = new LinkedList<>();
 
   public EfficientWaveGeneration(GraphDashboard graph) {
-    totalTime = graph.getTotalTime();
-    timeStep = graph.getTimeStep();
-    this.graph = graph;
+    this(graph.getTimeStep(), graph.getTotalTime(), graph);
   }
 
-  public List<XYChart.Series<Number, Number>> generateWithWrappers(List<SmartGuide> guides) {
+  public List<XYChart.Series<Number, Number>> generate() {
     for (double t = 0; t < totalTime; t += timeStep) {
-      for (var guide : guidesRegister) {
+      for (var guide : dynamicGuides) {
         guide.addPoint(t, timeStep);
       }
     }
-    guidesRegister = guidesRegister.stream().filter(SmartGuide::isInteractive).toList();
-    return guides.stream().map(SmartGuide::getSeries).toList();
+    dynamicGuides = dynamicGuides.stream().filter(SmartGuide::isInteractive).toList();
+    return allGuides.stream().map(SmartGuide::getSeries).toList();
   }
 
-  public EfficientWaveGeneration addGuide(SmartGuide guide) {
-    guidesRegister.add(guide);
-    return this;
+  public void addGuide(SmartGuide guide) {
+    dynamicGuides.add(guide);
+    allGuides.add(guide);
   }
 
   public static EfficientWaveGeneration generatorOf(GraphDashboard graph, SmartGuide... guides) {
@@ -48,12 +47,8 @@ public class EfficientWaveGeneration {
     return gen;
   }
 
-  public void regenerate(SmartGuide guide) {
-    generateWithWrappers(List.of(guide));
-  }
-
   public void regenerate() {
-    guidesRegister.forEach(guide -> guide.getSeries().getData().clear());
-    generateWithWrappers(guidesRegister);
+    dynamicGuides.forEach(guide -> guide.getSeries().getData().clear());
+    generate();
   }
 }

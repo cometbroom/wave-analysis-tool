@@ -31,4 +31,12 @@ public class SmartGuide implements Guide {
   public void addPoint(Double t, Double timeStep) {
     series.getData().add(new XYChart.Data<>(t, compute(t, timeStep)));
   }
+
+  protected void setupOptions(WaveOptions[] options) {
+    for (WaveOptions option : options) {
+      switch (option) {
+        case REGENERATION -> this.isInteractive = true;
+      }
+    }
+  }
 }
