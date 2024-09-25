@@ -6,7 +6,7 @@ import java.util.List;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.graph.GraphDashboard;
-import com.nbmp.waveform.guides.SmartGuide;
+import com.nbmp.waveform.guides.Guide;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,10 @@ import lombok.RequiredArgsConstructor;
 public class EfficientWaveGeneration {
   private final double timeStep, totalTime;
   private final GraphDashboard graph;
-  private List<SmartGuide> dynamicGuides = new LinkedList<>();
-  private List<SmartGuide> allGuides = new LinkedList<>();
+  private List<Guide> dynamicGuides = new LinkedList<>();
+  private List<Guide> allGuides = new LinkedList<>();
 
-  public EfficientWaveGeneration(GraphDashboard graph) {
+  private EfficientWaveGeneration(GraphDashboard graph) {
     this(graph.getTimeStep(), graph.getTotalTime(), graph);
   }
 
@@ -29,16 +29,16 @@ public class EfficientWaveGeneration {
         guide.addPoint(t, timeStep);
       }
     }
-    dynamicGuides = dynamicGuides.stream().filter(SmartGuide::isInteractive).toList();
-    return allGuides.stream().map(SmartGuide::getSeries).toList();
+    dynamicGuides = dynamicGuides.stream().filter(Guide::isInteractive).toList();
+    return allGuides.stream().map(Guide::getSeries).toList();
   }
 
-  public void addGuide(SmartGuide guide) {
+  public void addGuide(Guide guide) {
     dynamicGuides.add(guide);
     allGuides.add(guide);
   }
 
-  public static EfficientWaveGeneration generatorOf(GraphDashboard graph, SmartGuide... guides) {
+  public static EfficientWaveGeneration generatorOf(GraphDashboard graph, Guide... guides) {
     var gen = new EfficientWaveGeneration(graph);
     for (var guide : guides) {
       guide.setGenerator(gen);

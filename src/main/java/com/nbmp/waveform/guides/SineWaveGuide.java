@@ -8,7 +8,7 @@ import com.nbmp.waveform.models.SliderTarget;
 public class SineWaveGuide extends WaveGuide implements Sliderable, Reactive {
   private double changeTime = 0, startingFrequency, targetFrequency;
 
-  public SineWaveGuide(double frequency, WaveOptions... options) {
+  public SineWaveGuide(double frequency, GuideOptions... options) {
     super();
     this.frequency = frequency;
     this.startingFrequency = frequency;
@@ -20,12 +20,12 @@ public class SineWaveGuide extends WaveGuide implements Sliderable, Reactive {
   @Override
   public Double compute(Double t, Double timeStep) {
     if (t < changeTime) {
-      this.frequency = startingFrequency + ((targetFrequency - startingFrequency) / changeTime) * t;
+      frequency = startingFrequency + ((targetFrequency - startingFrequency) / changeTime) * t;
     } else {
-      this.frequency = targetFrequency;
+      frequency = targetFrequency;
     }
     cumulativePhaseRadians += 2 * Math.PI * frequency * timeStep;
-    return computeWaveValue();
+    return amplitude * Math.sin(cumulativePhaseRadians);
   }
 
   public void addFrequencyChange(double targetFrequency, double changeTime) {
@@ -40,17 +40,6 @@ public class SineWaveGuide extends WaveGuide implements Sliderable, Reactive {
       case AMPLITUDE -> this.amplitude = value;
       case PHASE -> this.phaseRadians = value;
     }
-    this.series.getData().clear();
-    this.generator.regenerate();
-  }
-
-  @Override
-  public void regenerateSeries() {
-    this.series.getData().clear();
-    this.generator.regenerate();
-  }
-
-  protected Double computeWaveValue() {
-    return amplitude * Math.sin(cumulativePhaseRadians);
+    regenerateSeries();
   }
 }
