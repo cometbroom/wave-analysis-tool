@@ -8,8 +8,8 @@ import com.nbmp.waveform.models.SliderTarget;
 public class SineWaveGuide extends WaveGuide implements Sliderable, Reactive {
   private double changeTime = 0, startingFrequency, targetFrequency;
 
-  public SineWaveGuide(double frequency, GuideOptions... options) {
-    super();
+  public SineWaveGuide(double frequency, String name, GuideOptions... options) {
+    super(name);
     this.frequency = frequency;
     this.startingFrequency = frequency;
     this.targetFrequency = frequency;

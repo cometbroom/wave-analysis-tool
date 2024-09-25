@@ -15,9 +15,9 @@ public class PhaseAnalyzerApp {
   public static void analyzePhaseRelationships(
       Stage stage, double frequencyWave1, double frequencyWave2) {
     var graph = GraphDashboard.builder().totalTime(10).build();
-    var sine1 = new SineWaveGuide(frequencyWave1, GuideOptions.REGENERATION);
-    var sine2 = new SineWaveGuide(frequencyWave2, GuideOptions.REGENERATION);
-    var phaseWave = new PhaseDifferenceGuide(sine1, sine2, GuideOptions.REGENERATION);
+    var sine1 = new SineWaveGuide(frequencyWave1, "Sine 1", GuideOptions.REGENERATION);
+    var sine2 = new SineWaveGuide(frequencyWave2, "Sine 2", GuideOptions.REGENERATION);
+    var phaseWave = new PhaseDifferenceGuide("Phase Sum", sine1, sine2, GuideOptions.REGENERATION);
 
     var gen = EfficientWaveGeneration.generatorOf(graph, sine1, sine2, phaseWave);
     var slider =

@@ -17,4 +17,8 @@ public abstract class WaveGuide extends Guide {
       mavValue = 0.0;
   public SmartData<Double> peakTime =
       new SmartData<>(Double.NEGATIVE_INFINITY, GlobalUtils.makeCountLabel("WaveGuide-peakTime"));
+
+  public WaveGuide(String name) {
+    super(name);
+  }
 }

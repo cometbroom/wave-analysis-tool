@@ -14,12 +14,15 @@ public abstract class Guide {
   protected EfficientWaveGeneration generator;
   protected XYChart.Series<Number, Number> series;
   protected boolean isInteractive = false;
-  protected String LABEL = "Guide";
   protected double currentValue = Double.NEGATIVE_INFINITY;
 
   public Guide() {
+    this("Guide");
+  }
+
+  public Guide(String name) {
     series = new XYChart.Series<>();
-    series.setName(LABEL);
+    series.setName(name);
   }
 
   abstract Double compute(Double t, Double timeStep);
