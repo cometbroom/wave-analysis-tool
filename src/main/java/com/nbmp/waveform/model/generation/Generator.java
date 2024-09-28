@@ -2,16 +2,15 @@
 package com.nbmp.waveform.model.generation;
 
 public abstract class Generator {
-  protected final double timeStep, totalTime;
+  protected final double timeStep;
   public static double SAMPLE_RATE;
 
-  public Generator(double totalTime, double sampleRate) {
-    this.totalTime = totalTime;
+  public Generator(double sampleRate) {
     Generator.SAMPLE_RATE = sampleRate;
     this.timeStep = 1.0 / sampleRate;
   }
 
   public Generator() {
-    this(5, 1000.0);
+    this(1000.0);
   }
 }
