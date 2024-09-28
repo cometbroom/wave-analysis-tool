@@ -21,8 +21,8 @@ public class WaveController {
     @FXML private LineChart<Number, Number> waveformChart;
     @FXML private Slider frequencySlider;
     @FXML private Button addWaveButton;
+    private WaveService waveService = new WaveService();
 
-    private WaveformGenerator generator = new WaveformGenerator();
     private List<WavesRegister> waves = new LinkedList<>();
 
 
@@ -38,40 +38,18 @@ public class WaveController {
     }
 
     public void createGuide(WaveType type, double frequency, double amplitude) {
-        var series = new XYChart.Series<Number, Number>();
-        series.setName("guide");
-        waveformChart.getData().add(series);
-        WavesRegister guide = switch (type) {
-      case SINE -> new WavesRegister(new SineWaveGuide(frequency, amplitude), series);
-            case SQUARE, TRIANGLE, SAWTOOTH ->
-                throw new IllegalArgumentException("Wave type not supported");
-        };
+        var guide = waveService.createGuide(type, frequency, amplitude);
+        waveformChart.getData().add(guide.series());
         //Only first waveform has slider
         if (waves.isEmpty()) {
             frequencySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
                 guide.guide().setFrequency(newValue.doubleValue());
                 sliderLabel.setText("Frequency: %.2f Hz".formatted(newValue.doubleValue()));
                 guide.series().getData().clear();
-                getPointsFor(guide);
+                waveService.getPointsFor(guide);
             });
         }
         waves.add(guide);
 
-    }
-
-    private void getPointsFor(WavesRegister wave) {
-        var data = generator.generate(wave.guide(), 0, 1);
-            for (double[] point : data) {
-                wave.series().getData().add(new XYChart.Data<>(point[0], point[1]));
-            }
-    }
-
-    private void getPoints() {
-        for (var wave : waves) {
-            var data = generator.generate(wave.guide(), 0, 1);
-            for (double[] point : data) {
-                wave.series().getData().add(new XYChart.Data<>(point[0], point[1]));
-            }
-        }
     }
 }

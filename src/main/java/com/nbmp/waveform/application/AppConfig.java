@@ -1,8 +1,5 @@
 package com.nbmp.waveform.application;
 
-import com.nbmp.waveform.utils.GlobalConfiguration;
-import lombok.Builder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 

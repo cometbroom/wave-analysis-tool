@@ -20,7 +20,6 @@ public class WaveformPlotter extends Application {
   @Override
   public void start(Stage stage) {
     ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-    PhaseAnalyzerApp phaseAnalyzerApp = context.getBean(PhaseAnalyzerApp.class);
     stage.setTitle(STAGE_TITLE);
       try {
           Parent root = FXMLLoader.load(Objects.requireNonNull(this.getClass().getResource("/waveView.fxml")));
@@ -29,11 +28,7 @@ public class WaveformPlotter extends Application {
       } catch (IOException e) {
           throw new RuntimeException("Failed to load fxml class", e);
       }
-
-
-      PhaseAnalyzerApp.analyzePhaseRelationships(stage, 2, 5);
   }
-
   public static void main(String[] args) {
     launch(args);
   }

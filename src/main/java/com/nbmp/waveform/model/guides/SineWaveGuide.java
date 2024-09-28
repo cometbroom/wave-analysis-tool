@@ -1,7 +1,6 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.guides;
 
-import com.nbmp.waveform.controller.Sliderable;
 
 public class SineWaveGuide extends WaveGuide {
   public SineWaveGuide(double frequency, double amplitude) {

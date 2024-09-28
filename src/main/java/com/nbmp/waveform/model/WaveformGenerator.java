@@ -1,7 +1,6 @@
 package com.nbmp.waveform.model;
 
 import com.nbmp.waveform.model.generation.Generator;
-import com.nbmp.waveform.model.guides.Guide;
 import com.nbmp.waveform.model.guides.WaveGuide;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
