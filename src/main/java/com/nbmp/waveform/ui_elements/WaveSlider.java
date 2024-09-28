@@ -5,7 +5,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
-import com.nbmp.waveform.extras.Reactive;
 import com.nbmp.waveform.extras.Sliderable;
 import com.nbmp.waveform.models.SliderTarget;
 
@@ -17,21 +16,16 @@ import lombok.Setter;
 public class WaveSlider extends Slider {
   private String name = "WaveSlider";
   private Label label = new Label("%s: ".formatted(name));
+  private final Runnable regenFunction;
 
-  public WaveSlider(String name, Sliderable targetToSlider, SliderTarget targetParam) {
+  public WaveSlider(
+      String name, Sliderable targetToSlider, SliderTarget targetParam, Runnable regenFunction) {
     this.setMin(0);
     this.setMax(20);
     this.setName("%s for %s".formatted(name, targetParam.name()));
     setSliderGeneralProps(1);
+    this.regenFunction = regenFunction;
     addListener(targetToSlider, targetParam);
-  }
-
-  public WaveSlider(
-      String name, Sliderable targetToSlider, SliderTarget targetParam, Reactive... affects) {
-    this(name, targetToSlider, targetParam);
-    for (Reactive affect : affects) {
-      addPassiveListener(affect::regenerateSeries);
-    }
   }
 
   private void setSliderGeneralProps(double defaultValue) {
@@ -52,6 +46,7 @@ public class WaveSlider extends Slider {
               double newValueDouble = newValue.doubleValue();
               label.setText(String.format("%s: %.2f Hz", name, newValueDouble));
               targetToSlider.updateValue(targetParam, newValueDouble);
+              regenFunction.run();
             });
   }
 

@@ -1,9 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.guides;
 
-import com.nbmp.waveform.extras.Reactive;
-
-public class PhaseDifferenceGuide extends Guide implements Reactive {
+public class PhaseDifferenceGuide extends Guide {
   private final WaveGuide wave1, wave2;
 
   public PhaseDifferenceGuide(

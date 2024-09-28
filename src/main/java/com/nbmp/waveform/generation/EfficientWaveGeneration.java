@@ -5,12 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.nbmp.waveform.graph.GraphDashboard;
-import javafx.scene.chart.XYChart;
-
 import com.nbmp.waveform.guides.Guide;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class EfficientWaveGeneration extends Generator {

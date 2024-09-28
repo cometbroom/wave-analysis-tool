@@ -11,6 +11,6 @@ public abstract class Generator {
   }
 
   public Generator() {
-    this(1.0/SAMPLE_RATE, 5);
+    this(1.0 / SAMPLE_RATE, 5);
   }
 }

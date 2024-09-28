@@ -1,11 +1,10 @@
 /* (C)2024 */
 package com.nbmp.waveform.guides;
 
-import com.nbmp.waveform.extras.Reactive;
 import com.nbmp.waveform.extras.Sliderable;
 import com.nbmp.waveform.models.SliderTarget;
 
-public class SineWaveGuide extends WaveGuide implements Sliderable, Reactive {
+public class SineWaveGuide extends WaveGuide implements Sliderable {
   private double changeTime = 0, startingFrequency, targetFrequency;
 
   public SineWaveGuide(double frequency, String name, GuideOptions... options) {
@@ -40,6 +39,5 @@ public class SineWaveGuide extends WaveGuide implements Sliderable, Reactive {
       case AMPLITUDE -> this.amplitude = value;
       case PHASE -> this.phaseRadians = value;
     }
-    regenerateSeries();
   }
 }
