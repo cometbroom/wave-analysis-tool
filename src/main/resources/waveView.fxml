@@ -1,37 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Orientation?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.control.ColorPicker?>
+
+<?import javafx.collections.FXCollections?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
-            prefHeight="800.0" prefWidth="600.0">
-    <BorderPane xmlns:fx="http://javafx.com/fxml">
-        <top>
-            <HBox spacing="20">
-                <Label text="Frequency:" />
-                <Slider fx:id="frequencySlider" min="1" max="50" value="5" />
-                <Button fx:id="addWaveButton" text="Add Wave" onAction="#createButton" />
-                <!-- Additional controls -->
-            </HBox>
-        </top>
-        <center>
-            <LineChart prefWidth="800" prefHeight="600" fx:id="waveformChart" title="WaveformsGraph" createSymbols="false">
-                <xAxis>
-                    <NumberAxis side="BOTTOM" label="Time"  />
-                </xAxis>
-                <yAxis>
-                    <NumberAxis side="LEFT" label="Amplitude" />
-                </yAxis>
-            </LineChart>
-        </center>
-    </BorderPane>
+            stylesheets="@stylesheets/waveView.css">
+    <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <!-- Main Content -->
+        <SplitPane VBox.vgrow="ALWAYS"><!-- Left Pane: Controls -->
+            <ScrollPane fitToWidth="true" prefWidth="250">
+                <VBox spacing="15" alignment="TOP_CENTER">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15"/>
+                    </padding>
+                    <!-- Waveform Type -->
+                    <Label text="Waveform Type:" styleClass="label-bold"/>
+
+
+                    <!-- Frequency -->
+                    <Label text="Frequency:" styleClass="label-bold"/>
+                    <Slider fx:id="frequencySlider" min="1" max="50" value="5"/>
+                    <Label fx:id="sliderLabel" text="5 Hz"/>
+
+
+                    <!-- Color Picker -->
+                    <Label text="Waveform Color:" styleClass="label-bold"/>
+
+                    <!-- Add Wave Button -->
+                    <Button fx:id="addWaveButton" text="Add Wave" onAction="#createButton" maxWidth="Infinity"/>
+
+                    <!-- Remove Wave Button -->
+                    <!--                            <Button fx:id="removeWaveButton" text="Remove Wave" onAction="#removeButton" maxWidth="Infinity" />-->
+
+                    <!-- Additional controls can be added here -->
+
+                </VBox>
+            </ScrollPane>
+
+            <!-- Right Pane: Waveform Chart -->
+            <AnchorPane>
+                <LineChart fx:id="waveformChart" title="Waveform Graph" createSymbols="false"
+                           AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <xAxis>
+                        <NumberAxis side="BOTTOM" label="Time"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis side="LEFT" label="Amplitude"/>
+                    </yAxis>
+                </LineChart>
+            </AnchorPane>
+
+        </SplitPane>
+
+        <!-- Status Bar -->
+        <HBox spacing="10" style="-fx-background-color: #e0e0e0;" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="5" right="5" bottom="5" left="5" />
+            </padding>
+            <Label fx:id="statusLabel" text="Ready" />
+        </HBox>
+
+    </VBox>
 </AnchorPane>
-
-

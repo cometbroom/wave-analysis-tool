@@ -1,0 +1,77 @@
+/* waveView.css */
+
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+}
+
+.label-bold {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-font-size: 13px;
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #1976D2;
+}
+
+.menu-bar {
+    -fx-background-color: #eeeeee;
+}
+
+.menu .label {
+    -fx-text-fill: #424242;
+}
+
+.status-bar {
+    -fx-background-color: #e0e0e0;
+}
+
+.line-chart {
+    -fx-background-color: #ffffff;
+}
+
+.chart-title {
+    -fx-text-fill: #333333;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.axis-label {
+    -fx-text-fill: #555555;
+    -fx-font-size: 12px;
+}
+
+.axis-tick-mark {
+    -fx-stroke: #888888;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.slider {
+    -fx-pref-width: 200px;
+}
+
+.combo-box {
+    -fx-pref-width: 200px;
+}
+
+.color-picker {
+    -fx-pref-width: 200px;
+}
+
+.label {
+    -fx-text-fill: #333333;
+}
+
+.separator {
+    -fx-background-color: #cccccc;
+}

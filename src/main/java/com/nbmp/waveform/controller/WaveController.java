@@ -5,8 +5,7 @@ import com.nbmp.waveform.model.guides.SineWaveGuide;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +14,10 @@ import java.util.List;
 
 @Component
 public class WaveController {
+    public ComboBox waveformTypeComboBox;
+    public ColorPicker colorPicker;
+    public Label statusLabel;
+    @FXML private Label sliderLabel;
     @FXML private LineChart<Number, Number> waveformChart;
     @FXML private Slider frequencySlider;
     @FXML private Button addWaveButton;
@@ -47,6 +50,7 @@ public class WaveController {
         if (waves.isEmpty()) {
             frequencySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
                 guide.guide().setFrequency(newValue.doubleValue());
+                sliderLabel.setText("Frequency: %.2f Hz".formatted(newValue.doubleValue()));
                 guide.series().getData().clear();
                 getPointsFor(guide);
             });
