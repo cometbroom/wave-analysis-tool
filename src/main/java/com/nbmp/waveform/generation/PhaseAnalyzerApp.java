@@ -21,10 +21,10 @@ public class PhaseAnalyzerApp {
     var gen = new EfficientWaveGeneration(sine1, sine2, phaseWave);
     var slider =
         new WaveSlider(
-            "sine %s".formatted(frequencyWave2), sine1, SliderTarget.FREQUENCY, sine2, phaseWave);
+            "sine wave", sine1, SliderTarget.FREQUENCY, sine2, phaseWave);
     SliderBox.addSlider(slider.getLabel(), slider);
     //    phaseWave.makeReactive();
-    var seriesList = gen.generate();
-    graph.addSeries(seriesList).viewVBox(stage);
+    gen.generateAndBindToGraph(graph);
+    graph.viewVBox(stage);
   }
 }

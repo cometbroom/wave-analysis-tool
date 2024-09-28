@@ -17,23 +17,20 @@ import lombok.Setter;
 public class WaveSlider extends Slider {
   private String name = "WaveSlider";
   private Label label = new Label("%s: ".formatted(name));
-  private final Sliderable targetToSlider;
-  private final SliderTarget targetParam;
 
   public WaveSlider(String name, Sliderable targetToSlider, SliderTarget targetParam) {
     this.setMin(0);
     this.setMax(20);
-    this.targetToSlider = targetToSlider;
-    this.targetParam = targetParam;
     this.setName("%s for %s".formatted(name, targetParam.name()));
     setSliderGeneralProps(1);
+    addListener(targetToSlider, targetParam);
   }
 
   public WaveSlider(
       String name, Sliderable targetToSlider, SliderTarget targetParam, Reactive... affects) {
     this(name, targetToSlider, targetParam);
     for (Reactive affect : affects) {
-      addListener(affect::regenerateSeries);
+      addPassiveListener(affect::regenerateSeries);
     }
   }
 
@@ -46,10 +43,9 @@ public class WaveSlider extends Slider {
     this.setBlockIncrement(0.1);
     // Create a label to show the current frequency
     this.label = new Label("%s: %s hz".formatted(name, defaultValue));
-    addListener();
   }
 
-  private void addListener() {
+  private void addListener(Sliderable targetToSlider, SliderTarget targetParam) {
     valueProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
@@ -63,7 +59,7 @@ public class WaveSlider extends Slider {
     valueProperty().addListener(changeListener);
   }
 
-  private void addListener(Runnable run) {
+  private void addPassiveListener(Runnable run) {
     valueProperty().addListener((observable, oldValue, newValue) -> run.run());
   }
 }

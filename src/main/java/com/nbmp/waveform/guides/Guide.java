@@ -1,6 +1,8 @@
 /* (C)2024 */
 package com.nbmp.waveform.guides;
 
+import com.nbmp.waveform.generation.BufferedSeries;
+import com.nbmp.waveform.generation.Generator;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.generation.EfficientWaveGeneration;
@@ -15,21 +17,29 @@ public abstract class Guide {
   protected XYChart.Series<Number, Number> series;
   protected boolean isInteractive = false;
   protected double currentValue = Double.NEGATIVE_INFINITY;
+  protected final BufferedSeries<Number, Number> buffer;
 
   public Guide() {
     this("Guide");
   }
 
   public Guide(String name) {
+    //200 ms of buffer
+    this(name, (int) Generator.SAMPLE_RATE / 5);
+  }
+
+  public Guide(String name, int bufferSize) {
     series = new XYChart.Series<>();
     series.setName(name);
+    buffer = new BufferedSeries<>(bufferSize, series);
   }
+
 
   abstract Double compute(Double t, Double timeStep);
 
   public void addPoint(Double t, Double timeStep) {
     currentValue = compute(t, timeStep);
-    series.getData().add(new XYChart.Data<>(t, currentValue));
+    buffer.addPoint(t, currentValue);
   }
 
   public void bindForRegeneration(EfficientWaveGeneration generator) {
