@@ -1,8 +1,8 @@
 /* (C)2024 */
-package com.nbmp.waveform.guides;
+package com.nbmp.waveform.model.guides;
 
-import com.nbmp.waveform.extras.Sliderable;
-import com.nbmp.waveform.models.SliderTarget;
+import com.nbmp.waveform.controller.SliderTarget;
+import com.nbmp.waveform.controller.Sliderable;
 
 public class SineWaveGuide extends WaveGuide implements Sliderable {
   private double changeTime = 0, startingFrequency, targetFrequency;

@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.guides;
+package com.nbmp.waveform.model.guides;
 
 public class PhaseDifferenceGuide extends Guide {
   private final WaveGuide wave1, wave2;

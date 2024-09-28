@@ -1,11 +1,11 @@
 /* (C)2024 */
-package com.nbmp.waveform.generation;
+package com.nbmp.waveform.model.generation;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import com.nbmp.waveform.graph.GraphDashboard;
-import com.nbmp.waveform.guides.Guide;
+import com.nbmp.waveform.view.GraphDashboard;
+import com.nbmp.waveform.model.guides.Guide;
 
 import lombok.Getter;
 
@@ -24,23 +24,22 @@ public class EfficientWaveGeneration extends Generator {
   }
 
   public void generate() {
-    for (double t = 0; t < totalTime; t += timeStep) {
-      for (var guide : dynamicGuides) {
-        guide.addPoint(t, timeStep);
-      }
-    }
+        for (double t = 0; t < totalTime; t += timeStep) {
+          for (var guide : dynamicGuides) {
+            guide.addPoint(t, timeStep);
+          }
+        }
     dynamicGuides = dynamicGuides.stream().filter(Guide::isInteractive).toList();
   }
 
   public void generateAndBindToGraph(GraphDashboard graph) {
-    generate();
     graph.addSeries(allGuides.stream().map(Guide::getSeries).toList());
+    generate();
   }
 
   public void populateSeriesList(Guide guide) {
     dynamicGuides.add(guide);
     allGuides.add(guide);
-    guide.bindForRegeneration(this);
   }
 
   public void regenerate() {

@@ -1,7 +1,7 @@
 /* (C)2024 */
-package com.nbmp.waveform.guides;
+package com.nbmp.waveform.model.guides;
 
-import com.nbmp.waveform.models.SmartData;
+import com.nbmp.waveform.data.SmartData;
 import com.nbmp.waveform.utils.GlobalUtils;
 
 import lombok.Getter;

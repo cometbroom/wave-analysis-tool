@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.graph;
+package com.nbmp.waveform.controller;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,16 +1,19 @@
 /* (C)2024 */
-package com.nbmp.waveform.generation;
+package com.nbmp.waveform.application;
 
+import com.nbmp.waveform.model.generation.EfficientWaveGeneration;
 import javafx.stage.Stage;
 
-import com.nbmp.waveform.graph.GraphDashboard;
-import com.nbmp.waveform.graph.SliderBox;
-import com.nbmp.waveform.guides.GuideOptions;
-import com.nbmp.waveform.guides.PhaseDifferenceGuide;
-import com.nbmp.waveform.guides.SineWaveGuide;
-import com.nbmp.waveform.models.SliderTarget;
-import com.nbmp.waveform.ui_elements.WaveSlider;
+import com.nbmp.waveform.view.GraphDashboard;
+import com.nbmp.waveform.controller.SliderBox;
+import com.nbmp.waveform.model.guides.GuideOptions;
+import com.nbmp.waveform.model.guides.PhaseDifferenceGuide;
+import com.nbmp.waveform.model.guides.SineWaveGuide;
+import com.nbmp.waveform.controller.SliderTarget;
+import com.nbmp.waveform.controller.WaveSlider;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PhaseAnalyzerApp {
   public static void analyzePhaseRelationships(
       Stage stage, double frequencyWave1, double frequencyWave2) {

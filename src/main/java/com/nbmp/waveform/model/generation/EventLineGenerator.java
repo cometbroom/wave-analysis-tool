@@ -1,9 +1,9 @@
 /* (C)2024 */
-package com.nbmp.waveform.generation;
+package com.nbmp.waveform.model.generation;
 
 import javafx.scene.chart.XYChart;
 
-import com.nbmp.waveform.graph.GraphDashboard;
+import com.nbmp.waveform.view.GraphDashboard;
 
 import lombok.Builder;
 

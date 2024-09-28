@@ -1,12 +1,9 @@
 /* (C)2024 */
-package com.nbmp.waveform.ui_elements;
+package com.nbmp.waveform.controller;
 
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-
-import com.nbmp.waveform.extras.Sliderable;
-import com.nbmp.waveform.models.SliderTarget;
 
 import lombok.Getter;
 import lombok.Setter;

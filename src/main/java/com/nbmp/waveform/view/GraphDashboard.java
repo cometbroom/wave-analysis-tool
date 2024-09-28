@@ -1,8 +1,10 @@
 /* (C)2024 */
-package com.nbmp.waveform.graph;
+package com.nbmp.waveform.view;
 
 import java.util.List;
 import java.util.Map;
+
+import com.nbmp.waveform.controller.SliderBox;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
