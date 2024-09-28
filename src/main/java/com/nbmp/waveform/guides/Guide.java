@@ -9,15 +9,15 @@ import com.nbmp.waveform.generation.EfficientWaveGeneration;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jfree.data.xy.XYSeries;
 
 @Getter
 @Setter
 public abstract class Guide {
   protected EfficientWaveGeneration generator;
-  protected XYChart.Series<Number, Number> series;
+  protected XYSeries series;
   protected boolean isInteractive = false;
   protected double currentValue = Double.NEGATIVE_INFINITY;
-  protected final BufferedSeries<Number, Number> buffer;
 
   public Guide() {
     this("Guide");
@@ -29,17 +29,15 @@ public abstract class Guide {
   }
 
   public Guide(String name, int bufferSize) {
-    series = new XYChart.Series<>();
-    series.setName(name);
-    buffer = new BufferedSeries<>(bufferSize, series);
+    series = new BufferedSeries(name, bufferSize);
   }
 
 
   abstract Double compute(Double t, Double timeStep);
 
-  public void addPoint(Double t, Double timeStep) {
+  public void addPoint(double t, double timeStep) {
     currentValue = compute(t, timeStep);
-    buffer.addPoint(t, currentValue);
+    series.add(t, currentValue);
   }
 
   public void bindForRegeneration(EfficientWaveGeneration generator) {
@@ -49,7 +47,7 @@ public abstract class Guide {
 
   public void regenerateSeries() {
     if (isInteractive) {
-      this.series.getData().clear();
+      this.series.clear();
       this.generator.regenerate();
     }
   }

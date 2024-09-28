@@ -3,7 +3,7 @@ package com.nbmp.waveform.generation;
 
 public abstract class Generator {
   protected final double timeStep, totalTime;
-  public static final double SAMPLE_RATE = 1000.0;
+  public static final double SAMPLE_RATE = 50.0;
 
   public Generator(double timeStep, double totalTime) {
     this.timeStep = timeStep;

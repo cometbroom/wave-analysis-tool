@@ -4,13 +4,12 @@ package com.nbmp.waveform.generation;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.nbmp.waveform.graph.GraphDashboard;
-import javafx.scene.chart.XYChart;
+import com.nbmp.waveform.graph.UiView;
 
+import com.nbmp.waveform.graph.UiViewable;
 import com.nbmp.waveform.guides.Guide;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class EfficientWaveGeneration extends Generator {
@@ -35,9 +34,9 @@ public class EfficientWaveGeneration extends Generator {
     dynamicGuides = dynamicGuides.stream().filter(Guide::isInteractive).toList();
   }
 
-  public void generateAndBindToGraph(GraphDashboard graph) {
+  public void generateAndBindToGraph(UiViewable graph) {
     generate();
-    graph.addSeries(allGuides.stream().map(Guide::getSeries).toList());
+    allGuides.forEach(guide -> graph.addSeries(guide.getSeries()));
   }
 
   public void populateSeriesList(Guide guide) {
@@ -49,7 +48,7 @@ public class EfficientWaveGeneration extends Generator {
   public void regenerate() {
     dynamicGuides.forEach(
         guide -> {
-          if (guide.isInteractive()) guide.getSeries().getData().clear();
+          if (guide.isInteractive()) guide.getSeries().clear();
         });
     generate();
   }
