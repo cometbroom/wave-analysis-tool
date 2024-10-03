@@ -1,6 +1,6 @@
 package com.nbmp.waveform.controller;
 
-import com.nbmp.waveform.model.WaveformGenerator;
+import com.nbmp.waveform.model.generation.WaveformGenerator;
 import com.nbmp.waveform.model.guides.SineWaveGuide;
 import javafx.scene.chart.XYChart;
 import org.springframework.stereotype.Component;

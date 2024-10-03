@@ -1,12 +1,8 @@
-package com.nbmp.waveform.model;
+package com.nbmp.waveform.model.generation;
 
-import com.nbmp.waveform.model.generation.Generator;
 import com.nbmp.waveform.model.guides.WaveGuide;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @Service
 @Scope("singleton")
