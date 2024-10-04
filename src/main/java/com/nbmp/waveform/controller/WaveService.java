@@ -14,7 +14,7 @@ import com.nbmp.waveform.model.guides.SineWaveGuide;
 public class WaveService extends WaveformGenerator {
   private List<WavesRegister> waves = new LinkedList<>();
 
-  public WavesRegister createGuide(
+  public WavesRegister createWaveform(
       WaveController.WaveType type, double frequency, double amplitude) {
     var series = new XYChart.Series<Number, Number>();
     WavesRegister guide =

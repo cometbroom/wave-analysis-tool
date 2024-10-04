@@ -38,21 +38,21 @@ public class WaveController {
 
   @FXML
   public void initialize() {
-    createGuide(WaveType.SINE, frequencySlider, waveformChart, sliderLabel, 5, 1);
-    createGuide("sine2", WaveType.SINE, frequencySlider2, waveformChart, sliderLabel2, 10, 1);
+    createWaveform(WaveType.SINE, frequencySlider, waveformChart, sliderLabel, 5, 1);
+    createWaveform("sine2", WaveType.SINE, frequencySlider2, waveformChart, sliderLabel2, 10, 1);
   }
 
-  public void createGuide(
+  public void createWaveform(
       WaveType type,
       Slider controlSlider,
       LineChart<Number, Number> chartToAddTo,
       Label labelOfAffectedSlider,
       double frequency,
       double amplitude) {
-    createGuide("", type, controlSlider, chartToAddTo, labelOfAffectedSlider, frequency, amplitude);
+    createWaveform("", type, controlSlider, chartToAddTo, labelOfAffectedSlider, frequency, amplitude);
   }
 
-  public void createGuide(
+  public void createWaveform(
       String id,
       WaveType type,
       Slider controlSlider,
@@ -60,7 +60,7 @@ public class WaveController {
       Label labelOfAffectedSlider,
       double frequency,
       double amplitude) {
-    var guide = waveService.createGuide(type, frequency, amplitude);
+    var guide = waveService.createWaveform(type, frequency, amplitude);
     chartToAddTo.getData().add(guide.series());
 
     PauseTransition pause = new PauseTransition(Duration.millis(50));
