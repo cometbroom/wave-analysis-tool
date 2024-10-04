@@ -1,25 +1,27 @@
+/* (C)2024 */
 package com.nbmp.waveform.controller;
-
-import com.nbmp.waveform.model.generation.WaveformGenerator;
-import com.nbmp.waveform.model.guides.SineWaveGuide;
-import com.nbmp.waveform.model.guides.WaveGuide;
-import javafx.scene.chart.XYChart;
-import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
+import javafx.scene.chart.XYChart;
+
+import org.springframework.stereotype.Component;
+
+import com.nbmp.waveform.model.generation.WaveformGenerator;
+import com.nbmp.waveform.model.guides.SineWaveGuide;
 
 @Component
 public class WaveService extends WaveformGenerator {
-    private List<WavesRegister> waves = new LinkedList<>();
+  private List<WavesRegister> waves = new LinkedList<>();
 
-  public WavesRegister createGuide(WaveController.WaveType type, double frequency, double amplitude) {
+  public WavesRegister createGuide(
+      WaveController.WaveType type, double frequency, double amplitude) {
     var series = new XYChart.Series<Number, Number>();
     WavesRegister guide =
         switch (type) {
           case SINE -> new WavesRegister(new SineWaveGuide(frequency, amplitude), series);
-          case SQUARE, TRIANGLE, SAWTOOTH ->
-              throw new IllegalArgumentException("Wave type not supported");
+          case SQUARE, TRIANGLE, SAWTOOTH -> throw new IllegalArgumentException(
+              "Wave type not supported");
         };
     waves.add(guide);
     return guide;
@@ -38,7 +40,7 @@ public class WaveService extends WaveformGenerator {
     }
   }
 
-    public void getPoints() {
+  public void getPoints() {
     for (var wave : waves) {
       var data = super.generate(wave.guide(), 0, 1);
       for (double[] point : data) {

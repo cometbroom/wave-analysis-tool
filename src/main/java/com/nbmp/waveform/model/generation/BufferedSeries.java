@@ -1,9 +1,12 @@
+/* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
 import javafx.application.Platform;
-import javafx.scene.chart.XYChart;
 import javafx.concurrent.Task;
+import javafx.scene.chart.XYChart;
+
 import org.apache.commons.lang3.mutable.MutableInt;
+
 import lombok.RequiredArgsConstructor;
 
 public class BufferedSeries<X, Y> {

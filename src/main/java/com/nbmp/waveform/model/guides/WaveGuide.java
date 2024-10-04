@@ -14,5 +14,5 @@ public abstract class WaveGuide {
       currentValue = Double.NEGATIVE_INFINITY,
       mavValue = 0.0;
 
-  abstract public Double compute(Double t, Double timeStep);
+  public abstract Double compute(Double t, Double timeStep);
 }

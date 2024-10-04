@@ -1,7 +1,6 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.guides;
 
-
 public class SineWaveGuide extends WaveGuide {
   public SineWaveGuide(double frequency, double amplitude) {
     this(frequency, amplitude, 0);
@@ -20,13 +19,12 @@ public class SineWaveGuide extends WaveGuide {
     return currentValue;
   }
 
-
-//  @Override
-//  public void updateValue(SliderTarget target, double value) {
-//    switch (target) {
-//      case FREQUENCY -> this.targetFrequency = value;
-//      case AMPLITUDE -> this.amplitude = value;
-//      case PHASE -> this.phaseRadians = value;
-//    }
+  //  @Override
+  //  public void updateValue(SliderTarget target, double value) {
+  //    switch (target) {
+  //      case FREQUENCY -> this.targetFrequency = value;
+  //      case AMPLITUDE -> this.amplitude = value;
+  //      case PHASE -> this.phaseRadians = value;
+  //    }
 
 }
