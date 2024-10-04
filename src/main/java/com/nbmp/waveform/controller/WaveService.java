@@ -2,6 +2,7 @@ package com.nbmp.waveform.controller;
 
 import com.nbmp.waveform.model.generation.WaveformGenerator;
 import com.nbmp.waveform.model.guides.SineWaveGuide;
+import com.nbmp.waveform.model.guides.WaveGuide;
 import javafx.scene.chart.XYChart;
 import org.springframework.stereotype.Component;
 
@@ -9,13 +10,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class WaveService {
+public class WaveService extends WaveformGenerator {
     private List<WavesRegister> waves = new LinkedList<>();
-    private WaveformGenerator generator = new WaveformGenerator();
 
   public WavesRegister createGuide(WaveController.WaveType type, double frequency, double amplitude) {
     var series = new XYChart.Series<Number, Number>();
-    series.setName("guide");
     WavesRegister guide =
         switch (type) {
           case SINE -> new WavesRegister(new SineWaveGuide(frequency, amplitude), series);
@@ -26,18 +25,24 @@ public class WaveService {
     return guide;
   }
 
+  public double[][] generateSineWave(double frequency, double amplitude, int duration) {
+    var waveGuide = new SineWaveGuide(frequency, amplitude);
+
+    return super.generate(waveGuide::compute, duration);
+  }
+
   public void getPointsFor(WavesRegister wave) {
-    var data = generator.generate(wave.guide(), 0, 1);
+    var data = super.generate(wave.guide(), 0, 1);
     for (double[] point : data) {
-      wave.series().getData().add(new XYChart.Data<Number, Number>(point[0], point[1]));
+      wave.series().getData().add(new XYChart.Data<>(point[0], point[1]));
     }
   }
 
     public void getPoints() {
     for (var wave : waves) {
-      var data = generator.generate(wave.guide(), 0, 1);
+      var data = super.generate(wave.guide(), 0, 1);
       for (double[] point : data) {
-        wave.series().getData().add(new XYChart.Data<Number, Number>(point[0], point[1]));
+        wave.series().getData().add(new XYChart.Data<>(point[0], point[1]));
       }
     }
   }

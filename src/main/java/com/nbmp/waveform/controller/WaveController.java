@@ -1,12 +1,10 @@
 package com.nbmp.waveform.controller;
 
-import com.nbmp.waveform.model.WaveformGenerator;
-import com.nbmp.waveform.model.guides.SineWaveGuide;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import javafx.util.Duration;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -14,42 +12,60 @@ import java.util.List;
 
 @Component
 public class WaveController {
-    public ComboBox waveformTypeComboBox;
-    public ColorPicker colorPicker;
-    public Label statusLabel;
-    @FXML private Label sliderLabel;
-    @FXML private LineChart<Number, Number> waveformChart;
+  public ComboBox waveformTypeComboBox;
+  public ColorPicker colorPicker;
+  public Label statusLabel;
+    public LineChart resultWaveformChart;
     @FXML private Slider frequencySlider;
-    @FXML private Button addWaveButton;
-    private WaveService waveService = new WaveService();
+    @FXML public Slider frequencySlider2;
+    @FXML private Label sliderLabel;
+    @FXML private Label sliderLabel2;
+  @FXML private LineChart<Number, Number> waveformChart;
+  @FXML private Button addWaveButton;
+  private WaveService waveService = new WaveService();
 
-    private List<WavesRegister> waves = new LinkedList<>();
+  private List<WavesRegister> waves = new LinkedList<>();
 
+  public enum WaveType {
+    SINE,
+    SQUARE,
+    TRIANGLE,
+    SAWTOOTH
+  }
 
-    public enum WaveType {
-        SINE, SQUARE, TRIANGLE, SAWTOOTH
+  public void createButton() {}
+
+  @FXML
+  public void initialize() {
+    createGuide(WaveType.SINE, frequencySlider, waveformChart, sliderLabel, 5, 1);
+    createGuide("sine2", WaveType.SINE, frequencySlider2, waveformChart, sliderLabel2, 10, 1);
+  }
+
+    public void createGuide(WaveType type, Slider controlSlider, LineChart<Number, Number> chartToAddTo, Label labelOfAffectedSlider, double frequency, double amplitude) {
+        createGuide("", type, controlSlider, chartToAddTo, labelOfAffectedSlider, frequency, amplitude);
     }
 
-    public void createButton() {
-    }
-
-    @FXML public void initialize() {
-        createGuide(WaveType.SINE, 5, 1);
-    }
-
-    public void createGuide(WaveType type, double frequency, double amplitude) {
+    public void createGuide(String id, WaveType type, Slider controlSlider, LineChart<Number, Number> chartToAddTo, Label labelOfAffectedSlider, double frequency, double amplitude) {
         var guide = waveService.createGuide(type, frequency, amplitude);
-        waveformChart.getData().add(guide.series());
-        //Only first waveform has slider
-        if (waves.isEmpty()) {
-            frequencySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-                guide.guide().setFrequency(newValue.doubleValue());
-                sliderLabel.setText("Frequency: %.2f Hz".formatted(newValue.doubleValue()));
-                guide.series().getData().clear();
-                waveService.getPointsFor(guide);
-            });
-        }
-        waves.add(guide);
+        chartToAddTo.getData().add(guide.series());
 
+        PauseTransition pause = new PauseTransition(Duration.millis(50));
+            controlSlider
+                    .valueProperty()
+                    .addListener(
+                            (observable, oldValue, newValue) -> {
+                                labelOfAffectedSlider.setText(
+                                        "Frequency: %.2f Hz".formatted(newValue.doubleValue()));
+                                pause.setOnFinished(
+                                        event -> {
+                                            guide.guide().setFrequency(newValue.doubleValue());
+                                            guide.series().getData().clear();
+                                            waveService.getPointsFor(guide);
+                                        });
+                                pause.playFromStart();
+                            });
+            guide.series().nodeProperty().get().setId(id);
+            guide.series().setName("Wave" + id);
+        waves.add(guide);
     }
 }

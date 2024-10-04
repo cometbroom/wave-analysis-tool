@@ -14,6 +14,7 @@
 <?import javafx.scene.control.ColorPicker?>
 
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.XYChart.Series?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
@@ -36,6 +37,11 @@
                     <Label fx:id="sliderLabel" text="5 Hz"/>
 
 
+                    <Label text="Frequency Waveform 2:" styleClass="label-bold"/>
+                    <Slider fx:id="frequencySlider2" min="1" max="50" value="5"/>
+                    <Label fx:id="sliderLabel2" text="7 Hz"/>
+
+
                     <!-- Color Picker -->
                     <Label text="Waveform Color:" styleClass="label-bold"/>
 
@@ -51,18 +57,34 @@
             </ScrollPane>
 
             <!-- Right Pane: Waveform Chart -->
-            <AnchorPane>
-                <LineChart fx:id="waveformChart" title="Waveform Graph" createSymbols="false"
-                           AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <xAxis>
-                        <NumberAxis side="BOTTOM" label="Time"/>
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis side="LEFT" label="Amplitude"/>
-                    </yAxis>
-                </LineChart>
-            </AnchorPane>
+            <VBox>
+                <AnchorPane>
+                    <LineChart fx:id="waveformChart" title="Waveform Graph" createSymbols="false"
+                               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <xAxis>
+                            <NumberAxis side="BOTTOM" label="Time"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis side="LEFT" label="Amplitude"/>
+                        </yAxis>
+                    </LineChart>
+                </AnchorPane>
+                <!-- Right Pane: Waveform Chart -->
+                <AnchorPane>
+                    <LineChart fx:id="resultWaveformChart" title="ResultingWaveform" createSymbols="false"
+                               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <xAxis>
+                            <NumberAxis side="BOTTOM" label="Time"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis side="LEFT" label="Amplitude"/>
+                        </yAxis>
+                    </LineChart>
+                </AnchorPane>
+            </VBox>
+
 
         </SplitPane>
 

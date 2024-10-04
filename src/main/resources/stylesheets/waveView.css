@@ -60,6 +60,10 @@
     -fx-pref-width: 200px;
 }
 
+#sine2 {
+    -fx-stroke: #2196F3;
+}
+
 .combo-box {
     -fx-pref-width: 200px;
 }

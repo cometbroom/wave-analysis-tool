@@ -1,6 +1,9 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
+import lombok.Getter;
+
+@Getter
 public abstract class Generator {
   protected final double timeStep;
   public static double SAMPLE_RATE;
