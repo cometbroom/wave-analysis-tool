@@ -3,9 +3,17 @@ package com.nbmp.waveform.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import com.nbmp.waveform.model.generation.ChaosSynthesis;
+import com.nbmp.waveform.model.generation.GenerationApi;
+import com.nbmp.waveform.model.generation.Generator;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 
@@ -16,7 +24,7 @@ public class WaveController {
   public ComboBox waveformTypeComboBox;
   public ColorPicker colorPicker;
   public Label statusLabel;
-  public LineChart resultWaveformChart;
+  public LineChart<Number, Number> resultWaveformChart;
   @FXML private Slider frequencySlider;
   @FXML public Slider frequencySlider2;
   @FXML private Label sliderLabel;
@@ -38,31 +46,46 @@ public class WaveController {
 
   @FXML
   public void initialize() {
-    createWaveform(WaveType.SINE, frequencySlider, waveformChart, sliderLabel, 5, 1);
-    createWaveform("sine2", WaveType.SINE, frequencySlider2, waveformChart, sliderLabel2, 10, 1);
+    var sineWave = createWaveform(WaveType.SINE, 5, 1);
+    var sineWave2 = createWaveform(WaveType.SINE, 10, 1);
+
+    int duration = 1;
+
+    waveformChart.getData().add(sineWave.series());
+    resultWaveformChart.getData().add(sineWave2.series());
+
+    sineWave2.series().nodeProperty().get().setId("sine2");
+
+    var chaosSytnthesis = new ChaosSynthesis(sineWave, sineWave2);
+    var data = chaosSytnthesis.compute(duration);
+
+    waveService.addDataToSeries(sineWave, data[0]);
+    waveService.addDataToSeries(sineWave2, data[1]);
+    addListenerToSlider(frequencySlider, sliderLabel, (newValue) -> {
+        sineWave.guide().setFrequency(newValue);
+        var newData = chaosSytnthesis.compute(duration);
+        sineWave.series().getData().clear();
+        sineWave2.series().getData().clear();
+        waveService.addDataToSeries(sineWave, newData[0]);
+        waveService.addDataToSeries(sineWave2, newData[1]);
+    });
+    addListenerToSlider(frequencySlider2, sliderLabel2, (newValue) -> {
+      sineWave2.guide().setFrequency(newValue);
+        var newData = chaosSytnthesis.compute(duration);
+        sineWave.series().getData().clear();
+        sineWave2.series().getData().clear();
+        waveService.addDataToSeries(sineWave, newData[0]);
+        waveService.addDataToSeries(sineWave2, newData[1]);
+    });
   }
 
-  public void createWaveform(
-      WaveType type,
-      Slider controlSlider,
-      LineChart<Number, Number> chartToAddTo,
-      Label labelOfAffectedSlider,
-      double frequency,
-      double amplitude) {
-    createWaveform("", type, controlSlider, chartToAddTo, labelOfAffectedSlider, frequency, amplitude);
-  }
-
-  public void createWaveform(
-      String id,
-      WaveType type,
-      Slider controlSlider,
-      LineChart<Number, Number> chartToAddTo,
-      Label labelOfAffectedSlider,
-      double frequency,
-      double amplitude) {
+  public WavesRegister createWaveform(WaveType type, double frequency, double amplitude) {
     var guide = waveService.createWaveform(type, frequency, amplitude);
-    chartToAddTo.getData().add(guide.series());
+    guide.series().setName("Wave");
+    return guide;
+  }
 
+  public void addListenerToSlider(Slider controlSlider, Label labelOfAffectedSlider, Consumer<Double> updateFunction) {
     PauseTransition pause = new PauseTransition(Duration.millis(50));
     controlSlider
         .valueProperty()
@@ -71,14 +94,9 @@ public class WaveController {
               labelOfAffectedSlider.setText("Frequency: %.2f Hz".formatted(newValue.doubleValue()));
               pause.setOnFinished(
                   event -> {
-                    guide.guide().setFrequency(newValue.doubleValue());
-                    guide.series().getData().clear();
-                    waveService.getPointsFor(guide);
+                    updateFunction.accept(newValue.doubleValue());
                   });
               pause.playFromStart();
             });
-    guide.series().nodeProperty().get().setId(id);
-    guide.series().setName("Wave" + id);
-    waves.add(guide);
   }
 }

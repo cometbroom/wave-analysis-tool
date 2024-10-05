@@ -5,15 +5,14 @@ import lombok.Getter;
 
 @Getter
 public abstract class Generator {
-  protected final double timeStep;
-  public static double SAMPLE_RATE;
-
-  public Generator(double sampleRate) {
+  public static int SAMPLE_RATE = 1000;
+  public static double timeStep = 1.0 / SAMPLE_RATE;
+  public Generator(int sampleRate) {
     Generator.SAMPLE_RATE = sampleRate;
     this.timeStep = 1.0 / sampleRate;
   }
 
   public Generator() {
-    this(1000.0);
+    this(1000);
   }
 }
