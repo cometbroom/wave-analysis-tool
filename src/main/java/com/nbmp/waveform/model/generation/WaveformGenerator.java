@@ -14,15 +14,6 @@ import com.nbmp.waveform.model.guides.WaveGuide;
 @Service
 @Scope("singleton")
 public class WaveformGenerator extends Generator {
-  //    public double[] generateOnlyY(Guide guide, int duration) {
-  //        var data = new double[duration * (int) SAMPLE_RATE];
-  //        int i = 0;
-  //        for (double t = 0; t < duration; t += timeStep) {
-  //            data[i++] = guide.compute(t, timeStep);
-  //        }
-  //        return data;
-  //    }
-
   private Map<String, WaveGuide> guides = new HashMap<>();
 
   public double[][] generateSineWave(

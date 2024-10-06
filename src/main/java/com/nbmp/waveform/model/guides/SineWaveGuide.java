@@ -18,13 +18,4 @@ public class SineWaveGuide extends WaveGuide {
     currentValue = amplitude * Math.sin(cumulativePhaseRadians);
     return currentValue;
   }
-
-  //  @Override
-  //  public void updateValue(SliderTarget target, double value) {
-  //    switch (target) {
-  //      case FREQUENCY -> this.targetFrequency = value;
-  //      case AMPLITUDE -> this.amplitude = value;
-  //      case PHASE -> this.phaseRadians = value;
-  //    }
-
 }

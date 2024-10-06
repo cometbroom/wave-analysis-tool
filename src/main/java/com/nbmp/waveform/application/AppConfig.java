@@ -8,6 +8,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
   public static final int SAMPLE_RATE = 1000;
-  public static double timeStep = 0.01, totalTime = 5;
-  public static String xLabel = "Time (s)", yLabel = "Amplitude";
 }
