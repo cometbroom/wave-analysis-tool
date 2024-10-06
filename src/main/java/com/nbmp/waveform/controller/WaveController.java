@@ -3,17 +3,12 @@ package com.nbmp.waveform.controller;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import com.nbmp.waveform.model.generation.ChaosSynthesis;
-import com.nbmp.waveform.model.generation.GenerationApi;
-import com.nbmp.waveform.model.generation.Generator;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 

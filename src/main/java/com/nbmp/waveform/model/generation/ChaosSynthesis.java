@@ -1,12 +1,7 @@
 package com.nbmp.waveform.model.generation;
 
 import com.nbmp.waveform.controller.WavesRegister;
-import com.nbmp.waveform.utils.GlobalUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.function.BiFunction;
 
 @RequiredArgsConstructor
 public class ChaosSynthesis {
@@ -35,10 +30,10 @@ public class ChaosSynthesis {
             double t = i / (double) Generator.SAMPLE_RATE;
 
             //Basic coupling by using last computer value of the other wave
-            double phi2 = k * wave1Gen[i-1][GenerationApi.AMPLITUDE];
+            double phi2 = k * wave1Gen[i-1][GenConstants.AMPLITUDE];
             wave2Gen[i] =  new double[]{t, wave2.guide().getAmplitude() * Math.sin(omega2 * t + phi2)};
 
-            double phi1 = k * wave2Gen[i-1][GenerationApi.AMPLITUDE];
+            double phi1 = k * wave2Gen[i-1][GenConstants.AMPLITUDE];
             wave1Gen[i] = new double[]{t, wave1.guide().getAmplitude() * Math.sin(omega1 * t + phi1)};
         }
         return new double[][][]{wave1Gen, wave2Gen};

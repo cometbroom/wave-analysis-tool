@@ -90,7 +90,7 @@
         <version>3.0.0</version>
         <configuration>
           <!-- Specify the fully qualified name of your main class -->
-          <mainClass>SineWave</mainClass>
+          <mainClass>com.nbmp.waveform.application.WaveformPlotter</mainClass>
           <arguments>
             <!-- Add the module-path and JavaFX modules -->
             <argument>--module-path</argument>

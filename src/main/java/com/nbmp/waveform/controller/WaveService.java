@@ -4,8 +4,7 @@ package com.nbmp.waveform.controller;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.nbmp.waveform.model.generation.GenerationApi;
-import com.nbmp.waveform.model.generation.Generator;
+import com.nbmp.waveform.model.generation.GenConstants;
 import javafx.scene.chart.XYChart;
 
 import org.springframework.stereotype.Component;
@@ -32,7 +31,7 @@ public class WaveService extends WaveformGenerator {
 
   public void addDataToSeries(WavesRegister wave, double[][] data) {
     for (double[] point : data) {
-      wave.series().getData().add(new XYChart.Data<>(point[GenerationApi.TIME], point[GenerationApi.AMPLITUDE]));
+      wave.series().getData().add(new XYChart.Data<>(point[GenConstants.TIME], point[GenConstants.AMPLITUDE]));
     }
   }
 
