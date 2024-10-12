@@ -5,16 +5,6 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Orientation?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.control.ColorPicker?>
-
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.chart.XYChart.Series?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
@@ -40,6 +30,9 @@
                     <Label text="Frequency Waveform 2:" styleClass="label-bold"/>
                     <Slider fx:id="frequencySlider2" min="1" max="50" value="5"/>
                     <Label fx:id="sliderLabel2" text="7 Hz"/>
+
+                <ComboBox fx:id="synthesisMode" layoutX="15.0" layoutY="33.0" prefWidth="90.0" promptText="choose"/>
+                <Label id="synthesisModeLabel" layoutX="15.0" layoutY="10.0" styleClass="bold-label" text="Synthesis Mode Selector" />
 
 
                     <!-- Color Picker -->
