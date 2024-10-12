@@ -1,6 +1,7 @@
 /* (C)2024 */
-package com.nbmp.waveform.controller;
+package com.nbmp.waveform.view;
 
+import com.nbmp.waveform.controller.WaveController;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.model.generation.GenConstants;
@@ -22,7 +23,7 @@ public class WavesRegister {
   private String name = "";
 
   public static WavesRegister createWaveform(
-      String name, WaveController.WaveType type, double frequency, double amplitude) {
+          String name, WaveController.WaveType type, double frequency, double amplitude) {
     var series = new XYChart.Series<Number, Number>();
     WavesRegister waveRegister =
         switch (type) {

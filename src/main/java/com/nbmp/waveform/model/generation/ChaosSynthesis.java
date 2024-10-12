@@ -1,8 +1,8 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
-import com.nbmp.waveform.controller.WavesRegister;
-import com.nbmp.waveform.model.dto.BiModulationData;
+import com.nbmp.waveform.view.WavesRegister;
+import com.nbmp.waveform.model.dto.BiTimeSeries;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +12,7 @@ public class ChaosSynthesis {
   private double k = 0.3;
   private final WavesRegister wave1, wave2;
 
-  public BiModulationData compute(int duration) {
+  public BiTimeSeries compute(int duration) {
     int sampleCount = Generator.SAMPLE_RATE * duration;
 
     double[][] wave1Gen = new double[sampleCount][2];
@@ -39,6 +39,6 @@ public class ChaosSynthesis {
     }
     wave1.getWaveform().setCumulativePhaseRadians(0);
     wave2.getWaveform().setCumulativePhaseRadians(0);
-    return new BiModulationData(wave1Gen, wave2Gen);
+    return new BiTimeSeries(wave1Gen, wave2Gen);
   }
 }

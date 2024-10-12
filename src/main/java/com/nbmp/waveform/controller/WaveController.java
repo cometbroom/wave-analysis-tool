@@ -4,6 +4,8 @@ package com.nbmp.waveform.controller;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import com.nbmp.waveform.view.WavesRegister;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
@@ -12,7 +14,7 @@ import javafx.util.Duration;
 
 import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.model.dto.BiModulationData;
+import com.nbmp.waveform.model.dto.BiTimeSeries;
 import com.nbmp.waveform.model.generation.ChaosSynthesis;
 
 @Component
@@ -46,7 +48,7 @@ public class WaveController {
     int duration = 1;
 
     var chaosSytnthesis = new ChaosSynthesis(sineWave, sineWave2);
-    BiModulationData data = chaosSytnthesis.compute(duration);
+    BiTimeSeries data = chaosSytnthesis.compute(duration);
 
     sineWave.addData(data.timeAmplitude1());
     sineWave2.addData(data.timeAmplitude2());
