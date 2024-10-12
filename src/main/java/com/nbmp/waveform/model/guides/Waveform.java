@@ -1,7 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.guides;
 
-import com.nbmp.waveform.model.dto.WaveformProps;
+import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
 import com.nbmp.waveform.model.generation.Generator;
 
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class Waveform {
-  protected WaveformProps props = WaveformProps.defaultWaveformProps();
+  protected ModulationActiveWaveProps props = new ModulationActiveWaveProps();
   protected double cumulativePhaseRadians = 0, mavValue = 0.0, previousAmplitude = 0.0;
 
   public abstract Double compute(Double timeStep);

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.nbmp.waveform.model.dto.WavePropsSliders;
 import com.nbmp.waveform.view.WavesRegister;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -48,44 +49,12 @@ public class WaveController {
     int duration = 1;
 
     var chaosSytnthesis = new ChaosSynthesis(sineWave, sineWave2);
-    BiTimeSeries data = chaosSytnthesis.compute(duration);
+    var synthesisViewer = new SynthesisViewer(sineWave, sineWave2, chaosSytnthesis, duration);
+    var slider1 = new WavePropsSliders(sineWave, frequencySlider, sliderLabel);
+    var slider2 = new WavePropsSliders(sineWave2, frequencySlider2, sliderLabel2);
 
-    sineWave.addData(data.timeAmplitude1());
-    sineWave2.addData(data.timeAmplitude2());
-
-    addListenerToSlider(
-        frequencySlider,
-        sliderLabel,
-        (newValue) -> {
-          sineWave.getWaveform().getProps().setFrequency(newValue);
-          var newData = chaosSytnthesis.compute(duration);
-          sineWave.refreshData(newData.timeAmplitude1());
-          sineWave2.refreshData(newData.timeAmplitude2());
-        });
-    addListenerToSlider(
-        frequencySlider2,
-        sliderLabel2,
-        (newValue) -> {
-          sineWave2.getWaveform().getProps().setFrequency(newValue);
-          var newData = chaosSytnthesis.compute(duration);
-          sineWave.refreshData(newData.timeAmplitude1());
-          sineWave2.refreshData(newData.timeAmplitude2());
-        });
-  }
-
-  public void addListenerToSlider(
-      Slider controlSlider, Label labelOfAffectedSlider, Consumer<Double> updateFunction) {
-    PauseTransition pause = new PauseTransition(Duration.millis(50));
-    controlSlider
-        .valueProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              labelOfAffectedSlider.setText("Frequency: %.2f Hz".formatted(newValue.doubleValue()));
-              pause.setOnFinished(
-                  event -> {
-                    updateFunction.accept(newValue.doubleValue());
-                  });
-              pause.playFromStart();
-            });
+    slider1.addListenerAccordingToTarget(WavePropsSliders.Target.FREQUENCY);
+    slider2.addListenerAccordingToTarget(WavePropsSliders.Target.FREQUENCY);
+    synthesisViewer.synthesizeForPair(slider1, slider2);
   }
 }

@@ -1,7 +1,8 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.guides;
 
-import com.nbmp.waveform.model.dto.WaveformProps;
+import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
+import com.nbmp.waveform.model.dto.WaveProps;
 
 import lombok.Getter;
 
@@ -13,7 +14,7 @@ public class SineWaveform extends Waveform {
 
   public SineWaveform(double frequency, double amplitude, double phaseRadians) {
     this.cumulativePhaseRadians = phaseRadians;
-    this.props = new WaveformProps(frequency, amplitude, phaseRadians);
+    this.props = new ModulationActiveWaveProps(frequency, amplitude, phaseRadians);
   }
 
   @Override
