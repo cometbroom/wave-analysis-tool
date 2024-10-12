@@ -37,6 +37,8 @@ public class ChaosSynthesis {
           (phi) -> phi + wave2.getWaveform().getNormalizedPreviousAmplitude() * k);
       wave1Gen[i] = wave1.getWaveform().computeTY(t);
     }
+    wave1.getWaveform().setCumulativePhaseRadians(0);
+    wave2.getWaveform().setCumulativePhaseRadians(0);
     return new BiModulationData(wave1Gen, wave2Gen);
   }
 }

@@ -27,8 +27,4 @@ public class SineWaveform extends Waveform {
     cumulativePhaseRadians += omega() * t + props.getInitialPhase();
     return cumulativePhaseRadians;
   }
-
-  public void regenerate() {
-    cumulativePhaseRadians = 0;
-  }
 }
