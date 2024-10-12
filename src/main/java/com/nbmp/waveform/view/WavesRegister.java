@@ -1,21 +1,16 @@
 /* (C)2024 */
 package com.nbmp.waveform.view;
 
-import com.nbmp.waveform.controller.WaveController;
-import com.nbmp.waveform.model.dto.WavePropsSliders;
 import javafx.scene.chart.XYChart;
 
+import com.nbmp.waveform.controller.WaveController;
 import com.nbmp.waveform.model.generation.GenConstants;
 import com.nbmp.waveform.model.guides.SineWaveform;
 import com.nbmp.waveform.model.guides.Waveform;
 
-import javafx.scene.control.Slider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
@@ -28,7 +23,7 @@ public class WavesRegister {
   private String name = "";
 
   public static WavesRegister createWaveform(
-          String name, WaveController.WaveType type, double frequency, double amplitude) {
+      String name, WaveController.WaveType type, double frequency, double amplitude) {
     var series = new XYChart.Series<Number, Number>();
     WavesRegister waveRegister =
         switch (type) {

@@ -2,7 +2,6 @@
 package com.nbmp.waveform.model.guides;
 
 import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
-import com.nbmp.waveform.model.dto.WaveProps;
 
 import lombok.Getter;
 

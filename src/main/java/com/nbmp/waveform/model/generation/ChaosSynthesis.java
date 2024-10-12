@@ -1,8 +1,8 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
-import com.nbmp.waveform.view.WavesRegister;
 import com.nbmp.waveform.model.dto.BiTimeSeries;
+import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.RequiredArgsConstructor;
 
