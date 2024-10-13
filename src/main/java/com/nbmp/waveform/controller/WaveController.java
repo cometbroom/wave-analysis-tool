@@ -46,8 +46,6 @@ public class WaveController {
     SAWTOOTH
   }
 
-  public void createButton() {}
-
   @FXML
   public void initialize() {
     var sineWave =

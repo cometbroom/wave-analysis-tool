@@ -5,10 +5,10 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.geometry.Insets?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<AnchorPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
-            stylesheets="@stylesheets/waveView.css">
+            stylesheets="@../stylesheets/waveView.css">
     <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <!-- Main Content -->
         <SplitPane VBox.vgrow="ALWAYS"><!-- Left Pane: Controls -->
@@ -50,8 +50,6 @@
                     <!-- Color Picker -->
                     <Label text="Waveform Color:" styleClass="label-bold"/>
 
-                    <!-- Add Wave Button -->
-                    <Button fx:id="addWaveButton" text="Add Wave" onAction="#createButton" maxWidth="Infinity"/>
 
                     <!-- Remove Wave Button -->
                     <!--                            <Button fx:id="removeWaveButton" text="Remove Wave" onAction="#removeButton" maxWidth="Infinity" />-->
