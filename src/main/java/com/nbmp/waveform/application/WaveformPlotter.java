@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class WaveformPlotter extends Application {
 
@@ -16,7 +17,6 @@ public class WaveformPlotter extends Application {
   public void init() throws Exception {
     super.init();
     applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
-    applicationContext.getBeanFactory().registerSingleton("hostServices", getHostServices());
   }
 
   @Override
