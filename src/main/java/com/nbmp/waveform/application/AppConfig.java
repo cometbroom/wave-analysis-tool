@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import com.nbmp.waveform.controller.ControllersState;
-import com.nbmp.waveform.controller.GraphController;
+import com.nbmp.waveform.controller.ChartController;
 import com.nbmp.waveform.controller.WaveController;
 import com.nbmp.waveform.view.WavesRegister;
 
@@ -32,7 +32,7 @@ public class AppConfig {
 
   @Bean
   @Scope("prototype")
-  public GraphController graphController() {
-    return new GraphController();
+  public ChartController chartController() {
+    return new ChartController();
   }
 }

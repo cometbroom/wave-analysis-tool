@@ -13,7 +13,7 @@ import lombok.Setter;
 @Component
 @Getter
 @Setter
-public class GraphController {
+public class ChartController {
   @FXML public LineChart<Number, Number> waveformChart;
   @FXML public LineChart<Number, Number> waveformChart2;
   @Autowired private ControllersState state;

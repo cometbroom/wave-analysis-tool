@@ -77,11 +77,6 @@ public class WaveController {
     slider2.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
   }
 
-  private void setup(WavePropsSliders slider1, WavePropsSliders slider2) {
-    slider1.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
-    slider2.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
-  }
-
   private void setupDurationField() {
     durationField.setText(duration + "");
 
