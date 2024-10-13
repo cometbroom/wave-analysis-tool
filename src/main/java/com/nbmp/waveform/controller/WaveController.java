@@ -50,6 +50,7 @@ public class WaveController {
         WavesRegister.createWaveform("sine2", WaveType.SINE, 10, 1).addToChart(resultWaveformChart);
     Synthesis synthesis = new IndependentSynthesis(sineWave, sineWave2);
     int duration = 1;
+    synthesisViewer = new SynthesisViewer(sineWave, sineWave2, synthesis, duration);
 
     synthesisMode.getItems().addAll("Independent", "Chaos");
     synthesisMode.getSelectionModel().select(0);
@@ -58,20 +59,14 @@ public class WaveController {
         .selectedItemProperty()
         .addListener(
             (observableValue, s, t1) -> {
-              if (t1.equals("Independent")) {
-                IndependentSynthesis independentSynthesis =
-                    new IndependentSynthesis(sineWave, sineWave2);
-                synthesisViewer.setSynthesis(independentSynthesis);
-                synthesisViewer.synthesizeForPair(slider1, slider2);
-              }
-              if (t1.equals("Chaos")) {
-                ChaosSynthesis chaosSynthesis = new ChaosSynthesis(sineWave, sineWave2);
-                synthesisViewer.setSynthesis(chaosSynthesis);
-                synthesisViewer.synthesizeForPair(slider1, slider2);
-              }
+              switch (t1) {
+                case "Independent" -> synthesisViewer.setSynthesis(new IndependentSynthesis(sineWave, sineWave2));
+                case "Chaos" -> synthesisViewer.setSynthesis(new ChaosSynthesis(sineWave, sineWave2));
+                default -> throw new IllegalStateException("Unexpected value: " + t1);
+              };
+              synthesisViewer.synthesizeForPair(slider1, slider2);
             });
 
-    synthesisViewer = new SynthesisViewer(sineWave, sineWave2, synthesis, duration);
     slider1 = new WavePropsSliders(sineWave, frequencySlider, sliderLabel);
     slider2 = new WavePropsSliders(sineWave2, frequencySlider2, sliderLabel2);
 

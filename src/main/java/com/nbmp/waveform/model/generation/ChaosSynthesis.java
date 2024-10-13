@@ -40,8 +40,14 @@ public class ChaosSynthesis implements Synthesis {
       wave1Gen[i] = wave1.getWaveform().computeTY(t);
       t += timeStep;
     }
+    resetWaveforms();
+    return new BiTimeSeries(wave1Gen, wave2Gen);
+  }
+
+  private void resetWaveforms() {
+    wave1.getWaveform().getProps().resetModulations();
+    wave2.getWaveform().getProps().resetModulations();
     wave1.getWaveform().setCumulativePhaseRadians(0);
     wave2.getWaveform().setCumulativePhaseRadians(0);
-    return new BiTimeSeries(wave1Gen, wave2Gen);
   }
 }

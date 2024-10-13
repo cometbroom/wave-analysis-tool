@@ -33,4 +33,10 @@ public class ModulationActiveWaveProps extends WaveProps {
   public double getInitialPhase() {
     return phaseModulation.apply(initialPhase);
   }
+
+  public void resetModulations() {
+    this.frequencyModulation = (f) -> f;
+    this.amplitudeModulation = (a) -> a;
+    this.phaseModulation = (phi) -> phi;
+  }
 }
