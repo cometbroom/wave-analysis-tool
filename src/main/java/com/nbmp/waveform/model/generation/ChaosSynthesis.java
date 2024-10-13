@@ -14,7 +14,9 @@ public class ChaosSynthesis implements Synthesis {
 
   @Override
   public BiTimeSeries compute(int duration) {
-    int sampleCount = Generator.SAMPLE_RATE * duration;
+    double durationDeci = duration / 100.0;
+    double sampleCountDouble = Generator.SAMPLE_RATE * durationDeci;
+    int sampleCount = Math.toIntExact(Math.round(sampleCountDouble));
     double timeStep = 1.0 / Generator.SAMPLE_RATE;
     double t = 0.0;
 
@@ -27,16 +29,14 @@ public class ChaosSynthesis implements Synthesis {
 
     var waveProps1 = wave1.getWaveform().getProps();
     var waveProps2 = wave2.getWaveform().getProps();
+    // Basic coupling by using last computer value of the other wave
+    waveProps2.setPhaseModulation(
+            (phi) -> phi + wave1.getWaveform().getNormalizedPreviousAmplitude() * k);
+    waveProps1.setPhaseModulation(
+            (phi) -> phi + wave2.getWaveform().getNormalizedPreviousAmplitude() * k);
 
     for (int i = 1; i < sampleCount; i++) {
-
-      // Basic coupling by using last computer value of the other wave
-      waveProps2.setPhaseModulation(
-          (phi) -> phi + wave1.getWaveform().getNormalizedPreviousAmplitude() * k);
       wave2Gen[i] = wave2.getWaveform().computeTY(t);
-
-      waveProps1.setPhaseModulation(
-          (phi) -> phi + wave2.getWaveform().getNormalizedPreviousAmplitude() * k);
       wave1Gen[i] = wave1.getWaveform().computeTY(t);
       t += timeStep;
     }

@@ -7,5 +7,5 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = "com.nbmp.waveform")
 @Configuration
 public class AppConfig {
-  public static final int SAMPLE_RATE = 1000;
+  public static final int SAMPLE_RATE = 44100;
 }
