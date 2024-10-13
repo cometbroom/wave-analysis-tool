@@ -31,9 +31,9 @@ public class ChaosSynthesis implements Synthesis {
     var waveProps2 = wave2.getWaveform().getProps();
     // Basic coupling by using last computer value of the other wave
     waveProps2.setPhaseModulation(
-            (phi) -> phi + wave1.getWaveform().getNormalizedPreviousAmplitude() * k);
+        (phi) -> phi + wave1.getWaveform().getNormalizedPreviousAmplitude() * k);
     waveProps1.setPhaseModulation(
-            (phi) -> phi + wave2.getWaveform().getNormalizedPreviousAmplitude() * k);
+        (phi) -> phi + wave2.getWaveform().getNormalizedPreviousAmplitude() * k);
 
     for (int i = 1; i < sampleCount; i++) {
       wave2Gen[i] = wave2.getWaveform().computeTY(t);

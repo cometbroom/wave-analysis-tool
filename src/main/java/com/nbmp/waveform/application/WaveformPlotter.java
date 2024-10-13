@@ -9,9 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 public class WaveformPlotter extends Application {
 
   private final String STAGE_TITLE = "Waveform Analysis Graph";

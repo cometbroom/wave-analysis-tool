@@ -16,8 +16,7 @@ public class SynthesisViewer {
   private final WavesRegister wave1, wave2;
   private Synthesis synthesis;
 
-  public SynthesisViewer(
-      WavesRegister wave1, WavesRegister wave2, Synthesis synthesis) {
+  public SynthesisViewer(WavesRegister wave1, WavesRegister wave2, Synthesis synthesis) {
     this.wave1 = wave1;
     this.wave2 = wave2;
     this.synthesis = synthesis;
