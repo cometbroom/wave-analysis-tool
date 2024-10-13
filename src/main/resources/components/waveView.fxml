@@ -20,11 +20,11 @@
                     <!-- Waveform Type -->
                     <GridPane>
                         <columnConstraints>
-                            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="307.0" minWidth="0.0" prefWidth="257.0" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="307.0" minWidth="57" prefWidth="257.0" />
                         </columnConstraints>
                         <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                         </rowConstraints>
                         <children>
                             <Label text="Duration" styleClass="label-bold"/>
@@ -59,34 +59,8 @@
                 </VBox>
             </ScrollPane>
 
-            <!-- Right Pane: Waveform Chart -->
-            <VBox>
-                <AnchorPane>
-                    <LineChart fx:id="waveformChart" title="Waveform Graph" createSymbols="false"
-                               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                        <xAxis>
-                            <NumberAxis side="BOTTOM" label="Time"/>
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis side="LEFT" label="Amplitude"/>
-                        </yAxis>
-                    </LineChart>
-                </AnchorPane>
-                <!-- Right Pane: Waveform Chart -->
-                <AnchorPane>
-                    <LineChart fx:id="resultWaveformChart" title="ResultingWaveform" createSymbols="false"
-                               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                        <xAxis>
-                            <NumberAxis side="BOTTOM" label="Time"/>
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis side="LEFT" label="Amplitude"/>
-                        </yAxis>
-                    </LineChart>
-                </AnchorPane>
-            </VBox>
+
+            <fx:include source="WaveformChart.fxml" fx:id="waveformView"/>
 
 
         </SplitPane>

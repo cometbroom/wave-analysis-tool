@@ -1,8 +1,9 @@
 /* (C)2024 */
 package com.nbmp.waveform.view;
 
+import java.util.function.Consumer;
+
 import com.nbmp.waveform.controller.WaveController;
-import com.nbmp.waveform.controller.WavePropsSliders;
 import com.nbmp.waveform.model.generation.Synthesis;
 
 import lombok.Getter;
@@ -22,24 +23,21 @@ public class SynthesisViewer {
     this.synthesis = synthesis;
   }
 
-  public void synthesizeForPair(WavePropsSliders slider1, WavePropsSliders slider2) {
+  public void synthesizeForPair() {
     regenSeriesData(WaveController.duration.get());
-    setUpdateTask(slider1);
-    setUpdateTask(slider2);
+  }
+
+  public Consumer<Double> getUpdateTask() {
+    return (newValue) -> {
+      var newData = synthesis.compute(WaveController.duration.get());
+      wave1.refreshData(newData.timeAmplitude1());
+      wave2.refreshData(newData.timeAmplitude2());
+    };
   }
 
   private void regenSeriesData(int duration) {
     var newData = synthesis.compute(duration);
     wave1.refreshData(newData.timeAmplitude1());
     wave2.refreshData(newData.timeAmplitude2());
-  }
-
-  private void setUpdateTask(WavePropsSliders slider) {
-    slider.setUpdateTask(
-        (newValue) -> {
-          var newData = synthesis.compute(WaveController.duration.get());
-          wave1.refreshData(newData.timeAmplitude1());
-          wave2.refreshData(newData.timeAmplitude2());
-        });
   }
 }

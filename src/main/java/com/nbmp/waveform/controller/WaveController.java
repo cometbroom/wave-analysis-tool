@@ -9,13 +9,10 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.model.generation.ChaosSynthesis;
-import com.nbmp.waveform.model.generation.IndependentSynthesis;
-import com.nbmp.waveform.model.generation.Synthesis;
-import com.nbmp.waveform.view.SynthesisViewer;
-import com.nbmp.waveform.view.WavesRegister;
+import com.nbmp.waveform.model.generation.SynthesisMode;
 
 @Component
 public class WaveController {
@@ -28,11 +25,10 @@ public class WaveController {
   @FXML private Slider frequencySlider2;
   @FXML private Label sliderLabel;
   @FXML private Label sliderLabel2;
-  @FXML private LineChart<Number, Number> waveformChart;
-
-  private SynthesisViewer synthesisViewer;
   private WavePropsSliders slider1;
   private WavePropsSliders slider2;
+
+  @Autowired private ControllersState state;
 
   @FXML
   public void durationEntered(ActionEvent actionEvent) {
@@ -48,38 +44,42 @@ public class WaveController {
 
   @FXML
   public void initialize() {
-    var sineWave =
-        WavesRegister.createWaveform("sine1", WaveType.SINE, 5, 1).addToChart(waveformChart);
-    var sineWave2 =
-        WavesRegister.createWaveform("sine2", WaveType.SINE, 10, 1).addToChart(resultWaveformChart);
-    Synthesis synthesis = new IndependentSynthesis(sineWave, sineWave2);
+    setupSliders();
     setupDurationField();
-    synthesisViewer = new SynthesisViewer(sineWave, sineWave2, synthesis);
+    setupSynthesisModeChangeCombo();
+    state.resynthesize();
+  }
 
-    synthesisMode.getItems().addAll("Independent", "Chaos");
+  private void setupSynthesisModeChangeCombo() {
+    synthesisMode
+        .getItems()
+        .addAll(SynthesisMode.INDEPENDENT.toString(), SynthesisMode.CHAOS.toString());
     synthesisMode.getSelectionModel().select(0);
     synthesisMode
         .getSelectionModel()
         .selectedItemProperty()
         .addListener(
             (observableValue, s, t1) -> {
-              switch (t1) {
-                case "Independent" -> synthesisViewer.setSynthesis(
-                    new IndependentSynthesis(sineWave, sineWave2));
-                case "Chaos" -> synthesisViewer.setSynthesis(
-                    new ChaosSynthesis(sineWave, sineWave2));
-                default -> throw new IllegalStateException("Unexpected value: " + t1);
-              }
-              ;
-              synthesisViewer.synthesizeForPair(slider1, slider2);
+              state.changeSynthesisMode(SynthesisMode.valueOf(t1));
+              slider1.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
+              slider2.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
+              state.resynthesize();
             });
+    state.resynthesize();
+  }
 
-    slider1 = new WavePropsSliders(sineWave, frequencySlider, sliderLabel);
-    slider2 = new WavePropsSliders(sineWave2, frequencySlider2, sliderLabel2);
-
+  private void setupSliders() {
+    slider1 = new WavePropsSliders(state.getWaveform1(), frequencySlider, sliderLabel);
+    slider2 = new WavePropsSliders(state.getWaveform2(), frequencySlider2, sliderLabel2);
     slider1.addListenerAccordingToTarget(WavePropsSliders.Target.FREQUENCY);
     slider2.addListenerAccordingToTarget(WavePropsSliders.Target.FREQUENCY);
-    synthesisViewer.synthesizeForPair(slider1, slider2);
+    slider1.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
+    slider2.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
+  }
+
+  private void setup(WavePropsSliders slider1, WavePropsSliders slider2) {
+    slider1.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
+    slider2.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
   }
 
   private void setupDurationField() {
@@ -108,7 +108,7 @@ public class WaveController {
                       durationField.setText("1");
                     }
                     duration.set(getDuration());
-                    synthesisViewer.synthesizeForPair(slider1, slider2);
+                    state.resynthesize();
                   });
               pause.playFromStart();
             });
