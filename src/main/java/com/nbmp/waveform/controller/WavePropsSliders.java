@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.dto;
+package com.nbmp.waveform.controller;
 
 import java.util.function.Consumer;
 import javafx.animation.PauseTransition;

@@ -5,8 +5,8 @@ import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.controller.WaveController;
 import com.nbmp.waveform.model.generation.GenConstants;
-import com.nbmp.waveform.model.guides.SineWaveform;
-import com.nbmp.waveform.model.guides.Waveform;
+import com.nbmp.waveform.model.waveform.SineWaveform;
+import com.nbmp.waveform.model.waveform.Waveform;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

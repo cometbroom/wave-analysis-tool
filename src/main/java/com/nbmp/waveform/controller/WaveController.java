@@ -3,13 +3,14 @@ package com.nbmp.waveform.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import com.nbmp.waveform.view.SynthesisViewer;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 
 import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.model.dto.WavePropsSliders;
 import com.nbmp.waveform.model.generation.ChaosSynthesis;
 import com.nbmp.waveform.model.generation.IndependentSynthesis;
 import com.nbmp.waveform.model.generation.Synthesis;

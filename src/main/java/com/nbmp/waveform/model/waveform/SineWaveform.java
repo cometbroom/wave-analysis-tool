@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.guides;
+package com.nbmp.waveform.model.waveform;
 
 import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
 

@@ -1,9 +1,8 @@
 /* (C)2024 */
-package com.nbmp.waveform.controller;
+package com.nbmp.waveform.view;
 
-import com.nbmp.waveform.model.dto.WavePropsSliders;
+import com.nbmp.waveform.controller.WavePropsSliders;
 import com.nbmp.waveform.model.generation.Synthesis;
-import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
