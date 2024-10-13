@@ -18,11 +18,11 @@ public class WaveformPlotter extends Application {
 
   @Override
   public void start(Stage stage) {
-    ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
     stage.setTitle(STAGE_TITLE);
     try {
       Parent root =
           FXMLLoader.load(Objects.requireNonNull(this.getClass().getResource("/waveView.fxml")));
+
       stage.setScene(new Scene(root));
       stage.show();
     } catch (IOException e) {

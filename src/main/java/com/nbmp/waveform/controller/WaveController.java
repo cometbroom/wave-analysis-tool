@@ -22,7 +22,7 @@ public class WaveController {
   public LineChart<Number, Number> resultWaveformChart;
   @FXML public ComboBox<String> synthesisMode;
   @FXML private Slider frequencySlider;
-  @FXML public Slider frequencySlider2;
+  @FXML private Slider frequencySlider2;
   @FXML private Label sliderLabel;
   @FXML private Label sliderLabel2;
   @FXML private LineChart<Number, Number> waveformChart;
