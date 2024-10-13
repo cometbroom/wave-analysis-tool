@@ -1,26 +1,29 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.nbmp.waveform.controller.component.LabeledComboBox;
 import com.nbmp.waveform.model.generation.SynthesisMode;
 
 @Component
-public class WaveController {
+public class WaveController implements Initializable {
   public Label statusLabel;
-  public LineChart<Number, Number> resultWaveformChart;
-  @FXML public ComboBox<String> synthesisMode;
+  //  @FXML public ComboBox<String> synthesisMode;
   @FXML public TextField durationField;
   public static AtomicReference<Integer> duration = new AtomicReference<>(1);
+  @FXML public LabeledComboBox synthesisModeControl;
   @FXML private Slider frequencySlider;
   @FXML private Slider frequencySlider2;
   @FXML private Label sliderLabel;
@@ -42,8 +45,8 @@ public class WaveController {
     SAWTOOTH
   }
 
-  @FXML
-  public void initialize() {
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
     setupSliders();
     setupDurationField();
     setupSynthesisModeChangeCombo();
@@ -51,6 +54,7 @@ public class WaveController {
   }
 
   private void setupSynthesisModeChangeCombo() {
+    var synthesisMode = synthesisModeControl.getComboBox();
     synthesisMode
         .getItems()
         .addAll(SynthesisMode.INDEPENDENT.toString(), SynthesisMode.CHAOS.toString());

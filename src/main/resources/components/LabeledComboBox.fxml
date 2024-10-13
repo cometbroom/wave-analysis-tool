@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.nbmp.waveform.controller.component.LabeledComboBox?>
+<fx:root type="HBox" xmlns="http://javafx.com/javafx"
+                 xmlns:fx="http://javafx.com/fxml">
+    <Label id="label" layoutX="15.0" layoutY="10.0" styleClass="bold-label" text="Synthesis Mode Selector" />
+    <ComboBox fx:id="comboBox" layoutX="15.0" layoutY="33.0" prefWidth="90.0" promptText="choose"/>
+</fx:root>
