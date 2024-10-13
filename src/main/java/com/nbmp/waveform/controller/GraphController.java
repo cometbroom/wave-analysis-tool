@@ -7,8 +7,6 @@ import javafx.scene.chart.LineChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.model.generation.SynthesisMode;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,10 +22,5 @@ public class GraphController {
   public void initialize() {
     state.getWaveform1().addToChart(waveformChart);
     state.getWaveform2().addToChart(waveformChart2);
-  }
-
-  public void syntheisModeChanged(SynthesisMode mode) {
-
-    state.setSynthesisMode(mode);
   }
 }

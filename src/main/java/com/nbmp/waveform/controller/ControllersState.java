@@ -1,8 +1,6 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller;
 
-import javafx.scene.chart.LineChart;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +22,6 @@ public class ControllersState {
   private WavesRegister waveform1;
   private WavesRegister waveform2;
   private Synthesis synthesis;
-  private GraphController graphController;
-  private LineChart<Number, Number> waveformChart;
-  private LineChart<Number, Number> waveformChart2;
   private SynthesisViewer synthesisViewer;
   private SynthesisMode synthesisMode;
 
