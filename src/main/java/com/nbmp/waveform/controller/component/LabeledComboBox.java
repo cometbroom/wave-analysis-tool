@@ -43,6 +43,13 @@ public class LabeledComboBox extends HBox implements Initializable {
     }
   }
 
+  public void setText(String text) {
+    this.text = text;
+    if (label != null) {
+      label.setText(text);
+    }
+  }
+
   public HBox getRoot() {
     return root;
   }
