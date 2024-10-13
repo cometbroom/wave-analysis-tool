@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.view;
 
+import com.nbmp.waveform.model.generation.Generator;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.controller.WaveController;
@@ -18,6 +19,7 @@ import lombok.Setter;
 public class WavesRegister {
   private final Waveform waveform;
   private final XYChart.Series<Number, Number> series;
+  public static final int VIEW_RESOLUTION = Math.min(500, Generator.SAMPLE_RATE / 2);
 
   private WavesRegister modulator;
   private String name = "";
@@ -43,10 +45,13 @@ public class WavesRegister {
   }
 
   public void addData(double[][] data) {
-    for (double[] point : data) {
+    var viewResolutionDuration = VIEW_RESOLUTION * WaveController.duration.get();
+    int totalSamples = data.length;
+    int step = Math.max(totalSamples / viewResolutionDuration, 1);
+    for (int i = 0; i < totalSamples; i += step) {
       series
           .getData()
-          .add(new XYChart.Data<>(point[GenConstants.TIME], point[GenConstants.AMPLITUDE]));
+          .add(new XYChart.Data<>(data[i][GenConstants.TIME], data[i][GenConstants.AMPLITUDE]));
     }
   }
 

@@ -18,7 +18,19 @@
                         <Insets top="15" right="15" bottom="15" left="15"/>
                     </padding>
                     <!-- Waveform Type -->
-                    <Label text="Waveform Type:" styleClass="label-bold"/>
+                    <GridPane>
+                        <columnConstraints>
+                            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="307.0" minWidth="0.0" prefWidth="257.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                        </rowConstraints>
+                        <children>
+                            <Label text="Duration" styleClass="label-bold"/>
+                            <TextField fx:id="durationField" promptText="Duration" GridPane.columnIndex="1" onAction="#durationEntered" />
+                        </children>
+                    </GridPane>
 
 
                     <!-- Frequency -->
