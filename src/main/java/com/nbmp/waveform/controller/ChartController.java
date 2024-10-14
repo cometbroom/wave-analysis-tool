@@ -5,12 +5,15 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @Getter
 @Setter
 public class ChartController {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="HBox" xmlns="http://javafx.com/javafx"
+                  xmlns:fx="http://javafx.com/fxml">
+
+    <Label fx:id="label" text="TEXT" styleClass="label-bold"/>
+    <TextField fx:id="textField" promptText="Duration" GridPane.columnIndex="1"/>
+</fx:root>

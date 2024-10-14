@@ -4,39 +4,36 @@ package com.nbmp.waveform.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
-import javafx.animation.PauseTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.util.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.controller.component.LabeledComboBox;
+import com.nbmp.waveform.controller.component.LabeledTextField;
 import com.nbmp.waveform.model.generation.SynthesisMode;
 
 @Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class WaveController implements Initializable {
   public Label statusLabel;
   //  @FXML public ComboBox<String> synthesisMode;
   @FXML public TextField durationField;
   public static AtomicReference<Integer> duration = new AtomicReference<>(1);
   @FXML public LabeledComboBox synthesisModeControl;
-  @FXML private Slider frequencySlider;
-  @FXML private Slider frequencySlider2;
-  @FXML private Label sliderLabel;
-  @FXML private Label sliderLabel2;
+  @FXML public LabeledTextField durationTextField;
+  @FXML public Slider frequencySlider;
+  @FXML public Slider frequencySlider2;
+  @FXML public Label sliderLabel;
+  @FXML public Label sliderLabel2;
   private WavePropsSliders slider1;
   private WavePropsSliders slider2;
 
   @Autowired private ControllersState state;
-
-  @FXML
-  public void durationEntered(ActionEvent actionEvent) {
-    System.out.println("hi");
-  }
 
   public enum WaveType {
     SINE,
@@ -50,7 +47,18 @@ public class WaveController implements Initializable {
     setupSliders();
     setupDurationField();
     setupSynthesisModeChangeCombo();
+    setupDurationField();
+
     state.resynthesize();
+  }
+
+  public void setupDurationField() {
+    durationTextField.setValue(duration.get());
+    durationTextField.addListener(
+        (value) -> {
+          duration.set(value);
+          state.resynthesize();
+        });
   }
 
   private void setupSynthesisModeChangeCombo() {
@@ -79,41 +87,5 @@ public class WaveController implements Initializable {
     slider2.addListenerAccordingToTarget(WavePropsSliders.Target.FREQUENCY);
     slider1.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
     slider2.setUpdateTask(state.getSynthesisViewer().getUpdateTask());
-  }
-
-  private void setupDurationField() {
-    durationField.setText(duration + "");
-
-    durationField.setOnMouseClicked(
-        (event) -> {
-          durationField.selectAll();
-        });
-
-    durationField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue.matches("\\d*")) {
-                durationField.setText(newValue.replaceAll("[^\\d]", ""));
-              }
-              PauseTransition pause = new PauseTransition(Duration.millis(500));
-              pause.setOnFinished(
-                  event -> {
-                    int newDuration = getDuration();
-                    if (newDuration > 5) {
-                      durationField.setText("5");
-                    }
-                    if (newDuration < 1) {
-                      durationField.setText("1");
-                    }
-                    duration.set(getDuration());
-                    state.resynthesize();
-                  });
-              pause.playFromStart();
-            });
-  }
-
-  public int getDuration() {
-    return Integer.parseInt(durationField.getText());
   }
 }

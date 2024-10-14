@@ -17,7 +17,6 @@ import com.nbmp.waveform.view.WavesRegister;
 
 @Configuration
 @ComponentScan(basePackages = "com.nbmp.waveform")
-@ComponentScan(basePackages = "com.nbmp.waveform.controller.component")
 public class SpringFXMLLoader {
   private final ApplicationContext applicationContext;
 
@@ -28,7 +27,7 @@ public class SpringFXMLLoader {
   @Bean(name = "mainView")
   public AnchorPane loadMainView() throws IOException {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("/Application.fxml"));
+    loader.setLocation(getClass().getResource("/components/Application.fxml"));
     loader.setControllerFactory(applicationContext::getBean);
     return loader.load();
   }

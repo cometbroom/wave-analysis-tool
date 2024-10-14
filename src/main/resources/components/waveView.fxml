@@ -2,10 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.geometry.Insets?>
 <?import com.nbmp.waveform.controller.component.LabeledComboBox?>
+<?import com.nbmp.waveform.controller.component.LabeledTextField?>
 <AnchorPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
@@ -18,22 +17,8 @@
                     <padding>
                         <Insets top="15" right="15" bottom="15" left="15"/>
                     </padding>
-                    <!-- Waveform Type -->
-                    <GridPane>
-                        <columnConstraints>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
-                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="307.0" minWidth="57" prefWidth="257.0" />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                        </rowConstraints>
-                        <children>
-                            <Label text="Duration" styleClass="label-bold"/>
-                            <TextField fx:id="durationField" promptText="Duration" GridPane.columnIndex="1" onAction="#durationEntered" />
-                        </children>
-                    </GridPane>
-
-
+                    <!-- Duration field -->
+                    <LabeledTextField fx:id="durationTextField" text="Duration: " minimum="1" maximum="5"/>
                     <!-- Frequency -->
                     <Label text="Frequency:" styleClass="label-bold"/>
                     <Slider fx:id="frequencySlider" min="1" max="50" value="5"/>
