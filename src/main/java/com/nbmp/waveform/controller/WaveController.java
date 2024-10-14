@@ -23,17 +23,11 @@ import com.nbmp.waveform.model.generation.SynthesisMode;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class WaveController implements Initializable {
   public Label statusLabel;
-  //  @FXML public ComboBox<String> synthesisMode;
-  @FXML public TextField durationField;
   public static AtomicReference<Integer> duration = new AtomicReference<>(1);
   @FXML public LabeledComboBox synthesisModeControl;
   @FXML public LabeledTextField durationTextField;
   @FXML public WaveLabeledSlider frequencySlider;
   @FXML public WaveLabeledSlider frequencySlider2;
-  @FXML public Label sliderLabel;
-  @FXML public Label sliderLabel2;
-  private WavePropsSliders slider1;
-  private WavePropsSliders slider2;
 
   @Autowired private ControllersState state;
 
