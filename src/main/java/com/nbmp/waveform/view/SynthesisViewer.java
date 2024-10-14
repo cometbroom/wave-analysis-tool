@@ -27,7 +27,7 @@ public class SynthesisViewer {
     regenSeriesData(WaveController.duration.get());
   }
 
-  public Consumer<Double> getUpdateTask() {
+  public Consumer<Double> recomputeRunner() {
     return (newValue) -> {
       var newData = synthesis.compute(WaveController.duration.get());
       wave1.refreshData(newData.timeAmplitude1());

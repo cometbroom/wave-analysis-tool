@@ -1,33 +1,31 @@
 /* (C)2024 */
-package com.nbmp.waveform.controller;
+package com.nbmp.waveform.controller.component;
 
-import com.nbmp.waveform.controller.component.LabeledSlider;
 import com.nbmp.waveform.view.WavesRegister;
 
-import lombok.Getter;
-import lombok.Setter;
+public class WaveLabeledSlider extends LabeledSlider {
 
-@Getter
-@Setter
-public class WavePropsSliders {
+  public WaveLabeledSlider() {
+    super();
+  }
+
   public enum Target {
     FREQUENCY,
     AMPLITUDE,
     PHASE;
   }
 
-  public static void addListenerForTarget(
-      LabeledSlider slider, WavesRegister waveform, Target target) {
+  public void addListenerForTarget(WavesRegister waveform, Target target) {
     switch (target) {
-      case FREQUENCY -> slider.addListener(
+      case FREQUENCY -> addListener(
           (newValue) -> {
             waveform.getWaveform().getProps().setFrequency(newValue);
           });
-      case AMPLITUDE -> slider.addListener(
+      case AMPLITUDE -> addListener(
           (newValue) -> {
             waveform.getWaveform().getProps().setAmplitude(newValue);
           });
-      case PHASE -> slider.addListener(
+      case PHASE -> addListener(
           (newValue) -> {
             waveform.getWaveform().getProps().setInitialPhase(newValue);
           });
