@@ -1,48 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import com.nbmp.waveform.controller.component.LabeledComboBox?>
 <?import com.nbmp.waveform.controller.component.LabeledTextField?>
-<?import com.nbmp.waveform.controller.component.LabeledSlider?>
 <?import com.nbmp.waveform.controller.component.WaveLabeledSlider?>
 <AnchorPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
             stylesheets="@../stylesheets/waveView.css">
     <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <!-- Main Content -->
         <SplitPane VBox.vgrow="ALWAYS"><!-- Left Pane: Controls -->
             <ScrollPane fitToWidth="true" prefWidth="250">
                 <VBox spacing="15" alignment="TOP_CENTER">
                     <padding>
                         <Insets top="15" right="15" bottom="15" left="15"/>
                     </padding>
-                    <!-- Duration field -->
                     <LabeledTextField fx:id="durationTextField" text="Duration: " minimum="1" maximum="5"/>
-                    <!-- Frequency -->
                     <WaveLabeledSlider fx:id="frequencySlider" unit="hz" text="Frequency: " min="1" max="50" value="5" load="true" />
-<!--                    <Label text="Frequency:" styleClass="label-bold"/>-->
-<!--                    <Slider fx:id="frequencySlider" min="1" max="50" value="5"/>-->
-<!--                    <Label fx:id="sliderLabel" text="5 Hz"/>-->
                     <WaveLabeledSlider fx:id="frequencySlider2" unit="hz" text="Frequency: " min="1" max="50" value="7" load="true" />
-
-
-<!--                    <Label text="Frequency Waveform 2:" styleClass="label-bold"/>-->
-<!--                    <Slider fx:id="frequencySlider2" min="1" max="50" value="5"/>-->
-<!--                    <Label fx:id="sliderLabel2" text="7 Hz"/>-->
-
                     <LabeledComboBox fx:id="synthesisModeControl" text="Synthesis Mode: "/>
                 </VBox>
             </ScrollPane>
-
-
-            <fx:include source="WaveformChart.fxml" fx:id="waveformView"/>
-
-
+            <fx:include source="WaveformChart.fxml"/>
         </SplitPane>
-
         <!-- Status Bar -->
         <HBox spacing="10" style="-fx-background-color: #e0e0e0;" alignment="CENTER_LEFT">
             <padding>
@@ -50,6 +31,5 @@
             </padding>
             <Label fx:id="statusLabel" text="Ready" />
         </HBox>
-
     </VBox>
 </AnchorPane>
