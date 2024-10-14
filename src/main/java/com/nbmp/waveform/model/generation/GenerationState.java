@@ -3,18 +3,12 @@ package com.nbmp.waveform.model.generation;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-
 import com.nbmp.waveform.controller.ControllersState;
 import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Service
-@Scope(BeanDefinition.SCOPE_SINGLETON)
 @Getter
 @Setter
 public class GenerationState {

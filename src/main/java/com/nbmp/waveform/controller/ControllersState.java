@@ -2,7 +2,6 @@
 package com.nbmp.waveform.controller;
 
 import com.nbmp.waveform.model.generation.SynthesisMode;
-import com.nbmp.waveform.view.SynthesisViewer;
 import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
@@ -13,7 +12,6 @@ import lombok.Setter;
 public class ControllersState {
   private WavesRegister waveform1;
   private WavesRegister waveform2;
-  private SynthesisViewer synthesisViewer;
   private SynthesisMode synthesisMode;
   private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>();
   private SmartObservable<Integer> durationObservable = new SmartObservable<>(1);

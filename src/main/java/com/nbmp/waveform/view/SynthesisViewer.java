@@ -1,12 +1,9 @@
 /* (C)2024 */
 package com.nbmp.waveform.view;
 
-import java.util.function.Consumer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nbmp.waveform.controller.WaveController;
 import com.nbmp.waveform.model.generation.GenerationState;
 
 import lombok.Getter;
@@ -18,9 +15,7 @@ import lombok.Setter;
 @Setter
 @Service
 public class SynthesisViewer {
+  // Class is the only class autowiring GenerationState. Removing it will break the application
+  // Will be using this class to simplify GenerationState in the future
   @Autowired private GenerationState genState;
-
-  public Consumer<Double> recomputeRunner() {
-    return (newValue) -> genState.regenSeriesData(WaveController.duration.get());
-  }
 }
