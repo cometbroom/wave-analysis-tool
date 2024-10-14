@@ -45,16 +45,12 @@ public class WaveController implements Initializable {
     setupDurationField();
     setupSynthesisModeChangeCombo();
 
-    state.resynthesize();
+    state.getResynthesizeTrigger().run();
   }
 
   public void setupDurationField() {
     durationTextField.setValue(duration.get());
-    durationTextField.addListener(
-        (value) -> {
-          duration.set(value);
-          state.resynthesize();
-        });
+    durationTextField.addListener((value) -> state.getDurationObservable().setValue(value));
   }
 
   private void setupSynthesisModeChangeCombo() {
@@ -63,16 +59,14 @@ public class WaveController implements Initializable {
     synthesisModeControl.addListener(
         (observableValue, s, t1) -> {
           state.changeSynthesisMode(SynthesisMode.valueOf(t1));
-          setRefreshTasksForSliders(state.getSynthesisViewer().recomputeRunner());
-          state.resynthesize();
+          setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
         });
-    state.resynthesize();
   }
 
   private void setupSliders() {
     frequencySlider.addListenerForTarget(state.getWaveform1(), WaveLabeledSlider.Target.FREQUENCY);
     frequencySlider2.addListenerForTarget(state.getWaveform2(), WaveLabeledSlider.Target.FREQUENCY);
-    setRefreshTasksForSliders(state.getSynthesisViewer().recomputeRunner());
+    setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
   }
 
   private void setRefreshTasksForSliders(Consumer<Double> refreshTask) {

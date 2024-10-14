@@ -23,7 +23,12 @@ public class ChartController {
 
   @FXML
   public void initialize() {
-    state.getWaveform1().addToChart(waveformChart);
-    state.getWaveform2().addToChart(waveformChart2);
+    var waveForm1 = state.getWaveform1();
+    var waveForm2 = state.getWaveform2();
+
+    waveformChart.getData().add(waveForm1.getSeries());
+    waveformChart2.getData().add(waveForm2.getSeries());
+    waveForm1.getSeries().nodeProperty().get().setId(waveForm1.getName());
+    waveForm2.getSeries().nodeProperty().get().setId(waveForm2.getName());
   }
 }

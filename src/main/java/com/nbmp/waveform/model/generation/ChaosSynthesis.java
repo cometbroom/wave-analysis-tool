@@ -2,7 +2,6 @@
 package com.nbmp.waveform.model.generation;
 
 import com.nbmp.waveform.model.dto.BiTimeSeries;
-import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class ChaosSynthesis implements Synthesis {
   // Modulation index
   private double k = 0.3;
-  private final WavesRegister wave1, wave2;
+  private final GenerationState state;
 
   @Override
   public BiTimeSeries compute(int duration) {
@@ -19,25 +18,25 @@ public class ChaosSynthesis implements Synthesis {
     int sampleCount = Math.toIntExact(Math.round(sampleCountDouble));
     double timeStep = 1.0 / Generator.SAMPLE_RATE;
     double t = 0.0;
+    var waveform1 = state.getWave1().getWaveform();
+    var waveform2 = state.getWave2().getWaveform();
 
     double[][] wave1Gen = new double[sampleCount][2];
     double[][] wave2Gen = new double[sampleCount][2];
 
     // Generate first point AKA initial conditions
-    wave1Gen[0] = wave1.getWaveform().computeTY(t);
-    wave2Gen[0] = wave2.getWaveform().computeTY(t);
+    wave1Gen[0] = waveform1.computeTY(t);
+    wave2Gen[0] = waveform2.computeTY(t);
 
-    var waveProps1 = wave1.getWaveform().getProps();
-    var waveProps2 = wave2.getWaveform().getProps();
+    var waveProps1 = waveform1.getProps();
+    var waveProps2 = waveform2.getProps();
     // Basic coupling by using last computer value of the other wave
-    waveProps2.setPhaseModulation(
-        (phi) -> phi + wave1.getWaveform().getNormalizedPreviousAmplitude() * k);
-    waveProps1.setPhaseModulation(
-        (phi) -> phi + wave2.getWaveform().getNormalizedPreviousAmplitude() * k);
+    waveProps2.setPhaseModulation((phi) -> phi + waveform1.getNormalizedPreviousAmplitude() * k);
+    waveProps1.setPhaseModulation((phi) -> phi + waveform2.getNormalizedPreviousAmplitude() * k);
 
     for (int i = 1; i < sampleCount; i++) {
-      wave2Gen[i] = wave2.getWaveform().computeTY(t);
-      wave1Gen[i] = wave1.getWaveform().computeTY(t);
+      wave2Gen[i] = waveform2.computeTY(t);
+      wave1Gen[i] = waveform1.computeTY(t);
       t += timeStep;
     }
     resetWaveforms();
@@ -45,9 +44,9 @@ public class ChaosSynthesis implements Synthesis {
   }
 
   private void resetWaveforms() {
-    wave1.getWaveform().getProps().resetModulations();
-    wave2.getWaveform().getProps().resetModulations();
-    wave1.getWaveform().setCumulativePhaseRadians(0);
-    wave2.getWaveform().setCumulativePhaseRadians(0);
+    state.getWave1().getWaveform().getProps().resetModulations();
+    state.getWave2().getWaveform().getProps().resetModulations();
+    state.getWave1().getWaveform().setCumulativePhaseRadians(0);
+    state.getWave2().getWaveform().setCumulativePhaseRadians(0);
   }
 }

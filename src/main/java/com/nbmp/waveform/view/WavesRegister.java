@@ -38,12 +38,6 @@ public class WavesRegister {
     return waveRegister;
   }
 
-  public WavesRegister addToChart(XYChart<Number, Number> chart) {
-    chart.getData().add(series);
-    series.nodeProperty().get().setId(name);
-    return this;
-  }
-
   public void addData(double[][] data) {
     var viewResolutionDuration = VIEW_RESOLUTION * WaveController.duration.get();
     int totalSamples = data.length;

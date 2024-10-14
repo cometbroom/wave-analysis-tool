@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 
 import com.nbmp.waveform.controller.ControllersState;
 import com.nbmp.waveform.controller.WaveController;
+import com.nbmp.waveform.model.generation.GenerationState;
 import com.nbmp.waveform.view.WavesRegister;
 
 @Configuration
@@ -38,5 +39,11 @@ public class SpringFXMLLoader {
     var sine1 = WavesRegister.createWaveform("sine1", WaveController.WaveType.SINE, 5, 1);
     var sine2 = WavesRegister.createWaveform("sine2", WaveController.WaveType.SINE, 7, 1);
     return ControllersState.createInstance(sine1, sine2);
+  }
+
+  @Bean
+  @Scope("singleton")
+  public GenerationState generationState(ControllersState controllersState) {
+    return new GenerationState(controllersState);
   }
 }
