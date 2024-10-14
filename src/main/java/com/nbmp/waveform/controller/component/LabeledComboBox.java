@@ -3,7 +3,10 @@ package com.nbmp.waveform.controller.component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +25,8 @@ public class LabeledComboBox extends HBox implements Initializable {
   private String text;
   @FXML private Label label;
   @FXML private ComboBox<String> comboBox;
+  private boolean load;
+  ChangeListener<String> listener;
 
   public LabeledComboBox() {
     FXMLLoader fxmlLoader =
@@ -38,19 +43,34 @@ public class LabeledComboBox extends HBox implements Initializable {
 
   @FXML
   public void initialize(URL location, ResourceBundle resources) {
-    if (text != null) {
-      label.setText(text);
+
+  }
+
+  public void setBoxValues(List<String> values) {
+    comboBox.getItems().addAll(values);
+    if (values.size() > 0) {
+      comboBox.getSelectionModel().select(0);
     }
   }
 
-  public void setText(String text) {
-    this.text = text;
-    if (label != null) {
-      label.setText(text);
+  public void addListener(ChangeListener<String> listener) {
+    if (this.listener != null) {
+      comboBox.getSelectionModel().selectedItemProperty().removeListener(this.listener);
     }
+    this.listener = listener;
+    comboBox.getSelectionModel().selectedItemProperty().addListener(this.listener);
+  }
+
+  public void setText(String text) {
   }
 
   public HBox getRoot() {
     return root;
+  }
+
+  public void setLoad(boolean load) {
+    this.load = load;
+    label.setText(text);
+
   }
 }

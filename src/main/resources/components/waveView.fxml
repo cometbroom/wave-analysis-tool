@@ -19,7 +19,7 @@
                     <LabeledTextField fx:id="durationTextField" text="Duration: " minimum="1" maximum="5"/>
                     <WaveLabeledSlider fx:id="frequencySlider" unit="hz" text="Frequency: " min="1" max="50" value="5" load="true" />
                     <WaveLabeledSlider fx:id="frequencySlider2" unit="hz" text="Frequency: " min="1" max="50" value="7" load="true" />
-                    <LabeledComboBox fx:id="synthesisModeControl" text="Synthesis Mode: "/>
+                    <LabeledComboBox fx:id="synthesisModeControl" text="Synthesis Mode: " load="true"/>
                 </VBox>
             </ScrollPane>
             <fx:include source="WaveformChart.fxml"/>
