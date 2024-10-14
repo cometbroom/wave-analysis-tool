@@ -2,13 +2,10 @@
 package com.nbmp.waveform.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -61,7 +58,8 @@ public class WaveController implements Initializable {
   }
 
   private void setupSynthesisModeChangeCombo() {
-    synthesisModeControl.setBoxValues(Arrays.stream(SynthesisMode.values()).map(Object::toString).toList());
+    synthesisModeControl.setBoxValues(
+        Arrays.stream(SynthesisMode.values()).map(Object::toString).toList());
     synthesisModeControl.addListener(
         (observableValue, s, t1) -> {
           state.changeSynthesisMode(SynthesisMode.valueOf(t1));

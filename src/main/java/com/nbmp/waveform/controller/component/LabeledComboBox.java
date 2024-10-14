@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,9 +41,7 @@ public class LabeledComboBox extends HBox implements Initializable {
   }
 
   @FXML
-  public void initialize(URL location, ResourceBundle resources) {
-
-  }
+  public void initialize(URL location, ResourceBundle resources) {}
 
   public void setBoxValues(List<String> values) {
     comboBox.getItems().addAll(values);
@@ -61,9 +58,6 @@ public class LabeledComboBox extends HBox implements Initializable {
     comboBox.getSelectionModel().selectedItemProperty().addListener(this.listener);
   }
 
-  public void setText(String text) {
-  }
-
   public HBox getRoot() {
     return root;
   }
@@ -71,6 +65,5 @@ public class LabeledComboBox extends HBox implements Initializable {
   public void setLoad(boolean load) {
     this.load = load;
     label.setText(text);
-
   }
 }
