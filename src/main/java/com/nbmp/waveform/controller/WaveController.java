@@ -43,7 +43,6 @@ public class WaveController implements Initializable {
     setupSliders();
     setupDurationField();
     setupSynthesisModeChangeCombo();
-    setupDurationField();
 
     state.resynthesize();
   }
