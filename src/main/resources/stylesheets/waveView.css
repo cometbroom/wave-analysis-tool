@@ -1,37 +1,37 @@
 /* waveView.css */
 
-.root {
-    -fx-font-family: "Segoe UI", sans-serif;
-    -fx-font-size: 12px;
-}
+/*.root {*/
+/*    -fx-font-family: "Segoe UI", sans-serif;*/
+/*    -fx-font-size: 12px;*/
+/*}*/
 
-.label-bold {
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-}
+/*.label-bold {*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-font-size: 14px;*/
+/*}*/
 
-.button {
-    -fx-font-size: 13px;
-    -fx-background-color: #2196F3;
-    -fx-text-fill: white;
-    -fx-cursor: hand;
-}
+/*.button {*/
+/*    -fx-font-size: 13px;*/
+/*    -fx-background-color: #2196F3;*/
+/*    -fx-text-fill: white;*/
+/*    -fx-cursor: hand;*/
+/*}*/
 
-.button:hover {
-    -fx-background-color: #1976D2;
-}
+/*.button:hover {*/
+/*    -fx-background-color: #1976D2;*/
+/*}*/
 
-.menu-bar {
-    -fx-background-color: #eeeeee;
-}
+/*.menu-bar {*/
+/*    -fx-background-color: #eeeeee;*/
+/*}*/
 
-.menu .label {
-    -fx-text-fill: #424242;
-}
+/*.menu .label {*/
+/*    -fx-text-fill: #424242;*/
+/*}*/
 
-.status-bar {
-    -fx-background-color: #e0e0e0;
-}
+/*.status-bar {*/
+/*    -fx-background-color: #e0e0e0;*/
+/*}*/
 
 .line-chart {
     -fx-background-color: #ffffff;
@@ -78,4 +78,28 @@
 
 .separator {
     -fx-background-color: #cccccc;
+}
+
+.wave-sliders {
+    -fx-padding: 0px;
+    /*-fx-border-color: #000000;*/
+    /*-fx-border-width: 1px;*/
+    /*-fx-border-radius: 25px;*/
+}
+
+.wave-slider {
+    -fx-min-width: 200px;
+    -fx-max-width: 300px;
+
+
+}
+
+.wave-slider .label{
+    -fx-min-width: 75px;
+}
+
+.vertical-slider {
+    -fx-alignment: top-center;
+    -fx-min-height: 150px;
+    -fx-padding: 12px;
 }

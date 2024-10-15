@@ -20,6 +20,8 @@ public class LabeledSlider extends VBox {
   @FXML public Label label;
   @FXML public Label valueLabel;
   @FXML public Slider slider;
+  public boolean showLabel = true;
+  public String orientation = "HORIZONTAL";
   public String text, valueText, unit = "";
   public double value;
   public int min, max, pauseTime = 50;
@@ -59,10 +61,21 @@ public class LabeledSlider extends VBox {
   // All will be run when attributes are loaded
   public void setLoad(boolean load) {
     if (load) {
-      label.setText(text);
+      if (showLabel) {
+        label.setText(text);
+        valueLabel.minWidth(50);
+      } else {
+        label.setVisible(false);
+        valueLabel.setVisible(false);
+        valueLabel.minWidth(1);
+        valueLabel.maxWidth(1);
+
+      }
       slider.setValue(value);
       slider.setMin(min);
       slider.setMax(max);
+      slider.setOrientation(orientation.equals("HORIZONTAL") ? javafx.geometry.Orientation.HORIZONTAL
+              : javafx.geometry.Orientation.VERTICAL);
       valueLabel.setText(String.format("%.2f " + unit, value));
     }
   }

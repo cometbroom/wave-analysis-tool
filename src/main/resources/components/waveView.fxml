@@ -5,6 +5,7 @@
 <?import com.nbmp.waveform.controller.component.LabeledComboBox?>
 <?import com.nbmp.waveform.controller.component.LabeledTextField?>
 <?import com.nbmp.waveform.controller.component.WaveLabeledSlider?>
+<?import com.nbmp.waveform.controller.component.WaveSliders?>
 <AnchorPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
@@ -17,18 +18,19 @@
                         <Insets top="15" right="15" bottom="15" left="15"/>
                     </padding>
                     <LabeledTextField fx:id="durationTextField" text="Duration: " minimum="1" maximum="5"/>
-                    <WaveLabeledSlider fx:id="frequencySlider" unit="hz" text="Frequency: " min="1" max="50" value="5" load="true" />
-                    <WaveLabeledSlider fx:id="frequencySlider2" unit="hz" text="Frequency: " min="1" max="50" value="7" load="true" />
                     <LabeledComboBox fx:id="synthesisModeControl" text="Synthesis Mode: " load="true"/>
+                    <WaveSliders title="Waveform 1 (Red)" fx:id="waveSliders" />
+                    <WaveSliders title="Waveform 2 (Blue)" fx:id="waveSliders2" />
                 </VBox>
             </ScrollPane>
             <fx:include source="WaveformChart.fxml"/>
         </SplitPane>
-        <!-- Status Bar -->
+        <!-- TODO: Please delete. This is for debugging -->
         <HBox spacing="10" style="-fx-background-color: #e0e0e0;" alignment="CENTER_LEFT">
             <padding>
                 <Insets top="5" right="5" bottom="5" left="5" />
             </padding>
+            <Button>Reload!</Button>
             <Label fx:id="statusLabel" text="Ready" />
         </HBox>
     </VBox>

@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.application;
 
+import atlantafx.base.theme.PrimerLight;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +27,7 @@ public class WaveformPlotter extends Application {
 
   @Override
   public void start(Stage stage) {
+    Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     stage.setTitle(STAGE_TITLE);
     stage.setScene(new Scene(mainView));
     stage.show();

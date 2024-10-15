@@ -16,7 +16,7 @@
                     <NumberAxis side="BOTTOM" label="Time"/>
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT" label="Amplitude"/>
+                    <NumberAxis side="LEFT" label="Amplitude" autoRanging="false" lowerBound="-1" upperBound="1" tickUnit="0.25"/>
                 </yAxis>
             </LineChart>
         </AnchorPane>
@@ -29,7 +29,7 @@
                     <NumberAxis side="BOTTOM" label="Time"/>
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT" label="Amplitude"/>
+                    <NumberAxis side="LEFT" label="Amplitude"  autoRanging="false" lowerBound="-1" upperBound="1" tickUnit="0.25"/>
                 </yAxis>
             </LineChart>
         </AnchorPane>

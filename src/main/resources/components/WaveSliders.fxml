@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import com.nbmp.waveform.controller.component.WaveLabeledSlider?>
+<fx:root type="HBox"
+         styleClass="wave-sliders"
+         xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml">
+    <WaveLabeledSlider maxWidth="30" fx:id="amplitudeSlider" orientation="VERTICAL" unit=""
+                       text="Amplitude: " min="0" max="100" value="100" showLabel="false" load="true">
+        <padding>
+            <Insets bottom="10" left="10" right="10" top="10"/>
+        </padding>
+    </WaveLabeledSlider>
+    <StackPane pickOnBounds="false" prefHeight="150.0">
+        <VBox alignment="CENTER" spacing="10">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+            <Label fx:id="titleLabel" alignment="TOP_CENTER" text="Waveform Controls" styleClass="label-bold"/>
+            <WaveLabeledSlider styleClass="wave-slider" alignment="BOTTOM_LEFT" fx:id="frequencySlider" unit="hz" text="Frequency: " min="1" max="50" value="5"
+                               load="true">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0"/>
+                </padding>
+            </WaveLabeledSlider>
+            <WaveLabeledSlider styleClass="wave-slider" alignment="BOTTOM_LEFT" fx:id="phaseSlider" unit="deg" text="Phase: " min="0" max="180" value="0"
+                               load="true">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0"/>
+                </padding>
+            </WaveLabeledSlider>
+        </VBox>
+        <AnchorPane mouseTransparent="true" disable="true" prefHeight="200.0" prefWidth="200.0">
+            <HBox disable="true" mouseTransparent="true"  prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0">
+                <Label  mouseTransparent="true"  styleClass="vertical-slider" alignment="TOP_LEFT" prefHeight="95.0" prefWidth="100.0" rotate="270.0"
+                       text="Amplitude">
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <padding>
+                        <Insets top="5.0"/>
+                    </padding>
+                </Label>
+            </HBox>
+        </AnchorPane>
+    </StackPane>
+
+</fx:root>

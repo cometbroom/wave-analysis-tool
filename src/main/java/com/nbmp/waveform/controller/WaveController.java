@@ -6,10 +6,13 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+
+import com.nbmp.waveform.controller.component.WaveSliders;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -27,8 +30,8 @@ public class WaveController implements Initializable {
   public static AtomicReference<Integer> duration = new AtomicReference<>(1);
   @FXML public LabeledComboBox synthesisModeControl;
   @FXML public LabeledTextField durationTextField;
-  @FXML public WaveLabeledSlider frequencySlider;
-  @FXML public WaveLabeledSlider frequencySlider2;
+  @FXML public WaveSliders waveSliders;
+  @FXML public WaveSliders waveSliders2;
 
   @Autowired private ControllersState state;
 
@@ -41,7 +44,8 @@ public class WaveController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    setupSliders();
+    waveSliders.setupSliders(state.getWaveform1(), (x) -> state.getResynthesizeTrigger().run());
+    waveSliders2.setupSliders(state.getWaveform2(), (x) -> state.getResynthesizeTrigger().run());
     setupDurationField();
     setupSynthesisModeChangeCombo();
 
@@ -59,18 +63,19 @@ public class WaveController implements Initializable {
     synthesisModeControl.addListener(
         (observableValue, s, t1) -> {
           state.changeSynthesisMode(SynthesisMode.valueOf(t1));
-          setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
         });
   }
 
-  private void setupSliders() {
-    frequencySlider.addListenerForTarget(state.getWaveform1(), WaveLabeledSlider.Target.FREQUENCY);
-    frequencySlider2.addListenerForTarget(state.getWaveform2(), WaveLabeledSlider.Target.FREQUENCY);
-    setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
-  }
 
-  private void setRefreshTasksForSliders(Consumer<Double> refreshTask) {
-    frequencySlider.setRefreshTask(refreshTask);
-    frequencySlider2.setRefreshTask(refreshTask);
-  }
+
+//  private void setupSliders() {
+//    frequencySlider.addListenerForTarget(state.getWaveform1(), WaveLabeledSlider.Target.FREQUENCY);
+//    frequencySlider2.addListenerForTarget(state.getWaveform2(), WaveLabeledSlider.Target.FREQUENCY);
+//    setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
+//  }
+//
+//  private void setRefreshTasksForSliders(Consumer<Double> refreshTask) {
+//    frequencySlider.setRefreshTask(refreshTask);
+//    frequencySlider2.setRefreshTask(refreshTask);
+//  }
 }
