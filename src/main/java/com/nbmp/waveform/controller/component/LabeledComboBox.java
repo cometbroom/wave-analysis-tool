@@ -15,9 +15,11 @@ import javafx.scene.layout.HBox;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class LabeledComboBox extends HBox implements Initializable {
 
   @FXML private HBox root;
@@ -28,8 +30,8 @@ public class LabeledComboBox extends HBox implements Initializable {
   ChangeListener<String> listener;
 
   public LabeledComboBox() {
-    FXMLLoader fxmlLoader =
-        new FXMLLoader(getClass().getResource("/components/LabeledComboBox.fxml"));
+    String resourceName = "/components/LabeledComboBox.fxml";
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
 
@@ -38,6 +40,7 @@ public class LabeledComboBox extends HBox implements Initializable {
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
+    log.debug("LabeledComboBox from {} bound to controller {}", resourceName, this);
   }
 
   @FXML

@@ -16,9 +16,11 @@ import javafx.util.Duration;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class LabeledTextField extends HBox {
 
   @FXML public HBox root;
@@ -32,8 +34,8 @@ public class LabeledTextField extends HBox {
   private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
   public LabeledTextField() {
-    FXMLLoader fxmlLoader =
-        new FXMLLoader(getClass().getResource("/components/LabeledTextField.fxml"));
+    String resourceName = "/components/LabeledTextField.fxml";
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
 
@@ -42,6 +44,7 @@ public class LabeledTextField extends HBox {
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
+    log.debug("LabeledTextField from {} bound to controller {}", resourceName, this);
   }
 
   @FXML

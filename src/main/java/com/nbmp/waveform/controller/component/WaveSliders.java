@@ -15,9 +15,11 @@ import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class WaveSliders extends HBox implements Initializable {
   @FXML public HBox root;
   @FXML public WaveLabeledSlider amplitudeSlider;
@@ -27,7 +29,8 @@ public class WaveSliders extends HBox implements Initializable {
   public String title;
 
   public WaveSliders() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/components/WaveSliders.fxml"));
+    String resourceName = "/components/WaveSliders.fxml";
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
 
@@ -36,6 +39,7 @@ public class WaveSliders extends HBox implements Initializable {
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
+    log.debug("WaveSliders from {} bound to controller {}", resourceName, this);
   }
 
   @Override

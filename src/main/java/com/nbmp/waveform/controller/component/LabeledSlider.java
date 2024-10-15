@@ -12,9 +12,11 @@ import javafx.scene.layout.VBox;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class LabeledSlider extends VBox {
   @FXML public VBox root;
   @FXML public Label label;
@@ -29,8 +31,8 @@ public class LabeledSlider extends VBox {
   public Consumer<Double> refreshTask = (newValue) -> {};
 
   public LabeledSlider() {
-    FXMLLoader fxmlLoader =
-        new FXMLLoader(getClass().getResource("/components/LabeledSlider.fxml"));
+    String resourceName = "/components/LabeledSlider.fxml";
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
 
@@ -39,6 +41,7 @@ public class LabeledSlider extends VBox {
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
+    log.debug("LabeledSlider from {} bound to controller {}", resourceName, this);
   }
 
   public void addListener(Consumer<Double> updateTask) {

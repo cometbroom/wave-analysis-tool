@@ -22,6 +22,8 @@ public class WaveformPlotter extends Application {
 
   @Override
   public void init() throws Exception {
+    //    System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
+
     springContext = new AnnotationConfigApplicationContext(SpringFXMLLoader.class);
     springContext.getAutowireCapableBeanFactory().autowireBean(this);
   }
