@@ -69,12 +69,13 @@ public class LabeledSlider extends VBox {
         valueLabel.setVisible(false);
         valueLabel.minWidth(1);
         valueLabel.maxWidth(1);
-
       }
       slider.setValue(value);
       slider.setMin(min);
       slider.setMax(max);
-      slider.setOrientation(orientation.equals("HORIZONTAL") ? javafx.geometry.Orientation.HORIZONTAL
+      slider.setOrientation(
+          orientation.equals("HORIZONTAL")
+              ? javafx.geometry.Orientation.HORIZONTAL
               : javafx.geometry.Orientation.VERTICAL);
       valueLabel.setText(String.format("%.2f " + unit, value));
     }

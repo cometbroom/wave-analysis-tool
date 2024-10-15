@@ -5,14 +5,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import com.nbmp.waveform.controller.component.WaveSliders;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -20,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.controller.component.LabeledComboBox;
 import com.nbmp.waveform.controller.component.LabeledTextField;
-import com.nbmp.waveform.controller.component.WaveLabeledSlider;
+import com.nbmp.waveform.controller.component.WaveSliders;
 import com.nbmp.waveform.model.generation.SynthesisMode;
 
 @Component
@@ -66,16 +62,16 @@ public class WaveController implements Initializable {
         });
   }
 
-
-
-//  private void setupSliders() {
-//    frequencySlider.addListenerForTarget(state.getWaveform1(), WaveLabeledSlider.Target.FREQUENCY);
-//    frequencySlider2.addListenerForTarget(state.getWaveform2(), WaveLabeledSlider.Target.FREQUENCY);
-//    setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
-//  }
-//
-//  private void setRefreshTasksForSliders(Consumer<Double> refreshTask) {
-//    frequencySlider.setRefreshTask(refreshTask);
-//    frequencySlider2.setRefreshTask(refreshTask);
-//  }
+  //  private void setupSliders() {
+  //    frequencySlider.addListenerForTarget(state.getWaveform1(),
+  // WaveLabeledSlider.Target.FREQUENCY);
+  //    frequencySlider2.addListenerForTarget(state.getWaveform2(),
+  // WaveLabeledSlider.Target.FREQUENCY);
+  //    setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
+  //  }
+  //
+  //  private void setRefreshTasksForSliders(Consumer<Double> refreshTask) {
+  //    frequencySlider.setRefreshTask(refreshTask);
+  //    frequencySlider2.setRefreshTask(refreshTask);
+  //  }
 }

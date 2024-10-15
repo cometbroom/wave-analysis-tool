@@ -1,7 +1,6 @@
 /* (C)2024 */
 package com.nbmp.waveform.application;
 
-import atlantafx.base.theme.PrimerLight;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -10,6 +9,8 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import atlantafx.base.theme.PrimerLight;
 
 public class WaveformPlotter extends Application {
 
