@@ -61,7 +61,7 @@ public class LabeledSlider extends VBox {
             });
   }
 
-  // All will be run when attributes are loaded
+  // Will be run when all attributes are loaded
   public void setLoad(boolean load) {
     if (load) {
       if (showLabel) {
