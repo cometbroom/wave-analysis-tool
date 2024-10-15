@@ -19,7 +19,7 @@ public class SineWaveform extends Waveform {
   @Override
   public Double compute(Double timeStep) {
     var cumulativePhase = integratePhase(timeStep);
-    previousAmplitude = props.getAmplitude() * Math.sin(cumulativePhase + props.getInitialPhase());
+    previousAmplitude = props.getAmplitude() * Math.sin(cumulativePhase);
     return previousAmplitude;
   }
 
