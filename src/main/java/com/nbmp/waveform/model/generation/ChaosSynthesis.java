@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
+import com.github.psambit9791.jdsp.transform.Hilbert;
 import com.nbmp.waveform.model.dto.BiTimeSeries;
 import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.filter.HighPassFilters;
@@ -8,6 +9,7 @@ import com.nbmp.waveform.model.filter.LowPassFilters;
 import com.nbmp.waveform.model.utils.WaveStatUtils;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.math3.util.MathUtils;
 
 @RequiredArgsConstructor
 public class ChaosSynthesis implements Synthesis {
@@ -55,8 +57,22 @@ public class ChaosSynthesis implements Synthesis {
     sinalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
     sinalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
 
+    var hilbert = new Hilbert(signal1.getAmplitudeArray());
+    hilbert.transform();
+    var phase = hilbert.getInstantaneousPhase();
+    double[][] reconstructFramed = new double[sampleCount][2];
+
+    for (int i = 0; i < sampleCount; i++) {
+      double time = signal1.getTime(i);
+      if (phase[i] % MathUtils.TWO_PI == 0) {
+        time += 0.05;
+      }
+      reconstructFramed[i][GenConstants.TIME] = time;
+      reconstructFramed[i][GenConstants.AMPLITUDE] = signal1.getAmplitude(i);
+    }
+
     resetWaveforms();
-    state.getResultSeries().refreshData(result.getTimeAmplitude());
+    state.getResultSeries().refreshData(reconstructFramed);
     return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
   }
 
