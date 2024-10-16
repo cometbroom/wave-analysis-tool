@@ -14,10 +14,6 @@ public class ChaosSynthesis implements Synthesis {
   // Modulation index
   private double k = 0.3;
   private final GenerationState state;
-  private double lastAmplitude = 0.0;
-  private int lastFrameIndex = 0;
-  private int frameCounter = 0;
-  private int zeroCrossingCounter = 1;
 
   @Override
   public BiTimeSeries compute(int duration) {
@@ -48,12 +44,12 @@ public class ChaosSynthesis implements Synthesis {
       result.addPoint(t, (signal1.getAmplitude(i) + signal2.getAmplitude(i)) / 2);
       t += timeStep;
     }
-    var sinalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
+    var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
 
-    sinalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
-    sinalProcessor.applyEffect(HighPassFilters::removeDcOffset);
-    sinalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
-    sinalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
+    signalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
+    signalProcessor.applyEffect(HighPassFilters::removeDcOffset);
+    signalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
+    signalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
 
     resetWaveforms();
     state.getResultSeries().refreshData(result.getTimeAmplitude());
@@ -66,32 +62,10 @@ public class ChaosSynthesis implements Synthesis {
     return Math.toIntExact(Math.round(sampleCountDouble));
   }
 
-  private void monitorZeroCrossing(double[][] waveData, int i, double t) {
-    if (frameCounter >= 255) {
-      return;
-    }
-    if (isZeroCrossing(waveData[i][GenConstants.AMPLITUDE])) {
-      if (zeroCrossingCounter % 2 == 0) {
-        state.getFrameDurations()[frameCounter++] = i - lastFrameIndex;
-        lastFrameIndex = i;
-      }
-      zeroCrossingCounter++;
-    }
-    lastAmplitude = waveData[i][GenConstants.AMPLITUDE];
-  }
-
-  private double getZeroCrossingAngle(double signalValue) {
-    return Math.acos(lastAmplitude * signalValue);
-  }
-
   private void resetWaveforms() {
     state.getWave1().getWaveform().getProps().resetModulations();
     state.getWave2().getWaveform().getProps().resetModulations();
     state.getWave1().getWaveform().setCumulativePhaseRadians(0);
     state.getWave2().getWaveform().setCumulativePhaseRadians(0);
-  }
-
-  private boolean isZeroCrossing(double signalValue) {
-    return lastAmplitude * signalValue < 0;
   }
 }
