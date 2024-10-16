@@ -17,7 +17,7 @@
                     <padding>
                         <Insets top="15" right="15" bottom="15" left="15"/>
                     </padding>
-                    <LabeledTextField fx:id="durationTextField" text="Duration: " minimum="1" maximum="5"/>
+                    <LabeledTextField fx:id="durationTextField" text="Duration: " minimum="1" maximum="5000"/>
                     <LabeledComboBox fx:id="synthesisModeControl" text="Synthesis Mode: " load="true"/>
                     <WaveSliders title="Waveform 1 (Red)" fx:id="waveSliders" />
                     <WaveSliders title="Waveform 2 (Blue)" fx:id="waveSliders2" />

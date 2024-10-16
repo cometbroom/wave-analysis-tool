@@ -10,7 +10,7 @@ public class IndependentSynthesis implements Synthesis {
   private final GenerationState state;
 
   public BiTimeSeries compute(int duration) {
-    int sampleCount = Generator.SAMPLE_RATE * duration;
+    int sampleCount = getSampleCount(duration);
     double timeStep = 1.0 / Generator.SAMPLE_RATE;
     double t = 0;
 
@@ -29,5 +29,10 @@ public class IndependentSynthesis implements Synthesis {
     waveform1.setCumulativePhaseRadians(0);
     waveform2.setCumulativePhaseRadians(0);
     return new BiTimeSeries(wave1Gen, wave2Gen);
+  }
+
+  private int getSampleCount(int durationInMs) {
+    double sampleCountDouble = Generator.SAMPLE_RATE * durationInMs / 1000.0;
+    return Math.toIntExact(Math.round(sampleCountDouble));
   }
 }

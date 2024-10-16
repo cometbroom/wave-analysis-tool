@@ -3,7 +3,9 @@ package com.nbmp.waveform.model.generation;
 
 import javax.annotation.PostConstruct;
 
+import com.nbmp.waveform.application.AppConfig;
 import com.nbmp.waveform.controller.ControllersState;
+import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
@@ -14,13 +16,18 @@ import lombok.Setter;
 public class GenerationState {
   private final WavesRegister wave1, wave2;
   private Synthesis synthesis;
+  private int[] frameDurations = new int[256];
+
+  // 256 frames of our generated data
+  private double[][][] resultData = new double[256][][];
+  private TimeSeries resultSeries;
 
   public GenerationState(ControllersState controllersState) {
     this.wave1 = controllersState.getWaveform1();
     this.wave2 = controllersState.getWaveform2();
-    controllersState.setResynthesizeTrigger(
-        () -> regenSeriesData(controllersState.getDurationObservable().getValue()));
-    controllersState.getDurationObservable().addObserver(this::regenSeriesData);
+    AppConfig.duration.addObserver(this::regenSeriesData);
+    controllersState.setResynthesizeTrigger(() -> regenSeriesData(AppConfig.duration.getValue()));
+    resultSeries = controllersState.getResultData();
     controllersState
         .getSynthModeObservable()
         .addObserver(
@@ -30,7 +37,7 @@ public class GenerationState {
                     case INDEPENDENT -> new IndependentSynthesis(this);
                     case CHAOS -> new ChaosSynthesis(this);
                   };
-              regenSeriesData(controllersState.getDurationObservable().getValue());
+              regenSeriesData(AppConfig.duration.getValue());
             });
   }
 

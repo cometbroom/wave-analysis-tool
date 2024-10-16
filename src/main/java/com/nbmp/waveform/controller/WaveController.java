@@ -14,6 +14,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.nbmp.waveform.application.AppConfig;
 import com.nbmp.waveform.controller.component.LabeledComboBox;
 import com.nbmp.waveform.controller.component.LabeledTextField;
 import com.nbmp.waveform.controller.component.WaveSliders;
@@ -23,7 +24,7 @@ import com.nbmp.waveform.model.generation.SynthesisMode;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class WaveController implements Initializable {
   public Label statusLabel;
-  public static AtomicReference<Integer> duration = new AtomicReference<>(1);
+  public static AtomicReference<Integer> duration = new AtomicReference<>(1000);
   @FXML public LabeledComboBox synthesisModeControl;
   @FXML public LabeledTextField durationTextField;
   @FXML public WaveSliders waveSliders;
@@ -50,7 +51,7 @@ public class WaveController implements Initializable {
 
   public void setupDurationField() {
     durationTextField.setValue(duration.get());
-    durationTextField.addListener((value) -> state.getDurationObservable().setValue(value));
+    durationTextField.addListener((value) -> AppConfig.duration.setValue(value));
   }
 
   private void setupSynthesisModeChangeCombo() {

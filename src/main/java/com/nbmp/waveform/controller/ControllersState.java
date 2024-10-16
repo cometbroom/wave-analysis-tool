@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller;
 
+import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.model.generation.SynthesisMode;
 import com.nbmp.waveform.view.WavesRegister;
 
@@ -12,9 +13,9 @@ import lombok.Setter;
 public class ControllersState {
   private WavesRegister waveform1;
   private WavesRegister waveform2;
+  private TimeSeries resultData = new TimeSeries();
   private SynthesisMode synthesisMode;
   private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>();
-  private SmartObservable<Integer> durationObservable = new SmartObservable<>(1);
   private Runnable resynthesizeTrigger = () -> {};
 
   public static ControllersState createInstance(WavesRegister waveform1, WavesRegister waveform2) {

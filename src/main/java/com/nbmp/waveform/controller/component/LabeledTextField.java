@@ -26,7 +26,7 @@ public class LabeledTextField extends HBox {
   @FXML public HBox root;
   @FXML public Label label;
   @FXML public TextField textField;
-  public int maximum = 5;
+  public int maximum = 5000;
   public int minimum = 1;
   public String text;
 
@@ -65,7 +65,7 @@ public class LabeledTextField extends HBox {
               if (!newValue.matches("\\d*")) {
                 textField.setText(newValue.replaceAll("[^\\d]", ""));
               }
-              PauseTransition pause = new PauseTransition(Duration.millis(500));
+              PauseTransition pause = new PauseTransition(Duration.millis(2000));
               pause.setOnFinished(
                   event -> {
                     int newDuration = getValue();

@@ -4,6 +4,7 @@ package com.nbmp.waveform.view;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.controller.WaveController;
+import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.generation.GenConstants;
 import com.nbmp.waveform.model.generation.Generator;
 import com.nbmp.waveform.model.waveform.SineWaveform;
@@ -39,7 +40,7 @@ public class WavesRegister {
   }
 
   public void addData(double[][] data) {
-    var viewResolutionDuration = VIEW_RESOLUTION * WaveController.duration.get();
+    var viewResolutionDuration = VIEW_RESOLUTION * (WaveController.duration.get() / 1000);
     int totalSamples = data.length;
     int step = Math.max(totalSamples / viewResolutionDuration, 1);
     for (int i = 0; i < totalSamples; i += step) {

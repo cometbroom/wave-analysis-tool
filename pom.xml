@@ -7,7 +7,16 @@
   <name>Archetype - waveform-experiments</name>
   <url>http://maven.apache.org</url>
 
-
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
   <repositories>
     <repository>
@@ -51,6 +60,11 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>2.0.12</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.psambit9791</groupId>
+      <artifactId>jdsp</artifactId>
+      <version>3.0.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.mkpaz</groupId>
