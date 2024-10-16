@@ -3,5 +3,6 @@ package com.nbmp.waveform.model.generation;
 
 public enum SynthesisMode {
   INDEPENDENT,
-  CHAOS
+  CHAOS,
+  FM_WAVE1MOD_WAVE2CARRIER
 }

@@ -11,7 +11,10 @@ import lombok.Setter;
 @Setter
 public abstract class Waveform {
   protected ModulationActiveWaveProps props = new ModulationActiveWaveProps();
-  protected double cumulativePhaseRadians = 0, mavValue = 0.0, previousAmplitude = 0.0;
+  protected double cumulativePhaseRadians = 0,
+      mavValue = 0.0,
+      previousAmplitude = 0.0,
+      currentPhase = 0.0;
 
   public abstract Double compute(Double timeStep);
 
