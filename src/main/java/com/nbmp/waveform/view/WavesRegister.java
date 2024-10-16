@@ -4,7 +4,6 @@ package com.nbmp.waveform.view;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.controller.WaveController;
-import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.generation.GenConstants;
 import com.nbmp.waveform.model.generation.Generator;
 import com.nbmp.waveform.model.waveform.SineWaveform;

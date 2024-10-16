@@ -1,9 +1,11 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
+
 import com.nbmp.waveform.model.dto.BiTimeSeries;
 import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.filter.HighPassFilters;
 import com.nbmp.waveform.model.filter.LowPassFilters;
+import com.nbmp.waveform.model.utils.WaveStatUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,7 +51,9 @@ public class ChaosSynthesis implements Synthesis {
     var sinalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
 
     sinalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
+    sinalProcessor.applyEffect(HighPassFilters::removeDcOffset);
     sinalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
+    sinalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
 
     resetWaveforms();
     state.getResultSeries().refreshData(result.getTimeAmplitude());

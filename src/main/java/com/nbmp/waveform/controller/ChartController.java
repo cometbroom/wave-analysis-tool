@@ -4,8 +4,6 @@ package com.nbmp.waveform.controller;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.ZoomEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
