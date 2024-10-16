@@ -1,10 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.dto;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
-
-import com.nbmp.waveform.model.waveform.Waveform;
 
 import lombok.Getter;
 import lombok.Setter;

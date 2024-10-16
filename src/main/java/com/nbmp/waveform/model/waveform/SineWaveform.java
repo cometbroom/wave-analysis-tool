@@ -24,6 +24,11 @@ public class SineWaveform extends Waveform {
     return previousAmplitude;
   }
 
+  /**
+   * Taking timestep here as phase function is being integrated (Added over time)
+   * @param t timestep
+   * @return integrated phase value which contains any frequency changes. Modulation is not integrated here as it's already integrated in the original waveform.
+   */
   public double integratePhase(double t) {
     double deltaf = props.getModulatorCompute().apply(t) * props.getModulationIndex();
     currentPhase += props.getOmega().apply(props.getFrequency()) * t;
