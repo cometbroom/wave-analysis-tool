@@ -11,7 +11,4 @@ import lombok.Setter;
 public class WaveProps {
   protected double frequency, amplitude, initialPhase;
 
-  public static WaveProps defaultWaveformProps() {
-    return new WaveProps(5, 1, 0);
-  }
 }

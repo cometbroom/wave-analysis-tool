@@ -30,15 +30,6 @@ public class Signal {
     amplitudeArray = new double[sampleCount];
   }
 
-  public Signal(double[] timeArray, double[] amplitudeArray) {
-    this.timeArray = timeArray;
-    this.amplitudeArray = amplitudeArray;
-    this.sumAmplitude = 0;
-    for (double amp : amplitudeArray) {
-      this.sumAmplitude += amp;
-    }
-  }
-
   public void addPoint(double t, double amplitude) {
     if (indexCounter >= sampleCount) {
       return;

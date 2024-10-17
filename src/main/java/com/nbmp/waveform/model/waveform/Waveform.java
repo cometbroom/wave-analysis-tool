@@ -18,23 +18,12 @@ public abstract class Waveform {
 
   public abstract Double compute(Double timeStep);
 
-  public Double compute() {
-    return compute(Generator.timeStep);
-  }
-
   public double[] computeTY(Double t) {
     return computeTY(t, Generator.timeStep);
   }
 
   public double[] computeTY(Double t, Double timeStep) {
     return new double[] {t, compute(timeStep)};
-  }
-
-  /**
-   * Omega is the angular frequency in radians per second. 2pi * f
-   */
-  public double omega() {
-    return 2 * Math.PI * props.getFrequency();
   }
 
   /**

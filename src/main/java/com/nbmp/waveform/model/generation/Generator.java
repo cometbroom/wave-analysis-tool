@@ -15,7 +15,4 @@ public abstract class Generator {
     this.timeStep = 1.0 / sampleRate;
   }
 
-  public Generator() {
-    this(1000);
-  }
 }

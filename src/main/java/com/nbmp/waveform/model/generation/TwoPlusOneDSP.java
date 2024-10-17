@@ -34,22 +34,4 @@ public class TwoPlusOneDSP {
     signal3.applyEffect(effectFuntcion, fxParam);
   }
 
-  public static void applyEffect(Consumer<Signal> effectFuntcion, Signal... signals) {
-    for (Signal signal : signals) {
-      effectFuntcion.accept(signal);
-    }
-  }
-
-  public static void applyEffect(Function<double[], double[]> effectFuntcion, Signal... signals) {
-    for (Signal signal : signals) {
-      signal.applyEffect(effectFuntcion);
-    }
-  }
-
-  public static void applyEffect(
-      BiFunction<double[], Double, double[]> effectFuntcion, double fxParam, Signal... signals) {
-    for (Signal signal : signals) {
-      signal.applyEffect(effectFuntcion, fxParam);
-    }
-  }
 }
