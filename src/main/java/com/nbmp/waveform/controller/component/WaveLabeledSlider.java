@@ -12,7 +12,7 @@ public class WaveLabeledSlider extends LabeledSlider {
   public enum Target {
     FREQUENCY,
     AMPLITUDE,
-    PHASE;
+    PHASE
   }
 
   public void addListenerForTarget(WavesRegister waveform, Target target) {

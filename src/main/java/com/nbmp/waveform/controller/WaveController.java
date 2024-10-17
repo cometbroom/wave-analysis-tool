@@ -56,7 +56,7 @@ public class WaveController implements Initializable {
 
   private void setupDurationField() {
     durationTextField.setValue(duration.get());
-    durationTextField.addListener((value) -> AppConstants.duration.setValue(value));
+    durationTextField.addListener(AppConstants.duration::setValue);
   }
 
   private void setupSynthesisModeChangeCombo() {

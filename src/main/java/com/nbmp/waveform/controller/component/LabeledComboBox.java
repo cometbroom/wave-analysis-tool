@@ -48,7 +48,7 @@ public class LabeledComboBox extends HBox implements Initializable {
 
   public void setBoxValues(List<String> values) {
     comboBox.getItems().addAll(values);
-    if (values.size() > 0) {
+    if (!values.isEmpty()) {
       comboBox.getSelectionModel().select(0);
     }
   }

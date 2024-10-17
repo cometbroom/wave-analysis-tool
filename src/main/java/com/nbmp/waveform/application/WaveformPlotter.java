@@ -17,11 +17,9 @@ import atlantafx.base.theme.PrimerLight;
 public class WaveformPlotter extends Application {
   @Autowired private AnchorPane mainView;
 
-  private ApplicationContext springContext;
-
   @Override
   public void init() {
-    springContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    ApplicationContext springContext = new AnnotationConfigApplicationContext(AppConfig.class);
     springContext.getAutowireCapableBeanFactory().autowireBean(this);
   }
 

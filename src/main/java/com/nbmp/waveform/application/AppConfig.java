@@ -34,7 +34,6 @@ public class AppConfig {
   @Bean
   @Scope("singleton")
   public ControllersState controllersState() {
-
     return ControllersState.createInstance();
   }
 
