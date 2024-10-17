@@ -1,19 +1,26 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
+import java.util.function.BiFunction;
+
 import com.nbmp.waveform.model.dto.BiTimeSeries;
+import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.filter.HighPassFilters;
 import com.nbmp.waveform.model.filter.LowPassFilters;
 import com.nbmp.waveform.model.utils.WaveStatUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
+@Setter
 public class ChaosSynthesis implements Synthesis {
   // Modulation index
   private double k = 0.3;
   private final GenerationState state;
+  private BiFunction<Double, Double, Double> recombinationMode =
+      RecombinationMode.ADD.getFunction();
 
   @Override
   public BiTimeSeries compute(int duration) {
@@ -41,7 +48,8 @@ public class ChaosSynthesis implements Synthesis {
     for (int i = 1; i < sampleCount; i++) {
       signal1.addPoint(t, waveform1.compute(timeStep));
       signal2.addPoint(t, waveform2.compute(timeStep));
-      result.addPoint(t, (signal1.getAmplitude(i) + signal2.getAmplitude(i)) / 2);
+      // (signal1.getAmplitude(i) + signal2.getAmplitude(i)) / 2
+      result.addPoint(t, recombinationMode.apply(signal1.getAmplitude(i), signal2.getAmplitude(i)));
       t += timeStep;
     }
     var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);

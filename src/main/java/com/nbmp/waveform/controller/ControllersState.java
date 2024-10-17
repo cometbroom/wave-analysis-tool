@@ -1,8 +1,11 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller;
 
+import java.util.function.BiFunction;
+
+import com.nbmp.waveform.model.dto.RecombinationMode;
+import com.nbmp.waveform.model.dto.SynthesisMode;
 import com.nbmp.waveform.model.dto.TimeSeries;
-import com.nbmp.waveform.model.generation.SynthesisMode;
 import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
@@ -17,6 +20,8 @@ public class ControllersState {
   private SynthesisMode synthesisMode;
   private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>();
   private SmartObservable<Double> modIndex = new SmartObservable<>(0.0);
+  private SmartObservable<BiFunction<Double, Double, Double>> recombinationMode =
+      new SmartObservable<>(RecombinationMode.ADD.getFunction());
   private Runnable resynthesizeTrigger = () -> {};
 
   public static ControllersState createInstance(WavesRegister waveform1, WavesRegister waveform2) {

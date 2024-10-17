@@ -25,9 +25,14 @@ public class GenerationState {
   public GenerationState(ControllersState controllersState) {
     this.wave1 = controllersState.getWaveform1();
     this.wave2 = controllersState.getWaveform2();
-    AppConfig.duration.addObserver(this::regenSeriesData);
     controllersState.setResynthesizeTrigger(() -> regenSeriesData(AppConfig.duration.getValue()));
     resultSeries = controllersState.getResultData();
+
+    setupObservers(controllersState);
+  }
+
+  private void setupObservers(ControllersState controllersState) {
+    AppConfig.duration.addObserver(this::regenSeriesData);
 
     controllersState
         .getModIndex()
@@ -47,6 +52,14 @@ public class GenerationState {
                     case CHAOS -> new ChaosSynthesis(this);
                     case FM_WAVE1MOD_WAVE2CARRIER -> new FMSynthesis(this);
                   };
+              regenSeriesData(AppConfig.duration.getValue());
+            });
+
+    controllersState
+        .getRecombinationMode()
+        .addObserver(
+            (mode) -> {
+              synthesis.setRecombinationMode(mode);
               regenSeriesData(AppConfig.duration.getValue());
             });
   }

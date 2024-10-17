@@ -1,16 +1,23 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
+import java.util.function.BiFunction;
+
 import com.nbmp.waveform.model.dto.BiTimeSeries;
+import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.Signal;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
+@Setter
 public class FMSynthesis implements Synthesis {
   // Modulation index
   private double k = 2;
   private final GenerationState state;
+  private BiFunction<Double, Double, Double> recombinationMode =
+      RecombinationMode.ADD.getFunction();
 
   @Override
   public BiTimeSeries compute(int duration) {
@@ -37,7 +44,8 @@ public class FMSynthesis implements Synthesis {
     for (int i = 1; i < sampleCount; i++) {
       signal1.addPoint(refTime.t, waveform1.compute(timeStep));
       signal2.addPoint(refTime.t, waveform2.compute(timeStep));
-      result.addPoint(refTime.t, (signal1.getAmplitude(i) + signal2.getAmplitude(i)) / 2);
+      result.addPoint(
+          refTime.t, recombinationMode.apply(signal1.getAmplitude(i), signal2.getAmplitude(i)));
       refTime.t += timeStep;
     }
     resetWaveforms();

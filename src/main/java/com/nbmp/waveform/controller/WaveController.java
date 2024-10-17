@@ -19,7 +19,8 @@ import com.nbmp.waveform.controller.component.LabeledComboBox;
 import com.nbmp.waveform.controller.component.LabeledSlider;
 import com.nbmp.waveform.controller.component.LabeledTextField;
 import com.nbmp.waveform.controller.component.WaveSliders;
-import com.nbmp.waveform.model.generation.SynthesisMode;
+import com.nbmp.waveform.model.dto.RecombinationMode;
+import com.nbmp.waveform.model.dto.SynthesisMode;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -31,6 +32,7 @@ public class WaveController implements Initializable {
   @FXML public WaveSliders waveSliders;
   @FXML public WaveSliders waveSliders2;
   @FXML public LabeledSlider modIndexSlider;
+  @FXML public LabeledComboBox recombinatorControl;
 
   @Autowired private ControllersState state;
 
@@ -48,6 +50,7 @@ public class WaveController implements Initializable {
     modIndexSlider.addListener((value) -> state.getModIndex().setValue(value));
     setupDurationField();
     setupSynthesisModeChangeCombo();
+    setupRecombinatorCombo();
 
     state.getResynthesizeTrigger().run();
   }
@@ -77,6 +80,26 @@ public class WaveController implements Initializable {
               statusLabel.setText("FM synthesis mode");
               modIndexSlider.setValue(2.0);
             }
+          }
+        });
+  }
+
+  private void setupRecombinatorCombo() {
+    recombinatorControl.setBoxValues(RecombinationMode.getNames());
+    recombinatorControl.getComboBox().setValue(RecombinationMode.ADD.name());
+    recombinatorControl.addListener(
+        (observableValue, s, t1) -> {
+          switch (RecombinationMode.valueOf(t1)) {
+            case ADD -> state.getRecombinationMode().setValue(RecombinationMode.ADD.getFunction());
+            case SUBTRACT -> state
+                .getRecombinationMode()
+                .setValue(RecombinationMode.SUBTRACT.getFunction());
+            case MULTIPLY -> state
+                .getRecombinationMode()
+                .setValue(RecombinationMode.MULTIPLY.getFunction());
+            case DIVIDE -> state
+                .getRecombinationMode()
+                .setValue(RecombinationMode.DIVIDE.getFunction());
           }
         });
   }

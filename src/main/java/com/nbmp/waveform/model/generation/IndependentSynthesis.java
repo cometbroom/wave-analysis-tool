@@ -1,13 +1,18 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
+import java.util.function.BiFunction;
+
 import com.nbmp.waveform.model.dto.BiTimeSeries;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
+@Setter
 public class IndependentSynthesis implements Synthesis {
   private final GenerationState state;
+  private BiFunction<Double, Double, Double> recombinationMode = (a, b) -> a;
 
   public BiTimeSeries compute(int duration) {
     int sampleCount = getSampleCount(duration);

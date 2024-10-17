@@ -28,6 +28,7 @@
                     <WaveSliders title="Waveform 1 (Red)" fx:id="waveSliders" />
                     <WaveSliders title="Waveform 2 (Blue)" fx:id="waveSliders2" />
                     <LabeledSlider fx:id="modIndexSlider" unit="" text="Modulation Amount: " pauseTime="5" min="0" max="5" value="0" showLabel="true" majorTickUnit="0.1" minorTickCount="0" showTickLabels="true" load="true" />
+                    <LabeledComboBox fx:id="recombinatorControl" text="Recombination Mode: " load="true"/>
                 </VBox>
             </ScrollPane>
             <fx:include source="WaveformChart.fxml"/>

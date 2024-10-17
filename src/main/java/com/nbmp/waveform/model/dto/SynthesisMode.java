@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.generation;
+package com.nbmp.waveform.model.dto;
 
 public enum SynthesisMode {
   INDEPENDENT,
