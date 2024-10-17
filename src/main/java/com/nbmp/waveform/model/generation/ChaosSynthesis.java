@@ -15,20 +15,35 @@ import com.nbmp.waveform.model.waveform.Waveform;
 
 import lombok.Setter;
 
+/**
+ * Class representing chaotic waveform synthesis.
+ */
 @Setter
 public class ChaosSynthesis implements Synthesis {
-  // Modulation index AKA Magnitude of the modulation
+  /** Modulation index, AKA magnitude of the modulation. */
   private static AtomicReference<Double> k = new AtomicReference<>(0.3);
   private final GenerationState state;
   private BiFunction<Double, Double, Double> recombinationMode =
       RecombinationMode.ADD.getFunction();
   private BiConsumer<Waveform, Waveform> modulationFunction;
 
+  /**
+   * Constructor for ChaosSynthesis.
+   *
+   * @param state the generation state
+   * @param modulationFunction the modulation function to be applied in a coupling style to phase of chaotic waveforms
+   */
   public ChaosSynthesis(GenerationState state, BiConsumer<Waveform, Waveform> modulationFunction) {
     this.state = state;
     this.modulationFunction = modulationFunction;
   }
 
+  /**
+   * Computes the waveform for the given duration.
+   *
+   * @param duration the duration for which the waveform is to be generated
+   * @return a BiTimeSeries representing the generated waveform
+   */
   @Override
   public BiTimeSeries compute(int duration) {
     int sampleCount = getSampleCount(duration);
@@ -46,7 +61,6 @@ public class ChaosSynthesis implements Synthesis {
     for (int i = 1; i < sampleCount; i++) {
       signal1.addPoint(t, waveform1.compute(timeStep));
       signal2.addPoint(t, waveform2.compute(timeStep));
-      // (signal1.getAmplitude(i) + signal2.getAmplitude(i)) / 2
       result.addPoint(t, recombinationMode.apply(signal1.getAmplitude(i), signal2.getAmplitude(i)));
       t += timeStep;
     }
@@ -62,6 +76,12 @@ public class ChaosSynthesis implements Synthesis {
     return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
   }
 
+  /**
+   * Applies a two-way frequency modulation between two waveforms.
+   *
+   * @param wave1 the first waveform
+   * @param wave2 the second waveform
+   */
   public static void twoWayFM(Waveform wave1, Waveform wave2) {
     wave2
         .getProps()
@@ -71,6 +91,12 @@ public class ChaosSynthesis implements Synthesis {
         .setPhaseModulation((phi) -> phi + wave2.getCompressedPreviousAmplitude() * k.get());
   }
 
+  /**
+   * Applies a single self-frequency modulation to both waveforms.
+   *
+   * @param wave1 the first waveform
+   * @param wave2 the second waveform
+   */
   public static void singleSelfFM(Waveform wave1, Waveform wave2) {
     wave2
         .getProps()
@@ -85,6 +111,9 @@ public class ChaosSynthesis implements Synthesis {
     k.set(index);
   }
 
+  /**
+   * Resets the waveforms to their initial state.
+   */
   private void resetWaveforms() {
     state.getWave1().getWaveform().getProps().resetModulations();
     state.getWave2().getWaveform().getProps().resetModulations();

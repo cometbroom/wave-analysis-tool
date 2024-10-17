@@ -7,13 +7,21 @@ import com.nbmp.waveform.model.dto.BiTimeSeries;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
+/**
+ * Class representing independent waveform synthesis.
+ */
 @RequiredArgsConstructor
 @Setter
 public class IndependentSynthesis implements Synthesis {
   private final GenerationState state;
   private BiFunction<Double, Double, Double> recombinationMode = (a, b) -> a;
 
+  /**
+   * Computes the waveform for the given duration. No modulation is applied.
+   *
+   * @param duration the duration for which the waveform is to be generated
+   * @return a BiTimeSeries representing the generated waveform
+   */
   public BiTimeSeries compute(int duration) {
     int sampleCount = getSampleCount(duration);
     double timeStep = 1.0 / Generator.SAMPLE_RATE;

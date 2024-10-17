@@ -10,15 +10,24 @@ import com.nbmp.waveform.model.dto.Signal;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Class representing frequency modulation synthesis.
+ */
 @RequiredArgsConstructor
 @Setter
 public class FMSynthesis implements Synthesis {
-  // Modulation index
+  /** Modulation index. */
   private double k = 2;
   private final GenerationState state;
   private BiFunction<Double, Double, Double> recombinationMode =
       RecombinationMode.ADD.getFunction();
 
+  /**
+   * Computes the waveform for the given duration.
+   *
+   * @param duration the duration for which the waveform is to be generated
+   * @return a BiTimeSeries representing the generated waveform
+   */
   @Override
   public BiTimeSeries compute(int duration) {
     int sampleCount = getSampleCount(duration);
@@ -58,6 +67,9 @@ public class FMSynthesis implements Synthesis {
     this.k = index;
   }
 
+  /**
+   * Resets the waveforms to their initial state.
+   */
   private void resetWaveforms() {
     state.getWave1().getWaveform().getProps().resetModulations();
     state.getWave2().getWaveform().getProps().resetModulations();
