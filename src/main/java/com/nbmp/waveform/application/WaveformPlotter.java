@@ -13,17 +13,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import atlantafx.base.theme.PrimerLight;
 
 public class WaveformPlotter extends Application {
-
   private final String STAGE_TITLE = "Waveform Analysis Graph";
-
   @Autowired private AnchorPane mainView;
 
   private ApplicationContext springContext;
 
   @Override
-  public void init() throws Exception {
-    //    System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
-
+  public void init() {
     springContext = new AnnotationConfigApplicationContext(AppConfig.class);
     springContext.getAutowireCapableBeanFactory().autowireBean(this);
   }
