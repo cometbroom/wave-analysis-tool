@@ -4,10 +4,8 @@
 <?import javafx.geometry.Insets?>
 <?import com.nbmp.waveform.controller.component.LabeledComboBox?>
 <?import com.nbmp.waveform.controller.component.LabeledTextField?>
-<?import com.nbmp.waveform.controller.component.WaveLabeledSlider?>
 <?import com.nbmp.waveform.controller.component.WaveSliders?>
 <?import com.nbmp.waveform.controller.component.LabeledSlider?>
-<?import java.lang.String?>
 <AnchorPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.nbmp.waveform.controller.WaveController"
@@ -31,7 +29,7 @@
                     <LabeledComboBox fx:id="recombinatorControl" text="Recombination Mode: " load="true"/>
                 </VBox>
             </ScrollPane>
-            <fx:include source="WaveformChart.fxml" VBox.vgrow="ALWAYS"/>
+            <fx:include source="WaveformChart.fxml"  VBox.vgrow="ALWAYS"/>
         </SplitPane>
     </VBox>
 </AnchorPane>
