@@ -3,7 +3,7 @@ package com.nbmp.waveform.model.generation;
 
 import javax.annotation.PostConstruct;
 
-import com.nbmp.waveform.application.AppConfig;
+import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.controller.ControllersState;
 import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.view.WavesRegister;
@@ -25,21 +25,21 @@ public class GenerationState {
   public GenerationState(ControllersState controllersState) {
     this.wave1 = controllersState.getWaveform1();
     this.wave2 = controllersState.getWaveform2();
-    controllersState.setResynthesizeTrigger(() -> regenSeriesData(AppConfig.duration.getValue()));
+    controllersState.setResynthesizeTrigger(() -> regenSeriesData(AppConstants.duration.getValue()));
     resultSeries = controllersState.getResultData();
 
     setupObservers(controllersState);
   }
 
   private void setupObservers(ControllersState controllersState) {
-    AppConfig.duration.addObserver(this::regenSeriesData);
+    AppConstants.duration.addObserver(this::regenSeriesData);
 
     controllersState
         .getModIndex()
         .addObserver(
             (index) -> {
               synthesis.setModulationIndex(index);
-              regenSeriesData(AppConfig.duration.getValue());
+              regenSeriesData(AppConstants.duration.getValue());
             });
 
     controllersState
@@ -54,7 +54,7 @@ public class GenerationState {
                         this, ChaosSynthesis::singleSelfFM);
                     case FM_WAVE1MOD_WAVE2CARRIER -> new FMSynthesis(this);
                   };
-              regenSeriesData(AppConfig.duration.getValue());
+              regenSeriesData(AppConstants.duration.getValue());
             });
 
     controllersState
@@ -62,7 +62,7 @@ public class GenerationState {
         .addObserver(
             (mode) -> {
               synthesis.setRecombinationMode(mode);
-              regenSeriesData(AppConfig.duration.getValue());
+              regenSeriesData(AppConstants.duration.getValue());
             });
   }
 

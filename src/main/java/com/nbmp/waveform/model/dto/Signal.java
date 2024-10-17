@@ -4,7 +4,7 @@ package com.nbmp.waveform.model.dto;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import com.nbmp.waveform.application.AppConfig;
+import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.model.generation.GenConstants;
 import com.nbmp.waveform.model.generation.Generator;
 
@@ -25,7 +25,7 @@ public class Signal {
     sumAmplitude = 0.0;
     mean = 0.0;
     indexCounter = 0;
-    sampleCount = Generator.SAMPLE_RATE * AppConfig.duration.getValue() / 1000;
+    sampleCount = Generator.SAMPLE_RATE * AppConstants.duration.getValue() / 1000;
     timeArray = new double[sampleCount];
     amplitudeArray = new double[sampleCount];
   }

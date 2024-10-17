@@ -2,13 +2,13 @@
 package com.nbmp.waveform.model.filter;
 
 import com.github.psambit9791.jdsp.filter.Butterworth;
-import com.nbmp.waveform.application.AppConfig;
+import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.model.dto.Signal;
 
 public class HighPassFilters {
 
   public static double[] removeDcOffset(double[] signal) {
-    double samplingFrequency = AppConfig.SAMPLE_RATE; //
+    double samplingFrequency = AppConstants.SAMPLE_RATE; //
     double cutoff = 2; // hz
 
     int filterOrder = 2;

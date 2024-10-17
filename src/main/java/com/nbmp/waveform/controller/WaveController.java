@@ -13,7 +13,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.application.AppConfig;
+import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.controller.component.*;
 import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.SynthesisMode;
@@ -61,7 +61,7 @@ public class WaveController implements Initializable {
 
   private void setupDurationField() {
     durationTextField.setValue(duration.get());
-    durationTextField.addListener((value) -> AppConfig.duration.setValue(value));
+    durationTextField.addListener((value) -> AppConstants.duration.setValue(value));
   }
 
   private void setupSynthesisModeChangeCombo() {
