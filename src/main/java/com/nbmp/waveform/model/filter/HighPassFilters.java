@@ -17,11 +17,10 @@ public class HighPassFilters {
     return butterworth.highPassFilter(signal, filterOrder, cutoff);
   }
 
-  public static Signal removeDcOffsetMeanTechnique(Signal signal) {
+  public static void removeDcOffsetMeanTechnique(Signal signal) {
     double mean = signal.recalculateMean();
     for (int i = 0; i < signal.getSampleCount(); i++) {
       signal.changePoint(i, signal.getTime(i), signal.getAmplitude(i) - mean);
     }
-    return signal;
   }
 }

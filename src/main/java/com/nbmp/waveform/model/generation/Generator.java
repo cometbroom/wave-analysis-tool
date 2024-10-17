@@ -9,10 +9,4 @@ import lombok.Getter;
 public abstract class Generator {
   public static int SAMPLE_RATE = AppConstants.SAMPLE_RATE;
   public static double timeStep = 1.0 / SAMPLE_RATE;
-
-  public Generator(int sampleRate) {
-    Generator.SAMPLE_RATE = sampleRate;
-    this.timeStep = 1.0 / sampleRate;
-  }
-
 }

@@ -2,9 +2,7 @@
 package com.nbmp.waveform.model.filter;
 
 import com.github.psambit9791.jdsp.filter.Butterworth;
-import com.github.psambit9791.jdsp.filter.FIRWin2;
 import com.nbmp.waveform.application.AppConstants;
-import com.nbmp.waveform.model.generation.GenConstants;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -13,7 +13,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import atlantafx.base.theme.PrimerLight;
 
 public class WaveformPlotter extends Application {
-  private final String STAGE_TITLE = "Waveform Analysis Graph";
   @Autowired private AnchorPane mainView;
 
   private ApplicationContext springContext;
@@ -26,6 +25,8 @@ public class WaveformPlotter extends Application {
 
   @Override
   public void start(Stage stage) {
+    String STAGE_TITLE = "Waveform Analysis Graph";
+
     Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     stage.setTitle(STAGE_TITLE);
     stage.setScene(new Scene(mainView));

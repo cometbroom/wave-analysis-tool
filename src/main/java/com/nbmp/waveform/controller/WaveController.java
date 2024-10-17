@@ -23,7 +23,7 @@ import com.nbmp.waveform.model.dto.SynthesisMode;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class WaveController implements Initializable {
   public Label statusLabel;
-  public static AtomicReference<Integer> duration = new AtomicReference<>(1000);
+  public static final AtomicReference<Integer> duration = new AtomicReference<>(1000);
   @FXML public LabeledComboBox synthesisModeControl;
   @FXML public LabeledTextField durationTextField;
   @FXML public WaveSliders waveSliders;
@@ -74,9 +74,7 @@ public class WaveController implements Initializable {
     recombinatorControl.setBoxValues(RecombinationMode.getNames());
     recombinatorControl.getComboBox().setValue(RecombinationMode.ADD.name());
     recombinatorControl.addListener(
-        (observableValue, s, t1) -> {
-          state.getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction());
-        });
+        (observableValue, s, t1) -> state.getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction()));
   }
 
   private void setupExportButton() {

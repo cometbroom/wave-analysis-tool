@@ -8,7 +8,9 @@ import java.util.function.Function;
 import com.nbmp.waveform.model.dto.Signal;
 
 public class TwoPlusOneDSP {
-  private Signal signal1, signal2, signal3;
+  private final Signal signal1;
+  private final Signal signal2;
+  private final Signal signal3;
 
   public TwoPlusOneDSP(Signal signal1, Signal signal2, Signal signal3) {
     this.signal1 = signal1;

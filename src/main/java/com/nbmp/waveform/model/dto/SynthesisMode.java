@@ -12,8 +12,8 @@ public enum SynthesisMode {
   CHAOS_TWO_WAY_FM(0.3),
   CHAOS_INDEPENDENT_SELF_MOD_FM(0.2),
   FM_WAVE1MOD_WAVE2CARRIER(2);
-  private double modIndex;
-  private String title;
+  private final double modIndex;
+  private final String title;
 
   SynthesisMode() {
     this(0.0);
