@@ -19,7 +19,7 @@
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
             </padding>
-            <Label fx:id="titleLabel" alignment="TOP_CENTER" text="Waveform Controls" styleClass="label-bold"/>
+            <Label fx:id="titleLabel" alignment="TOP_CENTER" text="Waveform Controls"/>
             <WaveLabeledSlider styleClass="wave-slider" alignment="BOTTOM_LEFT" fx:id="frequencySlider" unit="hz" text="Frequency: " min="1" max="50" value="5"
                                load="true">
                 <padding>

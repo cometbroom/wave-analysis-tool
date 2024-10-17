@@ -30,7 +30,7 @@
             </LineChart>
         </AnchorPane>
     <AnchorPane>
-        <LineChart fx:id="resultChart" styleClass="resultChart" title="Waveform 3" createSymbols="false"
+        <LineChart fx:id="resultChart" title="Waveform 3" createSymbols="false"
                    AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <xAxis>
