@@ -17,7 +17,6 @@ public class ControllersState {
   private WavesRegister waveform1;
   private WavesRegister waveform2;
   private TimeSeries resultData = new TimeSeries();
-  private SynthesisMode synthesisMode;
   private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>();
   private SmartObservable<Double> modIndex = new SmartObservable<>(0.0);
   private SmartObservable<BiFunction<Double, Double, Double>> recombinationMode =

@@ -2,7 +2,6 @@
 package com.nbmp.waveform.controller;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.fxml.FXML;
@@ -61,26 +60,13 @@ public class WaveController implements Initializable {
   }
 
   private void setupSynthesisModeChangeCombo() {
-    synthesisModeControl.setBoxValues(
-        Arrays.stream(SynthesisMode.values()).map(Object::toString).toList());
+    synthesisModeControl.setBoxValues(SynthesisMode.getNames());
     synthesisModeControl.addListener(
         (observableValue, s, t1) -> {
           state.changeSynthesisMode(SynthesisMode.valueOf(t1));
           modIndexSlider.setDisable(SynthesisMode.INDEPENDENT.equals(SynthesisMode.valueOf(t1)));
-          switch (SynthesisMode.valueOf(t1)) {
-            case INDEPENDENT -> {
-              statusLabel.setText("Independent synthesis mode");
-              modIndexSlider.setValue(0.0);
-            }
-            case CHAOS -> {
-              statusLabel.setText("Chaos synthesis mode");
-              modIndexSlider.setValue(0.3);
-            }
-            case FM_WAVE1MOD_WAVE2CARRIER -> {
-              statusLabel.setText("FM synthesis mode");
-              modIndexSlider.setValue(2.0);
-            }
-          }
+          statusLabel.setText(SynthesisMode.valueOf(t1).getTitle());
+          modIndexSlider.setValue(SynthesisMode.valueOf(t1).getModIndex());
         });
   }
 
