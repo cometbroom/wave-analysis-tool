@@ -146,7 +146,7 @@ public class LabeledTextField extends HBox {
             try {
               consumer.accept((int) evt.getNewValue());
             } catch (ClassCastException ex) {
-              System.out.println("ClassCastException occurred: " + ex.getMessage());
+              log.error("ClassCastException occurred: for {}: {}", this, ex.getMessage());
             }
           }
         });

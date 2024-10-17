@@ -26,8 +26,10 @@
         </repository>
     </repositories>
     <properties>
-        <javafx-sdk.path>C:/Users/alawi/Downloads/Compressed/openjfx-22.0.2_windows-x64_bin-sdk/javafx-sdk-22.0.2
+        <javafx-sdk.path>../openjfx-22.0.2_windows-x64_bin-sdk/javafx-sdk-22.0.2
         </javafx-sdk.path>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <spotless.version>2.42.0</spotless.version>
@@ -162,9 +164,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <source>22</source>
+                    <target>22</target>
                 </configuration>
             </plugin>
             <plugin>
