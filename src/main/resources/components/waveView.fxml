@@ -18,7 +18,7 @@
             <Label text="Wave Analysis Tool" styleClass="title-1" style="-fx-text-fill: gray" alignment="CENTER" fx:id="statusLabel" textAlignment="CENTER"/>
         </HBox>
         <SplitPane VBox.vgrow="ALWAYS">
-            <ScrollPane fitToWidth="true" prefWidth="250">
+            <ScrollPane fitToWidth="true" prefWidth="350" maxWidth="350">
                 <VBox spacing="15" alignment="TOP_CENTER">
                     <padding>
                         <Insets top="15" right="15" bottom="15" left="15"/>
@@ -31,7 +31,7 @@
                     <LabeledComboBox fx:id="recombinatorControl" text="Recombination Mode: " load="true"/>
                 </VBox>
             </ScrollPane>
-            <fx:include source="WaveformChart.fxml"/>
+            <fx:include source="WaveformChart.fxml" VBox.vgrow="ALWAYS"/>
         </SplitPane>
     </VBox>
 </AnchorPane>
