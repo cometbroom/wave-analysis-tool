@@ -1,6 +1,8 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 import com.nbmp.waveform.model.dto.BiTimeSeries;
@@ -9,41 +11,41 @@ import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.filter.HighPassFilters;
 import com.nbmp.waveform.model.filter.LowPassFilters;
 import com.nbmp.waveform.model.utils.WaveStatUtils;
+import com.nbmp.waveform.model.waveform.Waveform;
 
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
 @Setter
 public class ChaosSynthesis implements Synthesis {
-  // Modulation index
-  private double k = 0.3;
+  // Modulation index AKA Magnitude of the modulation
+  private static AtomicReference<Double> k = new AtomicReference<>(0.3);
   private final GenerationState state;
   private BiFunction<Double, Double, Double> recombinationMode =
       RecombinationMode.ADD.getFunction();
+  private BiConsumer<Waveform, Waveform> modulationFunction;
+
+  public ChaosSynthesis(GenerationState state) {
+    this(state, (wave1, wave2) -> {});
+  }
+
+  public ChaosSynthesis(GenerationState state, BiConsumer<Waveform, Waveform> modulationFunction) {
+    this.state = state;
+    this.modulationFunction = modulationFunction;
+  }
 
   @Override
   public BiTimeSeries compute(int duration) {
     int sampleCount = getSampleCount(duration);
 
-    double timeStep = 1.0 / Generator.SAMPLE_RATE;
-    double t = 0.0;
+    double t = 0.0, timeStep = 1.0 / Generator.SAMPLE_RATE;
 
-    var waveform1 = state.getWave1().getWaveform();
-    var waveform2 = state.getWave2().getWaveform();
+    Waveform waveform1 = state.getWave1().getWaveform(), waveform2 = state.getWave2().getWaveform();
 
-    var signal1 = new Signal();
-    var signal2 = new Signal();
-    var result = new Signal();
+    Signal signal1 = new Signal(), signal2 = new Signal(), result = new Signal();
 
     signal1.addPoint(0.0, waveform1.compute(timeStep));
     signal2.addPoint(0.0, waveform2.compute(timeStep));
-
-    var waveProps1 = waveform1.getProps();
-    var waveProps2 = waveform2.getProps();
-    // Basic coupling by using last computer value of the other wave
-    waveProps2.setPhaseModulation((phi) -> phi + waveform1.getNormalizedPreviousAmplitude() * k);
-    waveProps1.setPhaseModulation((phi) -> phi + waveform2.getNormalizedPreviousAmplitude() * k);
+    modulationFunction.accept(waveform1, waveform2);
 
     for (int i = 1; i < sampleCount; i++) {
       signal1.addPoint(t, waveform1.compute(timeStep));
@@ -64,9 +66,27 @@ public class ChaosSynthesis implements Synthesis {
     return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
   }
 
+  public static void twoWayFM(Waveform wave1, Waveform wave2) {
+    wave2
+        .getProps()
+        .setPhaseModulation((phi) -> phi + wave1.getCompressedPreviousAmplitude() * k.get());
+    wave1
+        .getProps()
+        .setPhaseModulation((phi) -> phi + wave2.getCompressedPreviousAmplitude() * k.get());
+  }
+
+  public static void singleSelfFM(Waveform wave1, Waveform wave2) {
+    wave2
+        .getProps()
+        .setPhaseModulation((phi) -> phi + wave2.getCompressedPreviousAmplitude() * k.get());
+    wave1
+        .getProps()
+        .setPhaseModulation((phi) -> phi + wave1.getCompressedPreviousAmplitude() * k.get());
+  }
+
   @Override
   public void setModulationIndex(double index) {
-    this.k = index;
+    k.set(index);
   }
 
   // Problematic method. fix get sample count 500. Which is not true.

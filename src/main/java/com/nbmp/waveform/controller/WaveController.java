@@ -75,18 +75,7 @@ public class WaveController implements Initializable {
     recombinatorControl.getComboBox().setValue(RecombinationMode.ADD.name());
     recombinatorControl.addListener(
         (observableValue, s, t1) -> {
-          switch (RecombinationMode.valueOf(t1)) {
-            case ADD -> state.getRecombinationMode().setValue(RecombinationMode.ADD.getFunction());
-            case SUBTRACT -> state
-                .getRecombinationMode()
-                .setValue(RecombinationMode.SUBTRACT.getFunction());
-            case MULTIPLY -> state
-                .getRecombinationMode()
-                .setValue(RecombinationMode.MULTIPLY.getFunction());
-            case DIVIDE -> state
-                .getRecombinationMode()
-                .setValue(RecombinationMode.DIVIDE.getFunction());
-          }
+          state.getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction());
         });
   }
 

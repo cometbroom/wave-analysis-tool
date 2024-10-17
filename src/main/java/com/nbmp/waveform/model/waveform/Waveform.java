@@ -41,7 +41,7 @@ public abstract class Waveform {
    * dynamically compresses greater than -1/1 signals
    * @return
    */
-  public double getNormalizedPreviousAmplitude() {
+  public double getCompressedPreviousAmplitude() {
     double boundedAmplitude = previousAmplitude;
 
     if (previousAmplitude > 1 || previousAmplitude < -1) {
