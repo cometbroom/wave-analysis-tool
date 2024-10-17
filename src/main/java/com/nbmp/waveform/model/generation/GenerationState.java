@@ -65,6 +65,7 @@ public class GenerationState {
   @PostConstruct
   public void init() {
     synthesis = new IndependentSynthesis(this);
+    regenSeriesData(AppConstants.duration.getValue());
   }
 
   public void regenSeriesData(int duration) {
