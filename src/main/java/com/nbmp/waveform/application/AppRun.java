@@ -18,7 +18,7 @@ import atlantafx.base.theme.PrimerLight;
  * This class extends the JavaFX Application class and is responsible for initializing and starting the main UI.
  */
 @Component
-public class WaveformPlotter extends Application {
+public class AppRun extends Application {
   @Autowired private AnchorPane mainView;
 
   /**

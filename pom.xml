@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nbmp</groupId>
-    <artifactId>waveform-experiments</artifactId>
+    <artifactId>wave-analysis-tool</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Archetype - waveform-experiments</name>
     <url>http://maven.apache.org</url>
@@ -26,8 +26,7 @@
         </repository>
     </repositories>
     <properties>
-        <javafx-sdk.path>../openjfx-22.0.2_windows-x64_bin-sdk/javafx-sdk-22.0.2
-        </javafx-sdk.path>
+        <javafx-sdk.path>${env.PATH_TO_FX_MODS}</javafx-sdk.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>21</maven.compiler.source>
@@ -151,7 +150,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <!-- Specify the fully qualified name of your main class -->
-                    <mainClass>com.nbmp.waveform.application.WaveformPlotter</mainClass>
+                    <mainClass>com.nbmp.waveform.application.AppRun</mainClass>
                     <arguments>
                         <!-- Add the module-path and JavaFX modules -->
                         <argument>--module-path</argument>
