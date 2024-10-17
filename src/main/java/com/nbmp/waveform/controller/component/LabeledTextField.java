@@ -18,6 +18,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * A custom component that combines a TextField with a Label within an HBox layout.
+ * This component is used to provide labeled numeric input functionality in the UI.
+ */
 @Getter
 @Setter
 @Slf4j
@@ -30,9 +34,12 @@ public class LabeledTextField extends HBox {
   public int minimum = 1;
   public String text;
 
-  AtomicReference<Integer> value = new AtomicReference<>(0);
-  private PropertyChangeSupport support = new PropertyChangeSupport(this);
+  private final AtomicReference<Integer> value = new AtomicReference<>(0);
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+  /**
+   * Constructor that loads the LabeledTextField component from the FXML file.
+   */
   public LabeledTextField() {
     String resourceName = "/components/LabeledTextField.fxml";
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
@@ -55,6 +62,9 @@ public class LabeledTextField extends HBox {
     setupEventListeners();
   }
 
+  /**
+   * Sets up the event listeners for the TextField to handle user interactions.
+   */
   public void setupEventListeners() {
     textField.setOnMouseClicked((event) -> textField.selectAll());
 
@@ -81,10 +91,20 @@ public class LabeledTextField extends HBox {
             });
   }
 
+  /**
+   * Gets the current value from the TextField.
+   *
+   * @return the current value as an integer
+   */
   public int getValue() {
     return Integer.parseInt(textField.getText());
   }
 
+  /**
+   * Sets the value of the TextField and notifies any registered listeners.
+   *
+   * @param newValue the new value to set in the TextField
+   */
   public void setValue(int newValue) {
     int oldValue = value.get();
     this.value.set(newValue);
@@ -103,10 +123,20 @@ public class LabeledTextField extends HBox {
     }
   }
 
+  /**
+   * Adds a PropertyChangeListener to be notified when the value changes.
+   *
+   * @param pcl the listener to be added
+   */
   public void addPropertyChangeListener(PropertyChangeListener pcl) {
     support.addPropertyChangeListener(pcl);
   }
 
+  /**
+   * Adds a listener to be notified when the value of the TextField changes.
+   *
+   * @param consumer the action to perform when the value changes
+   */
   public void addListener(Consumer<Integer> consumer) {
     addPropertyChangeListener(
         evt -> {

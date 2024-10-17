@@ -17,6 +17,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * A custom component that combines a ComboBox with a Label within an HBox layout.
+ * This component is useful for providing a labeled drop-down menu in the UI.
+ */
 @Getter
 @Setter
 @Slf4j
@@ -27,8 +31,11 @@ public class LabeledComboBox extends HBox implements Initializable {
   @FXML private Label label;
   @FXML private ComboBox<String> comboBox;
   private boolean load;
-  ChangeListener<String> listener;
+  private ChangeListener<String> listener;
 
+  /**
+   * Constructor that loads the LabeledComboBox component from the FXML file.
+   */
   public LabeledComboBox() {
     String resourceName = "/components/LabeledComboBox.fxml";
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
@@ -46,6 +53,11 @@ public class LabeledComboBox extends HBox implements Initializable {
   @FXML
   public void initialize(URL location, ResourceBundle resources) {}
 
+  /**
+   * Sets the values in the ComboBox and selects the first item by default.
+   *
+   * @param values the list of values to populate the ComboBox
+   */
   public void setBoxValues(List<String> values) {
     comboBox.getItems().addAll(values);
     if (!values.isEmpty()) {
@@ -53,6 +65,11 @@ public class LabeledComboBox extends HBox implements Initializable {
     }
   }
 
+  /**
+   * Adds a listener that listens for selection changes in the ComboBox.
+   *
+   * @param listener the listener to be notified when the selected item changes
+   */
   public void addListener(ChangeListener<String> listener) {
     if (this.listener != null) {
       comboBox.getSelectionModel().selectedItemProperty().removeListener(this.listener);
@@ -65,6 +82,11 @@ public class LabeledComboBox extends HBox implements Initializable {
     return root;
   }
 
+  /**
+   * Sets the load state and updates the label accordingly.
+   *
+   * @param load the load state of the component
+   */
   public void setLoad(boolean load) {
     this.load = load;
     label.setText(text);

@@ -14,6 +14,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * A custom component that combines a Slider with labels for displaying the value.
+ * This component is used to provide an intuitive way for users to adjust numeric values.
+ */
 @Getter
 @Setter
 @Slf4j
@@ -31,6 +35,9 @@ public class LabeledSlider extends VBox {
   public double majorTickUnit = 1;
   public Consumer<Double> refreshTask = (newValue) -> {};
 
+  /**
+   * Constructor that loads the LabeledSlider component from the FXML file.
+   */
   public LabeledSlider() {
     String resourceName = "/components/LabeledSlider.fxml";
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
@@ -45,6 +52,11 @@ public class LabeledSlider extends VBox {
     log.debug("LabeledSlider from {} bound to controller {}", resourceName, this);
   }
 
+  /**
+   * Adds a listener to the slider that triggers the provided Consumer when the slider value changes.
+   *
+   * @param updateTask the action to perform when the slider value changes
+   */
   public void addListener(Consumer<Double> updateTask) {
     PauseTransition pause = new PauseTransition(javafx.util.Duration.millis(pauseTime));
 
@@ -62,7 +74,11 @@ public class LabeledSlider extends VBox {
             });
   }
 
-  // Will be run when all attributes are loaded
+  /**
+   * Initializes the component after all attributes have been loaded.
+   *
+   * @param load the load state of the component
+   */
   public void setLoad(boolean load) {
     if (load) {
       if (showLabel) {
