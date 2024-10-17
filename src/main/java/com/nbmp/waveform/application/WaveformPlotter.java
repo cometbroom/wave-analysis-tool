@@ -13,16 +13,28 @@ import org.springframework.stereotype.Component;
 
 import atlantafx.base.theme.PrimerLight;
 
+/**
+ * The entry point of the application.
+ * This class extends the JavaFX Application class and is responsible for initializing and starting the main UI.
+ */
 @Component
 public class WaveformPlotter extends Application {
   @Autowired private AnchorPane mainView;
 
+  /**
+   * Initializes the application by setting up the Spring application context and autowiring beans.
+   */
   @Override
   public void init() {
     ApplicationContext springContext = new AnnotationConfigApplicationContext(AppConfig.class);
     springContext.getAutowireCapableBeanFactory().autowireBean(this);
   }
 
+  /**
+   * Starts the JavaFX stage and displays the main view.
+   *
+   * @param stage the primary stage for this application
+   */
   @Override
   public void start(Stage stage) {
     String STAGE_TITLE = "Waveform Analysis Graph";
@@ -33,6 +45,11 @@ public class WaveformPlotter extends Application {
     stage.show();
   }
 
+  /**
+   * The main method that launches the JavaFX application.
+   *
+   * @param args the command line arguments
+   */
   public static void main(String[] args) {
     launch(args);
   }

@@ -10,8 +10,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.application.AppConstants;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,7 +27,6 @@ public class WaveformChartController {
   @Autowired private ControllersState state;
 
   private XYChart.Series<Number, Number> seriesTemp;
-  @Autowired private AppConstants appConstants;
 
   /**
    * Initializes the waveform chart controller.

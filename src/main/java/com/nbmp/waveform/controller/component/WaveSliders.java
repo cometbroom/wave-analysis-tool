@@ -17,6 +17,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * A custom component that combines three (Amplitude, Frequency and Phase) {@link WaveLabeledSlider}s
+ * within an HBox layout.
+ */
 @Getter
 @Setter
 @Slf4j
