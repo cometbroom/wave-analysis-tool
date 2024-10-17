@@ -38,9 +38,4 @@ public class IndependentSynthesis implements Synthesis {
 
   @Override
   public void setModulationIndex(double index) {}
-
-  private int getSampleCount(int durationInMs) {
-    double sampleCountDouble = Generator.SAMPLE_RATE * durationInMs / 1000.0;
-    return Math.toIntExact(Math.round(sampleCountDouble));
-  }
 }

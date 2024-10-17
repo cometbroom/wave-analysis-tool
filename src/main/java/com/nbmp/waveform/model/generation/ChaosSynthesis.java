@@ -85,12 +85,6 @@ public class ChaosSynthesis implements Synthesis {
     k.set(index);
   }
 
-  // Problematic method. fix get sample count 500. Which is not true.
-  private int getSampleCount(int durationInMs) {
-    double sampleCountDouble = Generator.SAMPLE_RATE * durationInMs / 1000.0;
-    return Math.toIntExact(Math.round(sampleCountDouble));
-  }
-
   private void resetWaveforms() {
     state.getWave1().getWaveform().getProps().resetModulations();
     state.getWave2().getWaveform().getProps().resetModulations();
