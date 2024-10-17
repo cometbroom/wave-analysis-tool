@@ -74,7 +74,8 @@ public class WaveController implements Initializable {
     recombinatorControl.setBoxValues(RecombinationMode.getNames());
     recombinatorControl.getComboBox().setValue(RecombinationMode.ADD.name());
     recombinatorControl.addListener(
-        (observableValue, s, t1) -> state.getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction()));
+        (observableValue, s, t1) ->
+            state.getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction()));
   }
 
   private void setupExportButton() {

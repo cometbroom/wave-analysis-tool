@@ -21,7 +21,8 @@ public class GenerationState {
   public GenerationState(ControllersState controllersState) {
     this.wave1 = controllersState.getWaveform1();
     this.wave2 = controllersState.getWaveform2();
-    controllersState.setResynthesizeTrigger(() -> regenSeriesData(AppConstants.duration.getValue()));
+    controllersState.setResynthesizeTrigger(
+        () -> regenSeriesData(AppConstants.duration.getValue()));
     resultSeries = controllersState.getResultData();
 
     setupObservers(controllersState);

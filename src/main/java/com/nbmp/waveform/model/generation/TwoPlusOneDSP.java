@@ -35,5 +35,4 @@ public class TwoPlusOneDSP {
     signal2.applyEffect(effectFuntcion, fxParam);
     signal3.applyEffect(effectFuntcion, fxParam);
   }
-
 }

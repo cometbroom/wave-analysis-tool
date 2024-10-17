@@ -9,5 +9,4 @@ import com.nbmp.waveform.controller.SmartObservable;
 public class AppConstants {
   public static final int SAMPLE_RATE = 88200;
   public static final SmartObservable<Integer> duration = new SmartObservable<>(1000);
-
 }

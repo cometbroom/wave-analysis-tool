@@ -10,5 +10,4 @@ import lombok.Setter;
 @Setter
 public class WaveProps {
   protected double frequency, amplitude, initialPhase;
-
 }
