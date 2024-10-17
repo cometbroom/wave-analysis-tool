@@ -2,6 +2,7 @@
 package com.nbmp.waveform.controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.fxml.FXML;
@@ -53,12 +54,6 @@ public class WaveController implements Initializable {
     state.getResynthesizeTrigger().run();
   }
 
-  private void setupExportButton() {
-    exportButton.getComboBox().getItems().add("Implemented in a future release");
-    exportButton.getComboBox().getSelectionModel().select(0);
-    exportButton.getButton().setDisable(true);
-  }
-
   private void setupDurationField() {
     durationTextField.setValue(duration.get());
     durationTextField.addListener((value) -> AppConstants.duration.setValue(value));
@@ -84,16 +79,8 @@ public class WaveController implements Initializable {
         });
   }
 
-  //  private void setupSliders() {
-  //    frequencySlider.addListenerForTarget(state.getWaveform1(),
-  // WaveLabeledSlider.Target.FREQUENCY);
-  //    frequencySlider2.addListenerForTarget(state.getWaveform2(),
-  // WaveLabeledSlider.Target.FREQUENCY);
-  //    setRefreshTasksForSliders((x) -> state.getResynthesizeTrigger().run());
-  //  }
-  //
-  //  private void setRefreshTasksForSliders(Consumer<Double> refreshTask) {
-  //    frequencySlider.setRefreshTask(refreshTask);
-  //    frequencySlider2.setRefreshTask(refreshTask);
-  //  }
+  private void setupExportButton() {
+    exportButton.setBoxValues(List.of("Implemented in a future release"));
+    exportButton.getButton().setDisable(true);
+  }
 }

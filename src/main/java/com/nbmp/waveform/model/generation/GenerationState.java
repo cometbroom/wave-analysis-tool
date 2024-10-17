@@ -16,10 +16,6 @@ import lombok.Setter;
 public class GenerationState {
   private final WavesRegister wave1, wave2;
   private Synthesis synthesis;
-  private int[] frameDurations = new int[256];
-
-  // 256 frames of our generated data
-  private double[][][] resultData = new double[256][][];
   private TimeSeries resultSeries;
 
   public GenerationState(ControllersState controllersState) {

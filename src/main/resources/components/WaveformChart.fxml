@@ -18,7 +18,6 @@
                 </yAxis>
             </LineChart>
         </AnchorPane>
-        <!-- Right Pane: Waveform Chart -->
         <AnchorPane>
             <LineChart fx:id="waveformChart2" title="Waveform 2" createSymbols="false"
                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

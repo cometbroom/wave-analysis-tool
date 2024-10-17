@@ -24,10 +24,6 @@ public class ChaosSynthesis implements Synthesis {
       RecombinationMode.ADD.getFunction();
   private BiConsumer<Waveform, Waveform> modulationFunction;
 
-  public ChaosSynthesis(GenerationState state) {
-    this(state, (wave1, wave2) -> {});
-  }
-
   public ChaosSynthesis(GenerationState state, BiConsumer<Waveform, Waveform> modulationFunction) {
     this.state = state;
     this.modulationFunction = modulationFunction;
