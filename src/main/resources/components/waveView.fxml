@@ -13,7 +13,7 @@
             stylesheets="@../stylesheets/waveView.css">
 
     <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <HBox alignment="CENTER">
+        <HBox alignment="CENTER" styleClass="title-box">
             <Label text="Wave Analysis Tool" styleClass="title-1" style="-fx-text-fill: gray" alignment="CENTER" fx:id="statusLabel" textAlignment="CENTER"/>
         </HBox>
         <SplitPane VBox.vgrow="ALWAYS">

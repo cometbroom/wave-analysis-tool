@@ -7,7 +7,7 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.nbmp.waveform.controller.WaveformChartController" stylesheets="@../stylesheets/waveView.css" orientation="VERTICAL">
         <AnchorPane>
-            <LineChart fx:id="waveformChart" title="Waveform 1" createSymbols="false"
+            <LineChart fx:id="waveformChart" createSymbols="false"
                        AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <xAxis>
@@ -19,7 +19,7 @@
             </LineChart>
         </AnchorPane>
         <AnchorPane>
-            <LineChart fx:id="waveformChart2" title="Waveform 2" createSymbols="false"
+            <LineChart fx:id="waveformChart2" createSymbols="false"
                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <xAxis>
                     <NumberAxis side="BOTTOM" label="Time" tickLabelsVisible="false"/>
@@ -30,7 +30,7 @@
             </LineChart>
         </AnchorPane>
     <AnchorPane>
-        <LineChart fx:id="resultChart" title="Waveform 3" createSymbols="false"
+        <LineChart fx:id="resultChart" createSymbols="false"
                    AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <xAxis>

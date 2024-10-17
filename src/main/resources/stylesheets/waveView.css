@@ -2,11 +2,19 @@
     -fx-background-color: #ffffff;
 }
 
+.title-box {
+    -fx-border-color: gray;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10px;
+}
+
 .chart-title {
     -fx-text-fill: #333333;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
+
+
 
 .axis-label {
     -fx-text-fill: #555555;

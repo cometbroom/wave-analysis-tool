@@ -8,10 +8,10 @@ import lombok.Getter;
 
 @Getter
 public enum SynthesisMode {
-  INDEPENDENT,
-  CHAOS_TWO_WAY_FM(0.3),
-  CHAOS_INDEPENDENT_SELF_MOD_FM(0.2),
-  FM_WAVE1MOD_WAVE2CARRIER(2);
+  INDEPENDENT("Independent", 0.0),
+  CHAOS_TWO_WAY_FM("Chaos Two-Way FM", 0.3),
+  CHAOS_INDEPENDENT_SELF_MOD_FM("Chaos Independent Self-Modulation", 0.2),
+  FM_WAVE1MOD_WAVE2CARRIER("FM Modulation", 2);
   private final double modIndex;
   private final String title;
 
