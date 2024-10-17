@@ -74,9 +74,9 @@ public class LabeledSlider extends VBox {
         valueLabel.minWidth(1);
         valueLabel.maxWidth(1);
       }
-      slider.setValue(value);
       slider.setMin(min);
       slider.setMax(max);
+      slider.setValue(value);
       slider.setOrientation(
           orientation.equals("HORIZONTAL")
               ? javafx.geometry.Orientation.HORIZONTAL
