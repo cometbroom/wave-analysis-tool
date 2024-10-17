@@ -2,8 +2,6 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.chart.LineChart?>
-<?import com.nbmp.waveform.controller.WaveformChartController?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.SplitPane?>
 <SplitPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"

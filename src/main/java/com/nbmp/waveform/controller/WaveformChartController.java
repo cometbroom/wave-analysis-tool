@@ -38,6 +38,7 @@ public class WaveformChartController {
     resultChart.getData().add(state.getResultData().getSeries());
     waveForm1.getSeries().nodeProperty().get().setId(waveForm1.getName());
     waveForm2.getSeries().nodeProperty().get().setId(waveForm2.getName());
+    state.getResultData().getSeries().setName("Combination Result");
     state.getResultData().getSeries().nodeProperty().get().setId("resultChart");
   }
 }
