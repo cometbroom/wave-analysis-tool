@@ -16,6 +16,7 @@ public class ControllersState {
   private TimeSeries resultData = new TimeSeries();
   private SynthesisMode synthesisMode;
   private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>();
+  private SmartObservable<Double> modIndex = new SmartObservable<>(0.0);
   private Runnable resynthesizeTrigger = () -> {};
 
   public static ControllersState createInstance(WavesRegister waveform1, WavesRegister waveform2) {

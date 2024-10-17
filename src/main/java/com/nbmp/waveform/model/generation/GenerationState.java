@@ -28,6 +28,15 @@ public class GenerationState {
     AppConfig.duration.addObserver(this::regenSeriesData);
     controllersState.setResynthesizeTrigger(() -> regenSeriesData(AppConfig.duration.getValue()));
     resultSeries = controllersState.getResultData();
+
+    controllersState
+        .getModIndex()
+        .addObserver(
+            (index) -> {
+              synthesis.setModulationIndex(index);
+              regenSeriesData(AppConfig.duration.getValue());
+            });
+
     controllersState
         .getSynthModeObservable()
         .addObserver(

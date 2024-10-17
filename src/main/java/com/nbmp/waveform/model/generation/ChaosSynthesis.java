@@ -56,6 +56,11 @@ public class ChaosSynthesis implements Synthesis {
     return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
   }
 
+  @Override
+  public void setModulationIndex(double index) {
+    this.k = index;
+  }
+
   // Problematic method. fix get sample count 500. Which is not true.
   private int getSampleCount(int durationInMs) {
     double sampleCountDouble = Generator.SAMPLE_RATE * durationInMs / 1000.0;

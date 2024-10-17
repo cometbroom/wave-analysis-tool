@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConfig;
 import com.nbmp.waveform.controller.component.LabeledComboBox;
+import com.nbmp.waveform.controller.component.LabeledSlider;
 import com.nbmp.waveform.controller.component.LabeledTextField;
 import com.nbmp.waveform.controller.component.WaveSliders;
 import com.nbmp.waveform.model.generation.SynthesisMode;
@@ -29,6 +30,7 @@ public class WaveController implements Initializable {
   @FXML public LabeledTextField durationTextField;
   @FXML public WaveSliders waveSliders;
   @FXML public WaveSliders waveSliders2;
+  @FXML public LabeledSlider modIndexSlider;
 
   @Autowired private ControllersState state;
 
@@ -43,6 +45,7 @@ public class WaveController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     waveSliders.setupSliders(state.getWaveform1(), (x) -> state.getResynthesizeTrigger().run());
     waveSliders2.setupSliders(state.getWaveform2(), (x) -> state.getResynthesizeTrigger().run());
+    modIndexSlider.addListener((value) -> state.getModIndex().setValue(value));
     setupDurationField();
     setupSynthesisModeChangeCombo();
 
@@ -60,6 +63,21 @@ public class WaveController implements Initializable {
     synthesisModeControl.addListener(
         (observableValue, s, t1) -> {
           state.changeSynthesisMode(SynthesisMode.valueOf(t1));
+          modIndexSlider.setDisable(SynthesisMode.INDEPENDENT.equals(SynthesisMode.valueOf(t1)));
+          switch (SynthesisMode.valueOf(t1)) {
+            case INDEPENDENT -> {
+              statusLabel.setText("Independent synthesis mode");
+              modIndexSlider.setValue(0.0);
+            }
+            case CHAOS -> {
+              statusLabel.setText("Chaos synthesis mode");
+              modIndexSlider.setValue(0.3);
+            }
+            case FM_WAVE1MOD_WAVE2CARRIER -> {
+              statusLabel.setText("FM synthesis mode");
+              modIndexSlider.setValue(2.0);
+            }
+          }
         });
   }
 

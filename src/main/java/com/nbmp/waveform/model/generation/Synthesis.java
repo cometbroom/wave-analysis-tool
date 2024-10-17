@@ -5,4 +5,6 @@ import com.nbmp.waveform.model.dto.BiTimeSeries;
 
 public interface Synthesis {
   BiTimeSeries compute(int duration);
+
+  void setModulationIndex(double index);
 }

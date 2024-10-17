@@ -31,6 +31,9 @@ public class IndependentSynthesis implements Synthesis {
     return new BiTimeSeries(wave1Gen, wave2Gen);
   }
 
+  @Override
+  public void setModulationIndex(double index) {}
+
   private int getSampleCount(int durationInMs) {
     double sampleCountDouble = Generator.SAMPLE_RATE * durationInMs / 1000.0;
     return Math.toIntExact(Math.round(sampleCountDouble));

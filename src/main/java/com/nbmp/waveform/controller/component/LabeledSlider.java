@@ -26,8 +26,9 @@ public class LabeledSlider extends VBox {
   public String orientation = "HORIZONTAL";
   public String text, valueText, unit = "";
   public double value;
-  public int min, max, pauseTime = 50;
-  boolean load;
+  public int min, max, pauseTime = 50, minorTickCount = 0;
+  boolean load, showTickLabels = false, showTickMarks = false;
+  public double majorTickUnit = 1;
   public Consumer<Double> refreshTask = (newValue) -> {};
 
   public LabeledSlider() {
@@ -81,6 +82,10 @@ public class LabeledSlider extends VBox {
               ? javafx.geometry.Orientation.HORIZONTAL
               : javafx.geometry.Orientation.VERTICAL);
       valueLabel.setText(String.format("%.2f " + unit, value));
+      slider.setMajorTickUnit(majorTickUnit);
+      slider.setMinorTickCount(minorTickCount);
+      slider.setShowTickLabels(showTickLabels);
+      slider.setShowTickMarks(showTickMarks);
     }
   }
 }
