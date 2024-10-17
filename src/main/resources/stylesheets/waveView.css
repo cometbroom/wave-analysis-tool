@@ -60,8 +60,16 @@
     -fx-pref-width: 200px;
 }
 
+#sine1 {
+    -fx-stroke: #E95484;
+}
+
 #sine2 {
-    -fx-stroke: #2196F3;
+    -fx-stroke: #17B3D5;
+}
+
+#resultChart{
+    -fx-stroke: #8AC926;
 }
 
 .combo-box {
@@ -90,8 +98,6 @@
 .wave-slider {
     -fx-min-width: 200px;
     -fx-max-width: 300px;
-
-
 }
 
 .wave-slider .label{

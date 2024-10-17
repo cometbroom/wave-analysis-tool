@@ -19,7 +19,7 @@ import lombok.Setter;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @Getter
 @Setter
-public class ChartController {
+public class WaveformChartController {
   @FXML public LineChart<Number, Number> waveformChart;
   @FXML public LineChart<Number, Number> waveformChart2;
   @FXML public LineChart<Number, Number> resultChart;
@@ -38,5 +38,6 @@ public class ChartController {
     resultChart.getData().add(state.getResultData().getSeries());
     waveForm1.getSeries().nodeProperty().get().setId(waveForm1.getName());
     waveForm2.getSeries().nodeProperty().get().setId(waveForm2.getName());
+    state.getResultData().getSeries().nodeProperty().get().setId("resultChart");
   }
 }

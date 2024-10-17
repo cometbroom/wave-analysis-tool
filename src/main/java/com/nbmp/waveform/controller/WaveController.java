@@ -48,11 +48,18 @@ public class WaveController implements Initializable {
     setupDurationField();
     setupSynthesisModeChangeCombo();
     setupRecombinatorCombo();
+    setupExportButton();
 
     state.getResynthesizeTrigger().run();
   }
 
-  public void setupDurationField() {
+  private void setupExportButton() {
+    exportButton.getComboBox().getItems().add("Implemented in a future release");
+    exportButton.getComboBox().getSelectionModel().select(0);
+    exportButton.getButton().setDisable(true);
+  }
+
+  private void setupDurationField() {
     durationTextField.setValue(duration.get());
     durationTextField.addListener((value) -> AppConfig.duration.setValue(value));
   }

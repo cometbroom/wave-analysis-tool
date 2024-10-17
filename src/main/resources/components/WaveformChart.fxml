@@ -2,12 +2,12 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.chart.LineChart?>
-<?import com.nbmp.waveform.controller.ChartController?>
+<?import com.nbmp.waveform.controller.WaveformChartController?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.SplitPane?>
 <SplitPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.nbmp.waveform.controller.ChartController" stylesheets="@../stylesheets/waveView.css" orientation="VERTICAL">
+           fx:controller="com.nbmp.waveform.controller.WaveformChartController" stylesheets="@../stylesheets/waveView.css" orientation="VERTICAL">
         <AnchorPane>
             <LineChart fx:id="waveformChart" title="Waveform 1" createSymbols="false"
                        AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
@@ -33,7 +33,7 @@
             </LineChart>
         </AnchorPane>
     <AnchorPane>
-        <LineChart fx:id="resultChart" title="Waveform 3" createSymbols="false"
+        <LineChart fx:id="resultChart" styleClass="resultChart" title="Waveform 3" createSymbols="false"
                    AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <xAxis>

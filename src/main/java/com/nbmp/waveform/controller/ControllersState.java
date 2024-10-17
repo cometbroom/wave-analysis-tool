@@ -23,10 +23,10 @@ public class ControllersState {
       new SmartObservable<>(RecombinationMode.ADD.getFunction());
   private Runnable resynthesizeTrigger = () -> {};
 
-  public static ControllersState createInstance(WavesRegister waveform1, WavesRegister waveform2) {
+  public static ControllersState createInstance() {
     var instance = new ControllersState();
-    instance.waveform1 = waveform1;
-    instance.waveform2 = waveform2;
+    instance.waveform1 = WavesRegister.createWaveform("sine1", WaveController.WaveType.SINE, 5, 1);
+    instance.waveform2 = WavesRegister.createWaveform("sine2", WaveController.WaveType.SINE, 5, 1);
     return instance;
   }
 
