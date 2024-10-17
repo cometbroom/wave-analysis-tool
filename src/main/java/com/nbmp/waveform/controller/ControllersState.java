@@ -11,6 +11,9 @@ import com.nbmp.waveform.view.WavesRegister;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Class representing the state of waveform UI controllers such as {@link WaveController}
+ */
 @Getter
 @Setter
 public class ControllersState {
@@ -23,6 +26,11 @@ public class ControllersState {
       new SmartObservable<>(RecombinationMode.ADD.getFunction());
   private Runnable resynthesizeTrigger = () -> {};
 
+  /**
+   * Creates an instance of ControllersState with default waveforms. More options will be provided here
+   *
+   * @return a new ControllersState instance
+   */
   public static ControllersState createInstance() {
     var instance = new ControllersState();
     instance.waveform1 = WavesRegister.createWaveform("sine1", WaveController.WaveType.SINE, 5, 1);
@@ -30,6 +38,11 @@ public class ControllersState {
     return instance;
   }
 
+  /**
+   * Changes the synthesis mode and updates the observable value.
+   *
+   * @param mode the new synthesis mode to be set
+   */
   public void changeSynthesisMode(SynthesisMode mode) {
     synthModeObservable.setValue(mode);
   }

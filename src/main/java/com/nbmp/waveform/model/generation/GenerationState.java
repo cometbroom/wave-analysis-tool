@@ -11,6 +11,9 @@ import com.nbmp.waveform.view.WavesRegister;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Class representing the generation and synthesis state for waveforms.
+ */
 @Getter
 @Setter
 public class GenerationState {
@@ -18,6 +21,11 @@ public class GenerationState {
   private Synthesis synthesis;
   private TimeSeries resultSeries;
 
+  /**
+   * Constructor for GenerationState. As opposed to {@link ControllersState} this holds state for Signal Generation data.
+   *
+   * @param controllersState the controllers state containing waveform information
+   */
   public GenerationState(ControllersState controllersState) {
     this.wave1 = controllersState.getWaveform1();
     this.wave2 = controllersState.getWaveform2();
@@ -28,6 +36,11 @@ public class GenerationState {
     setupObservers(controllersState);
   }
 
+  /**
+   * Sets up observers to listen for changes in the controllers state. Such as changed Synthesizer mode on the ui
+   *
+   * @param controllersState the controllers state to observe
+   */
   private void setupObservers(ControllersState controllersState) {
     AppConstants.duration.addObserver(this::regenSeriesData);
 
@@ -63,15 +76,24 @@ public class GenerationState {
             });
   }
 
+  /**
+   * Initializes the synthesis process with a default on {@link IndependentSynthesis} after construction.
+   */
   @PostConstruct
   public void init() {
     synthesis = new IndependentSynthesis(this);
     regenSeriesData(AppConstants.duration.getValue());
   }
 
+  /**
+   * Regenerates the series data for the given duration.
+   *
+   * @param duration the duration for which the series data should be regenerated
+   */
   public void regenSeriesData(int duration) {
     var newData = synthesis.compute(duration);
     wave1.refreshData(newData.timeAmplitude1());
     wave2.refreshData(newData.timeAmplitude2());
   }
 }
+

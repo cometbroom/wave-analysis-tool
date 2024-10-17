@@ -15,6 +15,9 @@ import com.nbmp.waveform.application.AppConstants;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Controller class for managing waveform charts in the UI. Right side of the landing page.
+ */
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @Getter
@@ -28,6 +31,9 @@ public class WaveformChartController {
   private XYChart.Series<Number, Number> seriesTemp;
   @Autowired private AppConstants appConstants;
 
+  /**
+   * Initializes the waveform chart controller.
+   */
   @FXML
   public void initialize() {
     var waveForm1 = state.getWaveform1();
@@ -42,3 +48,4 @@ public class WaveformChartController {
     state.getResultData().getSeries().nodeProperty().get().setId("resultChart");
   }
 }
+

@@ -19,6 +19,9 @@ import com.nbmp.waveform.controller.component.*;
 import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.SynthesisMode;
 
+/**
+ * Controller class for landing page of the application. Most waveforms are managed here.
+ */
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class WaveController implements Initializable {
@@ -34,6 +37,9 @@ public class WaveController implements Initializable {
 
   @Autowired private ControllersState state;
 
+  /**
+   * Enumeration representing different types of waveforms.
+   */
   public enum WaveType {
     SINE,
     SQUARE,
@@ -54,11 +60,17 @@ public class WaveController implements Initializable {
     state.getResynthesizeTrigger().run();
   }
 
+  /**
+   * Sets up the duration input field and its listeners.
+   */
   private void setupDurationField() {
     durationTextField.setValue(duration.get());
     durationTextField.addListener(AppConstants.duration::setValue);
   }
 
+  /**
+   * Sets up the synthesis mode change combo box and its listeners.
+   */
   private void setupSynthesisModeChangeCombo() {
     synthesisModeControl.setBoxValues(SynthesisMode.getNames());
     synthesisModeControl.addListener(
@@ -70,6 +82,9 @@ public class WaveController implements Initializable {
         });
   }
 
+  /**
+   * Sets up the recombination mode combo box and its listeners.
+   */
   private void setupRecombinatorCombo() {
     recombinatorControl.setBoxValues(RecombinationMode.getNames());
     recombinatorControl.getComboBox().setValue(RecombinationMode.ADD.name());
@@ -78,6 +93,9 @@ public class WaveController implements Initializable {
             state.getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction()));
   }
 
+  /**
+   * Sets up the export button.
+   */
   private void setupExportButton() {
     exportButton.setBoxValues(List.of("Implemented in a future release"));
     exportButton.getButton().setDisable(true);
