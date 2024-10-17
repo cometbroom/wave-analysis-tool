@@ -14,10 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConfig;
-import com.nbmp.waveform.controller.component.LabeledComboBox;
-import com.nbmp.waveform.controller.component.LabeledSlider;
-import com.nbmp.waveform.controller.component.LabeledTextField;
-import com.nbmp.waveform.controller.component.WaveSliders;
+import com.nbmp.waveform.controller.component.*;
 import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.SynthesisMode;
 
@@ -32,6 +29,7 @@ public class WaveController implements Initializable {
   @FXML public WaveSliders waveSliders2;
   @FXML public LabeledSlider modIndexSlider;
   @FXML public LabeledComboBox recombinatorControl;
+  @FXML public ButtonedComboBox exportButton;
 
   @Autowired private ControllersState state;
 

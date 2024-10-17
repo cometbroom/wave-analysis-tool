@@ -5,22 +5,21 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import com.nbmp.waveform.controller.component.LabeledComboBox?>
-<?import javafx.scene.effect.Glow?>
-<?import javafx.scene.text.Font?>
+
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 <fx:root type="HBox" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml" spacing="10.0" alignment="CENTER_LEFT">
     <padding>
-        <Insets top="15.0" right="5.0" />
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
     </padding>
-    <Label fx:id="label" layoutX="15.0" layoutY="10.0" styleClass="bold-label" text="Text"
-           textFill="#000000ea">
+    <ComboBox fx:id="comboBox"
+              HBox.hgrow="ALWAYS">
+    </ComboBox>
+    <Button fx:id="button" layoutX="15.0" layoutY="10.0" text="Export"
+            textFill="#000000ea">
         <font>
             <Font size="12.0"/>
         </font>
-    </Label>
-    <ComboBox fx:id="comboBox" layoutX="15.0" layoutY="33.0"
-              HBox.hgrow="ALWAYS">
-    </ComboBox>
+    </Button>
 </fx:root>
