@@ -18,6 +18,7 @@ import lombok.Setter;
 public class FMSynthesis implements Synthesis {
   /** Modulation index. */
   private double k = 2;
+
   private final GenerationState state;
   private BiFunction<Double, Double, Double> recombinationMode =
       RecombinationMode.ADD.getFunction();
@@ -41,9 +42,9 @@ public class FMSynthesis implements Synthesis {
     var waveform1 = state.getWave1().getWaveform();
     var waveform2 = state.getWave2().getWaveform();
 
-    var signal1 = new Signal();
-    var signal2 = new Signal();
-    var result = new Signal();
+    var signal1 = new Signal(sampleCount);
+    var signal2 = new Signal(sampleCount);
+    var result = new Signal(sampleCount);
 
     signal1.addPoint(0.0, waveform1.compute(timeStep));
     signal2.addPoint(0.0, waveform2.compute(timeStep));

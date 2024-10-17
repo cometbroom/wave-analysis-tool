@@ -22,6 +22,7 @@ import lombok.Setter;
 public class ChaosSynthesis implements Synthesis {
   /** Modulation index, AKA magnitude of the modulation. */
   private static AtomicReference<Double> k = new AtomicReference<>(0.3);
+
   private final GenerationState state;
   private BiFunction<Double, Double, Double> recombinationMode =
       RecombinationMode.ADD.getFunction();
@@ -52,7 +53,9 @@ public class ChaosSynthesis implements Synthesis {
 
     Waveform waveform1 = state.getWave1().getWaveform(), waveform2 = state.getWave2().getWaveform();
 
-    Signal signal1 = new Signal(), signal2 = new Signal(), result = new Signal();
+    Signal signal1 = new Signal(sampleCount),
+        signal2 = new Signal(sampleCount),
+        result = new Signal(sampleCount);
 
     signal1.addPoint(0.0, waveform1.compute(timeStep));
     signal2.addPoint(0.0, waveform2.compute(timeStep));

@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
+import com.nbmp.waveform.application.AppConstants;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,7 @@ public class LabeledTextField extends HBox {
   @FXML public HBox root;
   @FXML public Label label;
   @FXML public TextField textField;
-  public int maximum = 5000;
+  public int maximum = AppConstants.MAX_DURATION;
   public int minimum = 1;
   public String text;
 

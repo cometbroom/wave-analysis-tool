@@ -10,12 +10,14 @@ import com.nbmp.waveform.model.generation.Generator;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class representing a signal consisting of time and amplitude data.
  */
 @Getter
 @Setter
+@Slf4j
 public class Signal {
   private double sumAmplitude;
   private double mean;
@@ -27,13 +29,35 @@ public class Signal {
   /**
    * Default constructor for Signal.
    */
-  public Signal() {
+  public Signal(int inputSampleCount) {
     sumAmplitude = 0.0;
     mean = 0.0;
     indexCounter = 0;
-    sampleCount = Generator.SAMPLE_RATE * AppConstants.duration.getValue() / 1000;
-    timeArray = new double[sampleCount];
-    amplitudeArray = new double[sampleCount];
+    this.sampleCount = inputSampleCount;
+    try {
+      if (inputSampleCount > Generator.SAMPLE_RATE * AppConstants.MAX_DURATION) {
+        throw new IllegalArgumentException();
+      } else if (inputSampleCount < 0) {
+        throw new NegativeArraySizeException();
+      }
+    } catch (IllegalArgumentException e) {
+      log.warn(
+          "Sample count exceeds maximum duration. Calculating sample count from maximum duration of"
+              + " {} ms.",
+          AppConstants.MAX_DURATION,
+          e);
+      this.sampleCount = Generator.SAMPLE_RATE * AppConstants.MAX_DURATION;
+    } catch (NegativeArraySizeException e) {
+      log.warn("Sample count cannot be negative. Setting sample count to 0.", e);
+      this.sampleCount = 0;
+    } finally {
+      initializeTimeAndAmplitudeArrays(this.sampleCount);
+    }
+  }
+
+  private void initializeTimeAndAmplitudeArrays(int sampleCount) {
+    this.timeArray = new double[sampleCount];
+    this.amplitudeArray = new double[sampleCount];
   }
 
   /**

@@ -45,4 +45,3 @@ public class WaveformChartController {
     state.getResultData().getSeries().nodeProperty().get().setId("resultChart");
   }
 }
-

@@ -7,6 +7,7 @@ import com.nbmp.waveform.model.dto.BiTimeSeries;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
 /**
  * Class representing independent waveform synthesis.
  */

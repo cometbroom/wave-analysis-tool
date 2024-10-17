@@ -59,4 +59,3 @@ public class SmartObservable<T> {
     void onUpdate(T value);
   }
 }
-
