@@ -20,7 +20,7 @@ It's on my to-do list to build platform dependent executables. Lower priority to
 
 ## Build
 `mvn clean package`
-You'll have an executable jar under [projectDir/target](./target) (You'll have to clone/fork build the project first)
+You'll have an executable jar under [projectDir/target](./target) <span style="color: red; text-decoration: underline">(You'll have to clone/fork build the project first)</span>
 
 ## To-do
 - Implement the button for export. Start with vector graphics and only the resulting waveform
