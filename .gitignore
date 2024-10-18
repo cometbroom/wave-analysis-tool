@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 ToDo.md
+jre/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

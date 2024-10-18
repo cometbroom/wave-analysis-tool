@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nbmp</groupId>
     <artifactId>wave-analysis-tool</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>Archetype - waveform-experiments</name>
     <url>http://maven.apache.org</url>
 
@@ -26,6 +26,7 @@
         </repository>
     </repositories>
     <properties>
+        <java.version>21</java.version>
         <javafx-sdk.path>${env.PATH_TO_FX_MODS}</javafx-sdk.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -35,7 +36,9 @@
         <git-code-format-maven-plugin.version>5.3</git-code-format-maven-plugin.version>
         <junit-jupiter.version>5.10.3</junit-jupiter.version>
         <mockito.version>5.11.0</mockito.version>
+        <java.library.path>${env.PATH_TO_FX_MODS}</java.library.path>
         <javafx.version>22.0.2</javafx.version>
+        <javafx.modules>javafx.controls,javafx.fxml,javafx-base,javafx-graphics</javafx.modules>
     </properties>
 
     <dependencies>
@@ -156,17 +159,92 @@
                         <argument>--module-path</argument>
                         <argument>${javafx-sdk.path}/lib</argument>
                         <argument>--add-modules</argument>
-                        <argument>javafx.controls,javafx.fxml</argument>
+                        <argument>${javafx.modules}</argument>
                     </arguments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <useModulePath>false</useModulePath>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>com.nbmp.waveform.application.AppRun</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/LICENSE</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>com.github.psambit9791:jdsp</artifact>
+                                    <excludes>
+                                        <exclude>*.wav</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <excludeDefaults>false</excludeDefaults>
+                                    <includes>
+                                        <include>${env.JFX_PATH}/lib/*.dll</include>
+                                        <include>${env.JFX_PATH}/lib/*.jar</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.junit.jupiter</exclude>
+                                    <exclude>org.mockito</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.nbmp.waveform.application.Launcher</mainClass>
+                                    <manifestEntries>
+                                        <author-github-handle>https://github.com/cometbroom</author-github-handle>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>22</source>
-                    <target>22</target>
+                    <release>${java.version}</release>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
