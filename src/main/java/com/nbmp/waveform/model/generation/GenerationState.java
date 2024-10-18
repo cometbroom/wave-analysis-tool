@@ -59,9 +59,9 @@ public class GenerationState {
               synthesis =
                   switch (mode) {
                     case INDEPENDENT -> new IndependentSynthesis(this);
-                    case CHAOS_TWO_WAY_FM -> new ChaosSynthesis(this, ChaosSynthesis::twoWayFM);
+                    case CHAOS_TWO_WAY_FM -> new ChaosSynthesis(this, mode);
                     case CHAOS_INDEPENDENT_SELF_MOD_FM -> new ChaosSynthesis(
-                        this, ChaosSynthesis::singleSelfFM);
+                        this, mode);
                     case FM_WAVE1MOD_WAVE2CARRIER -> new FMSynthesis(this);
                   };
               regenSeriesData(AppConstants.duration.getValue());

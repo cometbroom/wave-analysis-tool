@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 import com.nbmp.waveform.model.dto.BiTimeSeries;
 import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.Signal;
+import com.nbmp.waveform.model.dto.SynthesisMode;
 import com.nbmp.waveform.model.filter.HighPassFilters;
 import com.nbmp.waveform.model.filter.LowPassFilters;
 import com.nbmp.waveform.model.utils.WaveStatUtils;
@@ -32,11 +33,11 @@ public class ChaosSynthesis implements Synthesis {
    * Constructor for ChaosSynthesis.
    *
    * @param state the generation state
-   * @param modulationFunction the modulation function to be applied in a coupling style to phase of chaotic waveforms
    */
-  public ChaosSynthesis(GenerationState state, BiConsumer<Waveform, Waveform> modulationFunction) {
+  public ChaosSynthesis(GenerationState state, SynthesisMode mode) {
     this.state = state;
-    this.modulationFunction = modulationFunction;
+    modFunctionSwitcher(mode);
+//    this.modulationFunction = modulationFunction;
   }
 
   /**
@@ -79,13 +80,22 @@ public class ChaosSynthesis implements Synthesis {
     return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
   }
 
+  private void modFunctionSwitcher(SynthesisMode mode) {
+    modulationFunction =
+        switch (mode) {
+          case CHAOS_TWO_WAY_FM -> this::twoWayFM;
+          case CHAOS_INDEPENDENT_SELF_MOD_FM -> this::singleSelfFM;
+          default -> modulationFunction;
+        };
+  }
+
   /**
    * Applies a two-way frequency modulation between two waveforms.
    *
    * @param wave1 the first waveform
    * @param wave2 the second waveform
    */
-  public static void twoWayFM(Waveform wave1, Waveform wave2) {
+  public void twoWayFM(Waveform wave1, Waveform wave2) {
     wave2
         .getProps()
         .setPhaseModulation((phi) -> phi + wave1.getCompressedPreviousAmplitude() * k.get());
@@ -100,7 +110,7 @@ public class ChaosSynthesis implements Synthesis {
    * @param wave1 the first waveform
    * @param wave2 the second waveform
    */
-  public static void singleSelfFM(Waveform wave1, Waveform wave2) {
+  public void singleSelfFM(Waveform wave1, Waveform wave2) {
     wave2
         .getProps()
         .setPhaseModulation((phi) -> phi + wave2.getCompressedPreviousAmplitude() * k.get());
