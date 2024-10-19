@@ -30,7 +30,9 @@ You can change the frequency, amplitude, and phase of 2 of the waveforms. 3rd wa
 Furthermore in the controls on the left, you can choose the duration of the waveform and the [Synthesis Mode](#synth-mode) for the upper 2 waveforms. <br/>
 Lastly, you also have a control for modulation amount which is not applicable for INDEPENDENT synthesis mode. Read more on that in the [Synthesis Mode](#synth-mode) section. <br/>
 
+<p align="center">
 <img width="33%" src="./github-assets/app_screenshot_landing.png" alt="Screenshot of app UI">
+</p>
 
  <br/>
 Please keep in mind that the view resolution is much lower than calculation (500hz for view, 88200 for calculation). Due to that at high enough durations, you may see aliasing. <br/>
