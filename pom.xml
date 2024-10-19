@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nbmp</groupId>
     <artifactId>wave-analysis-tool</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>Archetype - waveform-experiments</name>
     <url>http://maven.apache.org</url>
 
@@ -257,7 +256,7 @@
                             <groupArtifact>com.google.googlejavaformat:google-java-format</groupArtifact>
                         </googleJavaFormat>
 
-                        <importOrder/> <!-- standard import order -->
+                        <importOrder /> <!-- standard import order -->
                         <importOrder>  <!-- or a custom ordering -->
                             <wildcardsLast>false
                             </wildcardsLast> <!-- Optional, default false. Sort wildcard import after specific imports -->
@@ -297,5 +296,6 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/cometbroom/wave-analysis-tool.git</developerConnection>
-    </scm>
+      <tag>v0.0.1-ALPHA</tag>
+  </scm>
 </project>
