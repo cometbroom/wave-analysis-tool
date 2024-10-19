@@ -1,0 +1,17 @@
+name: Package into Uber Jar
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
