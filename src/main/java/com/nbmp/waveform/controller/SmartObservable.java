@@ -41,6 +41,10 @@ public class SmartObservable<T> {
     observers.forEach(observer -> observer.onUpdate(value));
   }
 
+  public void fireEvents() {
+    observers.forEach(observer -> observer.onUpdate(value));
+  }
+
   /**
    * Adds an observer to the observable.
    *

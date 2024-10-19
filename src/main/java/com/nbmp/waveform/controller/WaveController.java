@@ -49,15 +49,15 @@ public class WaveController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    waveSliders.setupSliders(state.getWaveform1(), (x) -> state.getResynthesizeTrigger().run());
-    waveSliders2.setupSliders(state.getWaveform2(), (x) -> state.getResynthesizeTrigger().run());
-    modIndexSlider.addListener((value) -> state.getModIndex().setValue(value));
+    waveSliders.setupSliders(state.getGenState().getWave1(), (x) -> state.getGenState().getResynthesizeTrigger().run());
+    waveSliders2.setupSliders(state.getGenState().getWave2(), (x) -> state.getGenState().getResynthesizeTrigger().run());
+    modIndexSlider.addListener((value) -> state.getGenState().getModIndex().setValue(value));
     setupDurationField();
     setupSynthesisModeChangeCombo();
     setupRecombinatorCombo();
     setupExportButton();
 
-    state.getResynthesizeTrigger().run();
+    state.getGenState().getResynthesizeTrigger().run();
   }
 
   /**
@@ -90,7 +90,7 @@ public class WaveController implements Initializable {
     recombinatorControl.getComboBox().setValue(RecombinationMode.ADD.name());
     recombinatorControl.addListener(
         (observableValue, s, t1) ->
-            state.getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction()));
+            state.getGenState().getRecombinationMode().setValue(RecombinationMode.valueOf(t1).getFunction()));
   }
 
   /**
