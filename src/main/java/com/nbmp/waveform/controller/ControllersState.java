@@ -6,6 +6,7 @@ import java.util.function.BiFunction;
 import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.SynthesisMode;
 import com.nbmp.waveform.model.dto.TimeSeries;
+import com.nbmp.waveform.model.generation.GenerationState;
 import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
@@ -17,24 +18,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ControllersState {
-  private WavesRegister waveform1;
-  private WavesRegister waveform2;
-  private TimeSeries resultData = new TimeSeries();
-  private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>();
-  private SmartObservable<Double> modIndex = new SmartObservable<>(0.0);
-  private SmartObservable<BiFunction<Double, Double, Double>> recombinationMode =
-      new SmartObservable<>(RecombinationMode.ADD.getFunction());
-  private Runnable resynthesizeTrigger = () -> {};
+  private GenerationState genState;
 
   /**
    * Creates an instance of ControllersState with default waveforms. More options will be provided here
    *
    * @return a new ControllersState instance
    */
-  public static ControllersState createInstance() {
+  public static ControllersState createInstance(WavesRegister wave1, WavesRegister wave2) {
     var instance = new ControllersState();
-    instance.waveform1 = WavesRegister.createWaveform("sine1", WaveController.WaveType.SINE, 5, 1);
-    instance.waveform2 = WavesRegister.createWaveform("sine2", WaveController.WaveType.SINE, 5, 1);
+    instance.genState = new GenerationState(wave1, wave2);
     return instance;
   }
 
@@ -44,6 +37,6 @@ public class ControllersState {
    * @param mode the new synthesis mode to be set
    */
   public void changeSynthesisMode(SynthesisMode mode) {
-    synthModeObservable.setValue(mode);
+    genState.getSynthModeObservable().setValue(mode);
   }
 }

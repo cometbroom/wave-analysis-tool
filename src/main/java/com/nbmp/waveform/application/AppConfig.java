@@ -2,6 +2,9 @@
 package com.nbmp.waveform.application;
 
 import java.io.IOException;
+
+import com.nbmp.waveform.controller.WaveController;
+import com.nbmp.waveform.view.WavesRegister;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
@@ -54,18 +57,8 @@ public class AppConfig {
   @Bean
   @Scope("singleton")
   public ControllersState controllersState() {
-    return ControllersState.createInstance();
-  }
-
-  /**
-   * Creates a singleton bean for GenerationState.
-   *
-   * @param controllersState the ControllersState instance to be used
-   * @return a new instance of GenerationState
-   */
-  @Bean
-  @Scope("singleton")
-  public GenerationState generationState(ControllersState controllersState) {
-    return new GenerationState(controllersState);
+    return ControllersState.createInstance(
+        WavesRegister.createWaveform("sine1", WaveController.WaveType.SINE, 5, 1),
+        WavesRegister.createWaveform("sine2", WaveController.WaveType.SINE, 5, 1));
   }
 }

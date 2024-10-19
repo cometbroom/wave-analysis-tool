@@ -5,11 +5,16 @@ import javax.annotation.PostConstruct;
 
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.controller.ControllersState;
+import com.nbmp.waveform.controller.SmartObservable;
+import com.nbmp.waveform.model.dto.RecombinationMode;
+import com.nbmp.waveform.model.dto.SynthesisMode;
 import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.function.BiFunction;
 
 /**
  * Class representing the generation and synthesis state for waveforms.
@@ -17,43 +22,42 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GenerationState {
-  private final WavesRegister wave1, wave2;
+  private WavesRegister wave1, wave2;
   private Synthesis synthesis;
-  private TimeSeries resultSeries;
+  private TimeSeries resultSeries = new TimeSeries();
+  private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>(SynthesisMode.INDEPENDENT);
+  private SmartObservable<Double> modIndex = new SmartObservable<>(0.0);
+  private SmartObservable<BiFunction<Double, Double, Double>> recombinationMode =
+      new SmartObservable<>(RecombinationMode.ADD.getFunction());
+  private Runnable resynthesizeTrigger = () -> {};
 
   /**
    * Constructor for GenerationState. As opposed to {@link ControllersState} this holds state for Signal Generation data.
    *
-   * @param controllersState the controllers state containing waveform information
    */
-  public GenerationState(ControllersState controllersState) {
-    this.wave1 = controllersState.getWaveform1();
-    this.wave2 = controllersState.getWaveform2();
-    controllersState.setResynthesizeTrigger(
-        () -> regenSeriesData(AppConstants.duration.getValue()));
-    resultSeries = controllersState.getResultData();
-
-    setupObservers(controllersState);
+  public GenerationState(WavesRegister wave1, WavesRegister wave2) {
+    resynthesizeTrigger = () -> regenSeriesData(AppConstants.duration.getValue());
+    this.wave1 = wave1;
+    this.wave2 = wave2;
+    setupObservers();
+    synthModeObservable.fireEvents();
   }
 
   /**
    * Sets up observers to listen for changes in the controllers state. Such as changed Synthesizer mode on the ui
    *
-   * @param controllersState the controllers state to observe
    */
-  private void setupObservers(ControllersState controllersState) {
+  private void setupObservers() {
     AppConstants.duration.addObserver(this::regenSeriesData);
 
-    controllersState
-        .getModIndex()
+    modIndex
         .addObserver(
             (index) -> {
               synthesis.setModulationIndex(index);
               regenSeriesData(AppConstants.duration.getValue());
             });
 
-    controllersState
-        .getSynthModeObservable()
+    synthModeObservable
         .addObserver(
             (mode) -> {
               synthesis =
@@ -67,22 +71,12 @@ public class GenerationState {
               regenSeriesData(AppConstants.duration.getValue());
             });
 
-    controllersState
-        .getRecombinationMode()
+    recombinationMode
         .addObserver(
             (mode) -> {
               synthesis.setRecombinationMode(mode);
               regenSeriesData(AppConstants.duration.getValue());
             });
-  }
-
-  /**
-   * Initializes the synthesis process with a default on {@link IndependentSynthesis} after construction.
-   */
-  @PostConstruct
-  public void init() {
-    synthesis = new IndependentSynthesis(this);
-    regenSeriesData(AppConstants.duration.getValue());
   }
 
   /**

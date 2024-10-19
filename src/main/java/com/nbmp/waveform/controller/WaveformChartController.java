@@ -33,15 +33,15 @@ public class WaveformChartController {
    */
   @FXML
   public void initialize() {
-    var waveForm1 = state.getWaveform1();
-    var waveForm2 = state.getWaveform2();
+    var waveForm1 = state.getGenState().getWave1();
+    var waveForm2 = state.getGenState().getWave2();
 
     waveformChart.getData().add(waveForm1.getSeries());
     waveformChart2.getData().add(waveForm2.getSeries());
-    resultChart.getData().add(state.getResultData().getSeries());
+    resultChart.getData().add(state.getGenState().getResultSeries().getSeries());
     waveForm1.getSeries().nodeProperty().get().setId(waveForm1.getName());
     waveForm2.getSeries().nodeProperty().get().setId(waveForm2.getName());
-    state.getResultData().getSeries().setName("Combination Result");
-    state.getResultData().getSeries().nodeProperty().get().setId("resultChart");
+    state.getGenState().getResultSeries().getSeries().setName("Combination Result");
+    state.getGenState().getResultSeries().getSeries().nodeProperty().get().setId("resultChart");
   }
 }
