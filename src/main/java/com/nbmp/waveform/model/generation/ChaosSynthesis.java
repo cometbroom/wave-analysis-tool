@@ -5,13 +5,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-import com.nbmp.waveform.model.dto.BiTimeSeries;
-import com.nbmp.waveform.model.dto.RecombinationMode;
-import com.nbmp.waveform.model.dto.Signal;
-import com.nbmp.waveform.model.dto.SynthesisMode;
-import com.nbmp.waveform.model.filter.HighPassFilters;
-import com.nbmp.waveform.model.filter.LowPassFilters;
-import com.nbmp.waveform.model.utils.WaveStatUtils;
+import com.nbmp.waveform.model.dto.*;
 import com.nbmp.waveform.model.waveform.Waveform;
 
 import lombok.Setter;
@@ -37,7 +31,7 @@ public class ChaosSynthesis implements Synthesis {
   public ChaosSynthesis(GenerationState state, SynthesisMode mode) {
     this.state = state;
     modFunctionSwitcher(mode);
-//    this.modulationFunction = modulationFunction;
+    //    this.modulationFunction = modulationFunction;
   }
 
   /**
@@ -54,30 +48,33 @@ public class ChaosSynthesis implements Synthesis {
 
     Waveform waveform1 = state.getWave1().getWaveform(), waveform2 = state.getWave2().getWaveform();
 
-    Signal signal1 = new Signal(sampleCount),
-        signal2 = new Signal(sampleCount),
-        result = new Signal(sampleCount);
+    state.getReactor().addWave1(waveform1::compute, 0, 1);
+    //    state.getReactor().getSectionTasks().put(StreamReactor.Section.START, waveform1::compute);
+    //    state.getReactor().getSectionTasks().put(StreamReactor.Section.START, waveform2::compute);
 
-    signal1.addPoint(0.0, waveform1.compute(timeStep));
-    signal2.addPoint(0.0, waveform2.compute(timeStep));
+    state.getReactor().addWave2(waveform2::compute, 0, 1);
     modulationFunction.accept(waveform1, waveform2);
 
-    for (int i = 1; i < sampleCount; i++) {
-      signal1.addPoint(t, waveform1.compute(timeStep));
-      signal2.addPoint(t, waveform2.compute(timeStep));
-      result.addPoint(t, recombinationMode.apply(signal1.getAmplitude(i), signal2.getAmplitude(i)));
-      t += timeStep;
-    }
-    var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
+    state.getReactor().addWave1(waveform1::compute, 1, getSampleCount(duration));
+    state.getReactor().addWave2(waveform2::compute, 1, getSampleCount(duration));
+    state
+        .getReactor()
+        .addResultWave(
+            (time) -> recombinationMode.apply(waveform1.compute(time), waveform2.compute(time)),
+            0,
+            getSampleCount(duration));
 
-    signalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
-    signalProcessor.applyEffect(HighPassFilters::removeDcOffset);
-    signalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
-    signalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
+    //    state.getResultSeries().refreshData();
+
+    //    var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
+    //
+    //    signalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
+    //    signalProcessor.applyEffect(HighPassFilters::removeDcOffset);
+    //    signalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
+    //    signalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
 
     resetWaveforms();
-    state.getResultSeries().refreshData(result.getTimeAmplitude());
-    return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
+    return new BiTimeSeries(null, null);
   }
 
   private void modFunctionSwitcher(SynthesisMode mode) {

@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.view;
 
+import com.nbmp.waveform.model.generation.StreamReactor;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.controller.WaveController;
@@ -12,30 +13,42 @@ import com.nbmp.waveform.model.waveform.Waveform;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 @Getter
 @Setter
 public class WavesRegister {
   private final Waveform waveform;
   private final XYChart.Series<Number, Number> series;
   public static final int VIEW_RESOLUTION = Math.min(500, Generator.SAMPLE_RATE / 2);
+  @Autowired private StreamReactor reactor;
 
   private WavesRegister modulator;
   private String name = "";
 
-  public static WavesRegister createWaveform(
-      String name, WaveController.WaveType type, double frequency, double amplitude) {
-    var series = new XYChart.Series<Number, Number>();
-    WavesRegister waveRegister =
+  public WavesRegister(String name, WaveController.WaveType type, double frequency, double amplitude) {
+    this.series = new XYChart.Series<Number, Number>();
+    this.waveform =
         switch (type) {
-          case SINE -> new WavesRegister(new SineWaveform(frequency, amplitude), series);
+          case SINE -> new SineWaveform(frequency, amplitude);
           case SQUARE, TRIANGLE, SAWTOOTH -> throw new IllegalArgumentException(
               "Wave type not supported");
         };
-    waveRegister.name = name;
+    this.name = name;
     series.setName(name);
-    return waveRegister;
+  }
+
+  public void refreshData() {
+    var viewResolutionDuration = VIEW_RESOLUTION * (WaveController.duration.get() / 1000);
+    int step = Math.max(viewResolutionDuration, 1);
+
+    series.getData().clear();
+    reactor.getStream().buffer(step).subscribe(
+        buffer -> {
+          var lastBuffer = buffer.getFirst();
+          series.getData().add(new XYChart.Data<>(lastBuffer.time(), this.name.contains("1") ? lastBuffer.wave1() : lastBuffer.wave2()));
+        });
   }
 
   public void addData(double[][] data) {
