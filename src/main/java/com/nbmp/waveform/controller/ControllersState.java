@@ -1,11 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller;
 
-import java.util.function.BiFunction;
-
-import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.SynthesisMode;
-import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.model.generation.GenerationState;
 import com.nbmp.waveform.view.WavesRegister;
 

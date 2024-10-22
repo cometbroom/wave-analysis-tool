@@ -37,7 +37,7 @@ public class ChaosSynthesis implements Synthesis {
   public ChaosSynthesis(GenerationState state, SynthesisMode mode) {
     this.state = state;
     modFunctionSwitcher(mode);
-//    this.modulationFunction = modulationFunction;
+    //    this.modulationFunction = modulationFunction;
   }
 
   /**
