@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller;
 
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.nbmp.waveform.application.GenerationScope;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +41,16 @@ public class WaveformChartController {
 
     waveformChart.getData().add(waveForm1.getSeries());
     waveformChart2.getData().add(waveForm2.getSeries());
+    waveForm1
+        .getSeries()
+        .getData()
+        .addListener(
+            (ListChangeListener<XYChart.Data<Number, Number>>)
+                c -> {
+                  if (c.next() && c.wasRemoved()) {
+                    GenerationScope.refreshScope();
+                  }
+                });
     resultChart.getData().add(state.getGenState().getResultSeries().getSeries());
     waveForm1.getSeries().nodeProperty().get().setId(waveForm1.getName());
     waveForm2.getSeries().nodeProperty().get().setId(waveForm2.getName());

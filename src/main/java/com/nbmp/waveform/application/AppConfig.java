@@ -14,8 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import com.nbmp.waveform.controller.ControllersState;
-import com.nbmp.waveform.model.generation.GenerationState;
+import com.nbmp.waveform.model.pipeline.SreamPipeline;
 
 /**
  * Configuration class for the application context and bean definitions.
@@ -55,10 +54,8 @@ public class AppConfig {
    * @return a new instance of ControllersState
    */
   @Bean
-  @Scope("singleton")
-  public ControllersState controllersState() {
-    return ControllersState.createInstance(
-        WavesRegister.createWaveform("sine1", WaveController.WaveType.SINE, 5, 1),
-        WavesRegister.createWaveform("sine2", WaveController.WaveType.SINE, 5, 1));
+  @Scope("generation")
+  public SreamPipeline pipeline() {
+    return new SreamPipeline(AppConstants.SAMPLE_RATE * AppConstants.duration.getValue());
   }
 }

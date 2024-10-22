@@ -7,7 +7,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +25,10 @@ public class AppRun extends Application {
    */
   @Override
   public void init() {
-    ApplicationContext springContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    AnnotationConfigApplicationContext springContext = new AnnotationConfigApplicationContext();
+    springContext.getBeanFactory().registerScope("generation", new GenerationScope());
+    springContext.register(AppConfig.class);
+    springContext.refresh();
     springContext.getAutowireCapableBeanFactory().autowireBean(this);
   }
 
