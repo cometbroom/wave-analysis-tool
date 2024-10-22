@@ -2,9 +2,6 @@
 package com.nbmp.waveform.application;
 
 import java.io.IOException;
-
-import com.nbmp.waveform.controller.WaveController;
-import com.nbmp.waveform.view.WavesRegister;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 

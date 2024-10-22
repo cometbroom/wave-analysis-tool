@@ -1,7 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
-import javax.annotation.PostConstruct;
+import java.util.function.BiFunction;
 
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.controller.ControllersState;
@@ -14,8 +14,6 @@ import com.nbmp.waveform.view.WavesRegister;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.function.BiFunction;
-
 /**
  * Class representing the generation and synthesis state for waveforms.
  */
@@ -25,7 +23,8 @@ public class GenerationState {
   private WavesRegister wave1, wave2;
   private Synthesis synthesis;
   private TimeSeries resultSeries = new TimeSeries();
-  private SmartObservable<SynthesisMode> synthModeObservable = new SmartObservable<>(SynthesisMode.INDEPENDENT);
+  private SmartObservable<SynthesisMode> synthModeObservable =
+      new SmartObservable<>(SynthesisMode.INDEPENDENT);
   private SmartObservable<Double> modIndex = new SmartObservable<>(0.0);
   private SmartObservable<BiFunction<Double, Double, Double>> recombinationMode =
       new SmartObservable<>(RecombinationMode.ADD.getFunction());
@@ -50,33 +49,29 @@ public class GenerationState {
   private void setupObservers() {
     AppConstants.duration.addObserver(this::regenSeriesData);
 
-    modIndex
-        .addObserver(
-            (index) -> {
-              synthesis.setModulationIndex(index);
-              regenSeriesData(AppConstants.duration.getValue());
-            });
+    modIndex.addObserver(
+        (index) -> {
+          synthesis.setModulationIndex(index);
+          regenSeriesData(AppConstants.duration.getValue());
+        });
 
-    synthModeObservable
-        .addObserver(
-            (mode) -> {
-              synthesis =
-                  switch (mode) {
-                    case INDEPENDENT -> new IndependentSynthesis(this);
-                    case CHAOS_TWO_WAY_FM -> new ChaosSynthesis(this, mode);
-                    case CHAOS_INDEPENDENT_SELF_MOD_FM -> new ChaosSynthesis(
-                        this, mode);
-                    case FM_WAVE1MOD_WAVE2CARRIER -> new FMSynthesis(this);
-                  };
-              regenSeriesData(AppConstants.duration.getValue());
-            });
+    synthModeObservable.addObserver(
+        (mode) -> {
+          synthesis =
+              switch (mode) {
+                case INDEPENDENT -> new IndependentSynthesis(this);
+                case CHAOS_TWO_WAY_FM -> new ChaosSynthesis(this, mode);
+                case CHAOS_INDEPENDENT_SELF_MOD_FM -> new ChaosSynthesis(this, mode);
+                case FM_WAVE1MOD_WAVE2CARRIER -> new FMSynthesis(this);
+              };
+          regenSeriesData(AppConstants.duration.getValue());
+        });
 
-    recombinationMode
-        .addObserver(
-            (mode) -> {
-              synthesis.setRecombinationMode(mode);
-              regenSeriesData(AppConstants.duration.getValue());
-            });
+    recombinationMode.addObserver(
+        (mode) -> {
+          synthesis.setRecombinationMode(mode);
+          regenSeriesData(AppConstants.duration.getValue());
+        });
   }
 
   /**
