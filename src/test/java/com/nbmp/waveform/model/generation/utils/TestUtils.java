@@ -30,8 +30,8 @@ public class TestUtils {
     when(wave2.getWaveform()).thenReturn(waveform2);
     when(waveform1.getProps()).thenReturn(waveProps);
     when(waveform2.getProps()).thenReturn(waveProps);
-    when(stateMock.getWave1()).thenReturn(wave1);
-    when(stateMock.getWave2()).thenReturn(wave2);
+    when(stateMock.getWave1()).thenReturn(waveform1);
+    when(stateMock.getWave2()).thenReturn(waveform2);
     when(stateMock.getResultSeries()).thenReturn(resultSerise);
     when(waveform1.compute(1.0 / AppConstants.SAMPLE_RATE)).thenReturn(amplitudeWave1);
     when(waveform2.compute(1.0 / AppConstants.SAMPLE_RATE)).thenReturn(amplitudeWave2);

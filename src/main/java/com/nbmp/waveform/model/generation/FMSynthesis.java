@@ -1,10 +1,10 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
-import java.util.function.BiFunction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.model.dto.BiTimeSeries;
-import com.nbmp.waveform.model.dto.RecombinationMode;
+import com.nbmp.waveform.controller.ControllersState;
 import com.nbmp.waveform.model.dto.Signal;
 
 import lombok.RequiredArgsConstructor;
@@ -15,13 +15,12 @@ import lombok.Setter;
  */
 @RequiredArgsConstructor
 @Setter
+@Component("FMSynthesis")
 public class FMSynthesis implements Synthesis {
   /** Modulation index. */
-  private double k = 2;
+  @Autowired private GenerationState state;
 
-  private final GenerationState state;
-  private BiFunction<Double, Double, Double> recombinationMode =
-      RecombinationMode.ADD.getFunction();
+  @Autowired private ControllersState controllersState;
 
   /**
    * Computes the waveform for the given duration.
@@ -30,7 +29,9 @@ public class FMSynthesis implements Synthesis {
    * @return a BiTimeSeries representing the generated waveform
    */
   @Override
-  public BiTimeSeries compute(int duration) {
+  public void compute(int duration) {
+    var recombinationMode = state.getRecombinationMode();
+    double k = state.getModulationIndex();
     int sampleCount = getSampleCount(duration);
 
     double timeStep = 1.0 / Generator.SAMPLE_RATE;
@@ -39,8 +40,8 @@ public class FMSynthesis implements Synthesis {
           double t = 0.0;
         };
 
-    var waveform1 = state.getWave1().getWaveform();
-    var waveform2 = state.getWave2().getWaveform();
+    var waveform1 = state.getWave1();
+    var waveform2 = state.getWave2();
 
     var signal1 = new Signal(sampleCount);
     var signal2 = new Signal(sampleCount);
@@ -48,33 +49,29 @@ public class FMSynthesis implements Synthesis {
 
     signal1.addPoint(0.0, waveform1.compute(timeStep));
     signal2.addPoint(0.0, waveform2.compute(timeStep));
-    waveform2.getProps().setModulationIndex(k);
-    waveform2.getProps().setModulatorCompute(waveform1::compute);
 
     for (int i = 1; i < sampleCount; i++) {
-      signal1.addPoint(refTime.t, waveform1.compute(timeStep));
+      var wave1Amplitude = waveform1.compute(timeStep);
+      signal1.addPoint(refTime.t, wave1Amplitude);
+      waveform2.getProps().setDeltaFFmMod(wave1Amplitude * k);
       signal2.addPoint(refTime.t, waveform2.compute(timeStep));
       result.addPoint(
           refTime.t, recombinationMode.apply(signal1.getAmplitude(i), signal2.getAmplitude(i)));
       refTime.t += timeStep;
     }
     resetWaveforms();
-    state.getResultSeries().refreshData(result.getTimeAmplitude());
-    return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
-  }
-
-  @Override
-  public void setModulationIndex(double index) {
-    this.k = index;
+    controllersState.getView1().refreshData(signal1.getTimeAmplitude());
+    controllersState.getView2().refreshData(signal2.getTimeAmplitude());
+    controllersState.getResultView().refreshData(result.getTimeAmplitude());
   }
 
   /**
    * Resets the waveforms to their initial state.
    */
   private void resetWaveforms() {
-    state.getWave1().getWaveform().getProps().resetModulations();
-    state.getWave2().getWaveform().getProps().resetModulations();
-    state.getWave1().getWaveform().setCumulativePhaseRadians(0);
-    state.getWave2().getWaveform().setCumulativePhaseRadians(0);
+    state.getWave1().getProps().resetModulations();
+    state.getWave2().getProps().resetModulations();
+    state.getWave1().setCumulativePhaseRadians(0);
+    state.getWave2().setCumulativePhaseRadians(0);
   }
 }

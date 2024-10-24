@@ -1,43 +1,39 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
+import javax.annotation.PostConstruct;
 
-import com.nbmp.waveform.model.dto.BiTimeSeries;
-import com.nbmp.waveform.model.dto.RecombinationMode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.nbmp.waveform.application.AppConstants;
+import com.nbmp.waveform.controller.ControllersState;
 import com.nbmp.waveform.model.dto.Signal;
-import com.nbmp.waveform.model.dto.SynthesisMode;
 import com.nbmp.waveform.model.filter.HighPassFilters;
 import com.nbmp.waveform.model.filter.LowPassFilters;
 import com.nbmp.waveform.model.utils.WaveStatUtils;
 import com.nbmp.waveform.model.waveform.Waveform;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class representing chaotic waveform synthesis.
  */
+@Slf4j
+@Component("ChaosSynthesis")
 @Setter
 public class ChaosSynthesis implements Synthesis {
   /** Modulation index, AKA magnitude of the modulation. */
-  private static AtomicReference<Double> k = new AtomicReference<>(0.3);
+  @Autowired private GenerationState state;
 
-  private final GenerationState state;
-  private BiFunction<Double, Double, Double> recombinationMode =
-      RecombinationMode.ADD.getFunction();
-  private BiConsumer<Waveform, Waveform> modulationFunction;
+  @Autowired private ControllersState controllersState;
+  protected BiConsumer<Waveform, Waveform> modulationFunction;
 
-  /**
-   * Constructor for ChaosSynthesis.
-   *
-   * @param state the generation state
-   */
-  public ChaosSynthesis(GenerationState state, SynthesisMode mode) {
-    this.state = state;
-    modFunctionSwitcher(mode);
-    //    this.modulationFunction = modulationFunction;
+  @PostConstruct
+  public void init() {
+    this.modulationFunction = this::twoWayFM;
   }
 
   /**
@@ -47,46 +43,41 @@ public class ChaosSynthesis implements Synthesis {
    * @return a BiTimeSeries representing the generated waveform
    */
   @Override
-  public BiTimeSeries compute(int duration) {
-    int sampleCount = getSampleCount(duration);
+  public void compute(int duration) {
+    Signal signal1 = new Signal(AppConstants.getSampleCount()),
+        signal2 = new Signal(AppConstants.getSampleCount()),
+        result = new Signal(AppConstants.getSampleCount());
 
-    double t = 0.0, timeStep = 1.0 / Generator.SAMPLE_RATE;
+    var pipeline = state.getPipeline().getObject();
 
-    Waveform waveform1 = state.getWave1().getWaveform(), waveform2 = state.getWave2().getWaveform();
+    pipeline.addObserver(
+        (i) -> {
+          var recombinationMode = state.getRecombinationMode();
+          double wave1Amplitude = state.getWave1().compute(AppConstants.TIME_STEP);
+          double wave2Amplitude = state.getWave2().compute(AppConstants.TIME_STEP);
+          double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
+          pipeline.addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
+          signal1.addPoint(i, wave1Amplitude);
+          signal2.addPoint(i, wave2Amplitude);
+          result.addPoint(i, recombination);
+        });
+    pipeline.runFor(1);
+    modulationFunction.accept(state.getWave1(), state.getWave2());
+    pipeline.resume();
 
-    Signal signal1 = new Signal(sampleCount),
-        signal2 = new Signal(sampleCount),
-        result = new Signal(sampleCount);
-
-    signal1.addPoint(0.0, waveform1.compute(timeStep));
-    signal2.addPoint(0.0, waveform2.compute(timeStep));
-    modulationFunction.accept(waveform1, waveform2);
-
-    for (int i = 1; i < sampleCount; i++) {
-      signal1.addPoint(t, waveform1.compute(timeStep));
-      signal2.addPoint(t, waveform2.compute(timeStep));
-      result.addPoint(t, recombinationMode.apply(signal1.getAmplitude(i), signal2.getAmplitude(i)));
-      t += timeStep;
-    }
     var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
-
     signalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
     signalProcessor.applyEffect(HighPassFilters::removeDcOffset);
     signalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
     signalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
-
+    pipeline.getClockStream().getObservers().clear();
+    pipeline.addObserver(
+        (i) -> {
+          pipeline.addOutputs(
+              i, signal1.getAmplitude(i), signal2.getAmplitude(i), result.getAmplitude(i));
+        });
+    pipeline.run();
     resetWaveforms();
-    state.getResultSeries().refreshData(result.getTimeAmplitude());
-    return new BiTimeSeries(signal1.getTimeAmplitude(), signal2.getTimeAmplitude());
-  }
-
-  private void modFunctionSwitcher(SynthesisMode mode) {
-    modulationFunction =
-        switch (mode) {
-          case CHAOS_TWO_WAY_FM -> this::twoWayFM;
-          case CHAOS_INDEPENDENT_SELF_MOD_FM -> this::singleSelfFM;
-          default -> modulationFunction;
-        };
   }
 
   /**
@@ -98,10 +89,12 @@ public class ChaosSynthesis implements Synthesis {
   public void twoWayFM(Waveform wave1, Waveform wave2) {
     wave2
         .getProps()
-        .setPhaseModulation((phi) -> phi + wave1.getCompressedPreviousAmplitude() * k.get());
+        .setPhaseModulation(
+            (phi) -> phi + wave1.getCompressedPreviousAmplitude() * state.getModulationIndex());
     wave1
         .getProps()
-        .setPhaseModulation((phi) -> phi + wave2.getCompressedPreviousAmplitude() * k.get());
+        .setPhaseModulation(
+            (phi) -> phi + wave2.getCompressedPreviousAmplitude() * state.getModulationIndex());
   }
 
   /**
@@ -113,24 +106,21 @@ public class ChaosSynthesis implements Synthesis {
   public void singleSelfFM(Waveform wave1, Waveform wave2) {
     wave2
         .getProps()
-        .setPhaseModulation((phi) -> phi + wave2.getCompressedPreviousAmplitude() * k.get());
+        .setPhaseModulation(
+            (phi) -> phi + wave2.getCompressedPreviousAmplitude() * state.getModulationIndex());
     wave1
         .getProps()
-        .setPhaseModulation((phi) -> phi + wave1.getCompressedPreviousAmplitude() * k.get());
-  }
-
-  @Override
-  public void setModulationIndex(double index) {
-    k.set(index);
+        .setPhaseModulation(
+            (phi) -> phi + wave1.getCompressedPreviousAmplitude() * state.getModulationIndex());
   }
 
   /**
    * Resets the waveforms to their initial state.
    */
   private void resetWaveforms() {
-    state.getWave1().getWaveform().getProps().resetModulations();
-    state.getWave2().getWaveform().getProps().resetModulations();
-    state.getWave1().getWaveform().setCumulativePhaseRadians(0);
-    state.getWave2().getWaveform().setCumulativePhaseRadians(0);
+    state.getWave1().getProps().resetModulations();
+    state.getWave2().getProps().resetModulations();
+    state.getWave1().setCumulativePhaseRadians(0);
+    state.getWave2().setCumulativePhaseRadians(0);
   }
 }

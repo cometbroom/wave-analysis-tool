@@ -2,8 +2,13 @@
 package com.nbmp.waveform.model.generation;
 
 import java.util.function.BiFunction;
+import javax.annotation.PostConstruct;
 
-import com.nbmp.waveform.model.dto.BiTimeSeries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.nbmp.waveform.application.AppConstants;
+import com.nbmp.waveform.controller.ControllersState;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,9 +18,17 @@ import lombok.Setter;
  */
 @RequiredArgsConstructor
 @Setter
+@Component("IndependentSynthesis")
 public class IndependentSynthesis implements Synthesis {
-  private final GenerationState state;
-  private BiFunction<Double, Double, Double> recombinationMode = (a, b) -> a;
+  @Autowired private GenerationState state;
+  @Autowired private ControllersState controllersState;
+
+  private BiFunction<Double, Double, Double> recombinationMode;
+
+  @PostConstruct
+  public void init() {
+    this.recombinationMode = state.getRecombinationMode();
+  }
 
   /**
    * Computes the waveform for the given duration. No modulation is applied.
@@ -23,28 +36,22 @@ public class IndependentSynthesis implements Synthesis {
    * @param duration the duration for which the waveform is to be generated
    * @return a BiTimeSeries representing the generated waveform
    */
-  public BiTimeSeries compute(int duration) {
-    int sampleCount = getSampleCount(duration);
-    double timeStep = 1.0 / Generator.SAMPLE_RATE;
-    double t = 0;
-
-    var waveform1 = state.getWave1().getWaveform();
-    var waveform2 = state.getWave2().getWaveform();
-
-    double[][] wave1Gen = new double[sampleCount][2];
-    double[][] wave2Gen = new double[sampleCount][2];
-
-    for (int i = 0; i < sampleCount; i++) {
-      wave2Gen[i] = waveform2.computeTY(t);
-      wave1Gen[i] = waveform1.computeTY(t);
-
-      t += timeStep;
-    }
-    waveform1.setCumulativePhaseRadians(0);
-    waveform2.setCumulativePhaseRadians(0);
-    return new BiTimeSeries(wave1Gen, wave2Gen);
-  }
-
   @Override
-  public void setModulationIndex(double index) {}
+  public void compute(int duration) {
+    state
+        .getPipeline()
+        .getObject()
+        .addObserver(
+            (i) -> {
+              var recombinationMode = state.getRecombinationMode();
+              double wave1Amplitude = state.getWave1().compute(AppConstants.TIME_STEP);
+              double wave2Amplitude = state.getWave2().compute(AppConstants.TIME_STEP);
+              double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
+              state
+                  .getPipeline()
+                  .getObject()
+                  .addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
+            });
+    state.getPipeline().getObject().run();
+  }
 }

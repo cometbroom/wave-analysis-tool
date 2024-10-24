@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.generation;
+package com.nbmp.waveform.model.utils;
 
 public class GenConstants {
   public static final int AMPLITUDE = 1;

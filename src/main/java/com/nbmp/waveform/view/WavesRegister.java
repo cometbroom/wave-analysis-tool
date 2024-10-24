@@ -1,11 +1,12 @@
 /* (C)2024 */
 package com.nbmp.waveform.view;
 
+import java.util.List;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.controller.WaveController;
-import com.nbmp.waveform.model.generation.GenConstants;
 import com.nbmp.waveform.model.generation.Generator;
+import com.nbmp.waveform.model.utils.GenConstants;
 import com.nbmp.waveform.model.waveform.SineWaveform;
 import com.nbmp.waveform.model.waveform.Waveform;
 
@@ -18,11 +19,16 @@ import lombok.Setter;
 @Setter
 public class WavesRegister {
   private final Waveform waveform;
+  private List<Waveform> waves;
   private final XYChart.Series<Number, Number> series;
   public static final int VIEW_RESOLUTION = Math.min(500, Generator.SAMPLE_RATE / 2);
 
   private WavesRegister modulator;
   private String name = "";
+
+  public void addWave(Waveform wave) {
+    waves.add(wave);
+  }
 
   public static WavesRegister createWaveform(
       String name, WaveController.WaveType type, double frequency, double amplitude) {

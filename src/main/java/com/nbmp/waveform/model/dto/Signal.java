@@ -5,8 +5,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.nbmp.waveform.application.AppConstants;
-import com.nbmp.waveform.model.generation.GenConstants;
 import com.nbmp.waveform.model.generation.Generator;
+import com.nbmp.waveform.model.utils.GenConstants;
 
 import lombok.Getter;
 import lombok.Setter;

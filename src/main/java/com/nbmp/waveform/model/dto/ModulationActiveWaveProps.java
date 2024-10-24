@@ -11,8 +11,7 @@ import lombok.Setter;
 public class ModulationActiveWaveProps extends WaveProps {
   private Function<Double, Double> frequencyModulation, amplitudeModulation, phaseModulation;
   private Function<Double, Double> omega;
-  private Function<Double, Double> modulatorCompute = (t) -> 0.0;
-  private double modulationIndex = 0.0;
+  private double deltaFFmMod = 0.0;
 
   public ModulationActiveWaveProps(double frequency, double amplitude, double initialPhase) {
     super(frequency, amplitude, initialPhase);

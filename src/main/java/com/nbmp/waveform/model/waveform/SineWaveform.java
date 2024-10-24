@@ -20,7 +20,9 @@ public class SineWaveform extends Waveform {
   @Override
   public Double compute(Double timeStep) {
     var cumulativePhase = integratePhase(timeStep);
-    previousAmplitude = props.getAmplitude() * Math.sin(cumulativePhase + props.getInitialPhase());
+    previousAmplitude =
+        props.getAmplitude()
+            * Math.sin(cumulativePhase + props.getInitialPhase() + props.getDeltaFFmMod());
     return previousAmplitude;
   }
 
@@ -30,9 +32,8 @@ public class SineWaveform extends Waveform {
    * @return integrated phase value which contains any frequency changes. Modulation is not integrated here as it's already integrated in the original waveform.
    */
   public double integratePhase(double t) {
-    double deltaf = props.getModulatorCompute().apply(t) * props.getModulationIndex();
     currentPhase += props.getOmega().apply(props.getFrequency()) * t;
     currentPhase = currentPhase % (2 * Math.PI);
-    return currentPhase + deltaf;
+    return currentPhase;
   }
 }

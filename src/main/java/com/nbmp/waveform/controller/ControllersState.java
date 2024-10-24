@@ -1,9 +1,16 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller;
 
-import com.nbmp.waveform.model.dto.SynthesisMode;
-import com.nbmp.waveform.model.generation.GenerationState;
-import com.nbmp.waveform.view.WavesRegister;
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.nbmp.waveform.application.AppConstants;
+import com.nbmp.waveform.model.pipeline.StreamReactor;
+import com.nbmp.waveform.view.ChartView;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,26 +20,33 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Service
+@Scope("singleton")
 public class ControllersState {
-  private GenerationState genState;
+  @Autowired private ObjectFactory<StreamReactor> pipeline;
+  private ChartView view1 = new ChartView(), view2 = new ChartView(), resultView = new ChartView();
 
-  /**
-   * Creates an instance of ControllersState with default waveforms. More options will be provided here
-   *
-   * @return a new ControllersState instance
-   */
-  public static ControllersState createInstance(WavesRegister wave1, WavesRegister wave2) {
-    var instance = new ControllersState();
-    instance.genState = new GenerationState(wave1, wave2);
-    return instance;
+  @PostConstruct
+  public void init() {
+    view1.init("sine1");
+    view2.init("sine2");
+    resultView.init("Combination Result");
+    pipeline
+        .getObject()
+        .onStart(
+            () -> {
+              view1.getData().clear();
+              view2.getData().clear();
+              resultView.getData().clear();
+            });
+    pipeline.getObject().addOutStreamObserver(this::addPoints);
   }
 
-  /**
-   * Changes the synthesis mode and updates the observable value.
-   *
-   * @param mode the new synthesis mode to be set
-   */
-  public void changeSynthesisMode(SynthesisMode mode) {
-    genState.getSynthModeObservable().setValue(mode);
+  public void addPoints(int i, double value1, double value2, double result) {
+    if (i % AppConstants.VIEW_STEP == 0) {
+      view1.addPoint(i, value1);
+      view2.addPoint(i, value2);
+      resultView.addPoint(i, result);
+    }
   }
 }
