@@ -14,12 +14,8 @@ public class WaveStatUtils extends UtilMethods {
     double min = StatUtils.min(amplitudeArray);
     double max = StatUtils.max(amplitudeArray);
     double maxAbs = Math.max(Math.abs(min), Math.abs(max));
-    try {
-      if (maxAbs == 0) {
-        throw new IllegalArgumentException();
-      }
-    } catch (IllegalArgumentException e) {
-      log.warn("Cannot normalize zero signal. Returning array as is.", e);
+    if (maxAbs == 0) {
+      log.warn("Cannot normalize zero signal. Returning array as is.");
       return amplitudeArray;
     }
     double[] normalizedAmplitude = new double[amplitudeArray.length];

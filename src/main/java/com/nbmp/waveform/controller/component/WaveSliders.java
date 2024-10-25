@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+import com.nbmp.waveform.model.waveform.Waveform;
 import com.nbmp.waveform.view.WavesRegister;
 
 import lombok.Getter;
@@ -50,6 +51,10 @@ public class WaveSliders extends HBox implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {}
 
   public void setupSliders(WavesRegister waveform, Consumer<Double> refreshTask) {
+    setupSliders(waveform.getWaveform(), refreshTask);
+  }
+
+  public void setupSliders(Waveform waveform, Consumer<Double> refreshTask) {
     amplitudeSlider.addListenerForTarget(waveform, WaveLabeledSlider.Target.AMPLITUDE);
     amplitudeSlider.setRefreshTask(refreshTask);
     frequencySlider.addListenerForTarget(waveform, WaveLabeledSlider.Target.FREQUENCY);

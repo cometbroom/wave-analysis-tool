@@ -54,6 +54,10 @@ public class SmartObservable<T> {
     observers.add(observer);
   }
 
+  public void removeObserver(Observer<T> observer) {
+    observers.remove(observer);
+  }
+
   /**
    * Interface representing an observer that listens for value updates.
    *

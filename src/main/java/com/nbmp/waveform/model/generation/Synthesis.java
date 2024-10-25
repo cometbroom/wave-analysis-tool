@@ -1,10 +1,6 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
-import java.util.function.BiFunction;
-
-import com.nbmp.waveform.model.dto.BiTimeSeries;
-
 /**
  * Interface representing the synthesis process for generating waveforms.
  */
@@ -16,21 +12,7 @@ public interface Synthesis {
    * @param duration the duration for which the waveform is to be generated
    * @return a BiTimeSeries representing the generated waveform
    */
-  BiTimeSeries compute(int duration);
-
-  /**
-   * Sets the modulation index (Magnitude of modulation) for the synthesis.
-   *
-   * @param index the modulation index to be set
-   */
-  void setModulationIndex(double index);
-
-  /**
-   * Sets the recombination mode for waveform synthesis.
-   *
-   * @param mode the recombination mode as a BiFunction for combining two values
-   */
-  void setRecombinationMode(BiFunction<Double, Double, Double> mode);
+  void compute(int duration);
 
   /**
    * Calculates the sample count based on the given duration in milliseconds.

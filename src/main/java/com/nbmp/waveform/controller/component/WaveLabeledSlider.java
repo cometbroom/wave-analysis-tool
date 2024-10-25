@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.controller.component;
 
+import com.nbmp.waveform.model.waveform.Waveform;
 import com.nbmp.waveform.view.WavesRegister;
 
 /**
@@ -32,16 +33,17 @@ public class WaveLabeledSlider extends LabeledSlider {
    * @param target the target property to be controlled by the slider
    */
   public void addListenerForTarget(WavesRegister waveform, Target target) {
+    addListenerForTarget(waveform.getWaveform(), target);
+  }
+
+  public void addListenerForTarget(Waveform waveform, Target target) {
     switch (target) {
-      case FREQUENCY -> addListener(
-          (newValue) -> waveform.getWaveform().getProps().setFrequency(newValue));
+      case FREQUENCY -> addListener((newValue) -> waveform.getProps().setFrequency(newValue));
         // Bound amplitude to 0/1
-      case AMPLITUDE -> addListener(
-          (newValue) -> waveform.getWaveform().getProps().setAmplitude(newValue / max));
+      case AMPLITUDE -> addListener((newValue) -> waveform.getProps().setAmplitude(newValue / max));
         // Bound phase to 0/PI. TODO: Add negative phase support
       case PHASE -> addListener(
-          (newValue) ->
-              waveform.getWaveform().getProps().setInitialPhase((newValue / max) * Math.PI));
+          (newValue) -> waveform.getProps().setInitialPhase((newValue / max) * Math.PI));
     }
   }
 }

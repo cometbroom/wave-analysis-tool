@@ -6,12 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 
-import com.nbmp.waveform.model.pipeline.SreamPipeline;
+import com.nbmp.waveform.model.pipeline.StreamReactor;
 
 /**
  * Configuration class for the application context and bean definitions.
@@ -52,7 +49,7 @@ public class AppConfig {
    */
   @Bean
   @Scope("generation")
-  public SreamPipeline pipeline() {
-    return new SreamPipeline(AppConstants.SAMPLE_RATE * AppConstants.duration.getValue());
+  public StreamReactor pipeline() {
+    return new StreamReactor(AppConstants.getSampleCount());
   }
 }

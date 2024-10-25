@@ -4,7 +4,7 @@ package com.nbmp.waveform.model.dto;
 import javafx.scene.chart.XYChart;
 
 import com.nbmp.waveform.controller.WaveController;
-import com.nbmp.waveform.model.generation.GenConstants;
+import com.nbmp.waveform.model.utils.GenConstants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

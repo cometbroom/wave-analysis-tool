@@ -26,6 +26,15 @@ public abstract class Waveform {
     return new double[] {t, compute(timeStep)};
   }
 
+  public void reset() {
+    cumulativePhaseRadians = 0;
+    mavValue = 0;
+    previousAmplitude = 0;
+    currentPhase = 0;
+    props.setDeltaFFmMod(0);
+    props.resetModulations();
+  }
+
   /**
    * dynamically compresses greater than -1/1 signals
    * @return

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.GenerationScope;
+import com.nbmp.waveform.model.generation.GenerationState;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +29,7 @@ public class WaveformChartController {
   @FXML public LineChart<Number, Number> waveformChart2;
   @FXML public LineChart<Number, Number> resultChart;
   @Autowired private ControllersState state;
-
+  @Autowired private GenerationState genState;
   private XYChart.Series<Number, Number> seriesTemp;
 
   /**
@@ -36,13 +37,11 @@ public class WaveformChartController {
    */
   @FXML
   public void initialize() {
-    var waveForm1 = state.getGenState().getWave1();
-    var waveForm2 = state.getGenState().getWave2();
-
-    waveformChart.getData().add(waveForm1.getSeries());
-    waveformChart2.getData().add(waveForm2.getSeries());
-    waveForm1
-        .getSeries()
+    waveformChart.getData().add(state.getView1().getSeries());
+    waveformChart2.getData().add(state.getView2().getSeries());
+    resultChart.getData().add(state.getResultView().getSeries());
+    state
+        .getView1()
         .getData()
         .addListener(
             (ListChangeListener<XYChart.Data<Number, Number>>)
@@ -51,10 +50,8 @@ public class WaveformChartController {
                     GenerationScope.refreshScope();
                   }
                 });
-    resultChart.getData().add(state.getGenState().getResultSeries().getSeries());
-    waveForm1.getSeries().nodeProperty().get().setId(waveForm1.getName());
-    waveForm2.getSeries().nodeProperty().get().setId(waveForm2.getName());
-    state.getGenState().getResultSeries().getSeries().setName("Combination Result");
-    state.getGenState().getResultSeries().getSeries().nodeProperty().get().setId("resultChart");
+    state.getView1().nodeProperty().get().setId(state.getView1().getName());
+    state.getView2().nodeProperty().get().setId(state.getView2().getName());
+    state.getResultView().nodeProperty().get().setId("resultChart");
   }
 }
