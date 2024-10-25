@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nbmp</groupId>
     <artifactId>wave-analysis-tool</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>Archetype - waveform-experiments</name>
     <url>http://maven.apache.org</url>
 
@@ -316,6 +316,6 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/cometbroom/wave-analysis-tool.git</developerConnection>
-      <tag>v0.0.2-ALPHA</tag>
+      <tag>HEAD</tag>
   </scm>
 </project>
