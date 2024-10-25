@@ -27,13 +27,14 @@ public class StreamReactor {
     this.range = range;
   }
 
-  public void run() {
-    run(0, range);
+  public void resume() {
+    resume(range);
   }
 
-  public void resume() {
-    if (clockStream.getValue() < range) {
-      run(clockStream.getValue(), range);
+  public void resume(int sampleCount) {
+    int newStartIdx = clockStream.getValue() + 1;
+    if (newStartIdx < sampleCount) {
+      run(newStartIdx, sampleCount);
     }
   }
 
@@ -87,7 +88,11 @@ public class StreamReactor {
                     pair.getValue().channel3()));
   }
 
-  private void run(int start, int end) {
+  public void run() {
+    run(0, range);
+  }
+
+  public void run(int start, int end) {
     start();
     for (int i = start; i < end; i++) {
       clockStream.setValue(i);
@@ -100,7 +105,6 @@ public class StreamReactor {
   }
 
   private void start() {
-    clockStream.setValue(0);
     persistentInitObservers.forEach(Observer::onAction);
     nonPersistentInitObservers.forEach(Observer::onAction);
   }

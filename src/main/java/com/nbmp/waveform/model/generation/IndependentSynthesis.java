@@ -39,7 +39,7 @@ public class IndependentSynthesis implements Synthesis {
   @Override
   public void compute(int duration) {
     state
-        .getPipeline()
+        .getReactor()
         .getObject()
         .addObserver(
             (i) -> {
@@ -48,10 +48,10 @@ public class IndependentSynthesis implements Synthesis {
               double wave2Amplitude = state.getWave2().compute(AppConstants.TIME_STEP);
               double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
               state
-                  .getPipeline()
+                  .getReactor()
                   .getObject()
                   .addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
             });
-    state.getPipeline().getObject().run();
+    state.getReactor().getObject().run();
   }
 }

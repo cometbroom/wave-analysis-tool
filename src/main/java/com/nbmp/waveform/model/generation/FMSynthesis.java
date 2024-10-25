@@ -4,7 +4,7 @@ package com.nbmp.waveform.model.generation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.nbmp.waveform.controller.ControllersState;
+import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.model.dto.Signal;
 
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,6 @@ public class FMSynthesis implements Synthesis {
   /** Modulation index. */
   @Autowired private GenerationState state;
 
-  @Autowired private ControllersState controllersState;
-
   /**
    * Computes the waveform for the given duration.
    *
@@ -30,39 +28,32 @@ public class FMSynthesis implements Synthesis {
    */
   @Override
   public void compute(int duration) {
-    var recombinationMode = state.getRecombinationMode();
     double k = state.getModulationIndex();
-    int sampleCount = getSampleCount(duration);
-
-    double timeStep = 1.0 / Generator.SAMPLE_RATE;
-    var refTime =
-        new Object() {
-          double t = 0.0;
-        };
-
     var waveform1 = state.getWave1();
     var waveform2 = state.getWave2();
 
-    var signal1 = new Signal(sampleCount);
-    var signal2 = new Signal(sampleCount);
-    var result = new Signal(sampleCount);
+    var signal1 = new Signal(AppConstants.getSampleCount(duration));
+    var signal2 = new Signal(AppConstants.getSampleCount(duration));
+    var result = new Signal(AppConstants.getSampleCount(duration));
 
-    signal1.addPoint(0.0, waveform1.compute(timeStep));
-    signal2.addPoint(0.0, waveform2.compute(timeStep));
+    signal1.addPoint(0.0, waveform1.compute(AppConstants.TIME_STEP));
+    signal2.addPoint(0.0, waveform2.compute(AppConstants.TIME_STEP));
+    var reactor = state.getReactor().getObject();
+    reactor.addObserver(
+        (i) -> {
+          var recombinationMode = state.getRecombinationMode();
+          double wave1Amplitude = waveform1.compute(AppConstants.TIME_STEP);
+          waveform2.getProps().setDeltaFFmMod(wave1Amplitude * k);
+          double wave2Amplitude = waveform2.compute(AppConstants.TIME_STEP);
+          double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
 
-    for (int i = 1; i < sampleCount; i++) {
-      var wave1Amplitude = waveform1.compute(timeStep);
-      signal1.addPoint(refTime.t, wave1Amplitude);
-      waveform2.getProps().setDeltaFFmMod(wave1Amplitude * k);
-      signal2.addPoint(refTime.t, waveform2.compute(timeStep));
-      result.addPoint(
-          refTime.t, recombinationMode.apply(signal1.getAmplitude(i), signal2.getAmplitude(i)));
-      refTime.t += timeStep;
-    }
+          reactor.addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
+          signal1.addPoint(i, wave1Amplitude);
+          signal2.addPoint(i, wave2Amplitude);
+          result.addPoint(i, recombination);
+        });
+    reactor.run(0, AppConstants.getSampleCount());
     resetWaveforms();
-    controllersState.getView1().refreshData(signal1.getTimeAmplitude());
-    controllersState.getView2().refreshData(signal2.getTimeAmplitude());
-    controllersState.getResultView().refreshData(result.getTimeAmplitude());
   }
 
   /**

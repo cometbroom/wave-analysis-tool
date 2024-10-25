@@ -28,7 +28,7 @@ import lombok.Setter;
 @Service
 @Scope("singleton")
 public class GenerationState {
-  @Autowired private ObjectFactory<StreamReactor> pipeline;
+  @Autowired private ObjectFactory<StreamReactor> reactor;
   @Autowired private ApplicationContext context;
   private Waveform wave1, wave2;
   private Synthesis synthesis;

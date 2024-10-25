@@ -34,8 +34,12 @@ public class AppConstants {
    * @return the calculated sample count
    */
   public static int getSampleCount() {
+    return getSampleCount(duration.getValue());
+  }
+
+  public static int getSampleCount(int duration) {
     try {
-      double sampleCountDouble = SAMPLE_RATE * duration.getValue() / 1000.0;
+      double sampleCountDouble = SAMPLE_RATE * duration / 1000.0;
       return Math.toIntExact(Math.round(sampleCountDouble));
     } catch (ArithmeticException ex) {
       throw new ArithmeticException("Error occurred while getting sample count");

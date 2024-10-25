@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConstants;
-import com.nbmp.waveform.controller.ControllersState;
 import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.filter.HighPassFilters;
 import com.nbmp.waveform.model.filter.LowPassFilters;
+import com.nbmp.waveform.model.utils.GenConstants;
 import com.nbmp.waveform.model.utils.WaveStatUtils;
 import com.nbmp.waveform.model.waveform.Waveform;
 
@@ -28,7 +28,6 @@ public class ChaosSynthesis implements Synthesis {
   /** Modulation index, AKA magnitude of the modulation. */
   @Autowired private GenerationState state;
 
-  @Autowired private ControllersState controllersState;
   protected BiConsumer<Waveform, Waveform> modulationFunction;
 
   @PostConstruct
@@ -44,11 +43,11 @@ public class ChaosSynthesis implements Synthesis {
    */
   @Override
   public void compute(int duration) {
-    Signal signal1 = new Signal(AppConstants.getSampleCount()),
-        signal2 = new Signal(AppConstants.getSampleCount()),
-        result = new Signal(AppConstants.getSampleCount());
+    Signal signal1 = new Signal(AppConstants.getSampleCount(duration)),
+        signal2 = new Signal(AppConstants.getSampleCount(duration)),
+        result = new Signal(AppConstants.getSampleCount(duration));
 
-    var pipeline = state.getPipeline().getObject();
+    var pipeline = state.getReactor().getObject();
 
     pipeline.addObserver(
         (i) -> {
@@ -61,9 +60,9 @@ public class ChaosSynthesis implements Synthesis {
           signal2.addPoint(i, wave2Amplitude);
           result.addPoint(i, recombination);
         });
-    pipeline.runFor(1);
+    pipeline.runFor(GenConstants.boundValueTo(1, 0, AppConstants.getSampleCount(duration)));
     modulationFunction.accept(state.getWave1(), state.getWave2());
-    pipeline.resume();
+    pipeline.resume(AppConstants.getSampleCount(duration));
 
     var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
     signalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
@@ -76,7 +75,7 @@ public class ChaosSynthesis implements Synthesis {
           pipeline.addOutputs(
               i, signal1.getAmplitude(i), signal2.getAmplitude(i), result.getAmplitude(i));
         });
-    pipeline.run();
+    pipeline.run(0, AppConstants.getSampleCount(duration));
     resetWaveforms();
   }
 
