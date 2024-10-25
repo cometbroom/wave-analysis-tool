@@ -82,5 +82,4 @@ class StreamReactorTest {
       fail("Expected " + RANGE + " invocations, got " + testIdx.intValue());
     }
   }
-
 }

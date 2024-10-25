@@ -47,35 +47,35 @@ public class ChaosSynthesis implements Synthesis {
         signal2 = new Signal(AppConstants.getSampleCount(duration)),
         result = new Signal(AppConstants.getSampleCount(duration));
 
-    var pipeline = state.getReactor().getObject();
+    var reactor = state.getReactor().getObject();
 
-    pipeline.addObserver(
+    reactor.addObserver(
         (i) -> {
           var recombinationMode = state.getRecombinationMode();
           double wave1Amplitude = state.getWave1().compute(AppConstants.TIME_STEP);
           double wave2Amplitude = state.getWave2().compute(AppConstants.TIME_STEP);
           double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
-          pipeline.addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
+          reactor.addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
           signal1.addPoint(i, wave1Amplitude);
           signal2.addPoint(i, wave2Amplitude);
           result.addPoint(i, recombination);
         });
-    pipeline.runFor(GenConstants.boundValueTo(1, 0, AppConstants.getSampleCount(duration)));
+    reactor.runFor(GenConstants.boundValueTo(1, 0, AppConstants.getSampleCount(duration)));
     modulationFunction.accept(state.getWave1(), state.getWave2());
-    pipeline.resume(AppConstants.getSampleCount(duration));
+    reactor.resume(AppConstants.getSampleCount(duration));
 
     var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
     signalProcessor.applyEffect(HighPassFilters::removeDcOffsetMeanTechnique);
     signalProcessor.applyEffect(HighPassFilters::removeDcOffset);
     signalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
     signalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
-    pipeline.getClockStream().getObservers().clear();
-    pipeline.addObserver(
+    reactor.getClockStream().getObservers().clear();
+    reactor.addObserver(
         (i) -> {
-          pipeline.addOutputs(
+          reactor.addOutputs(
               i, signal1.getAmplitude(i), signal2.getAmplitude(i), result.getAmplitude(i));
         });
-    pipeline.run(0, AppConstants.getSampleCount(duration));
+    reactor.run(0, AppConstants.getSampleCount(duration));
     resetWaveforms();
   }
 
