@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.model.utils.RealtimeMethods;
 
 import lombok.Getter;
@@ -21,5 +22,10 @@ public enum RecombinationMode {
 
   public static List<String> getNames() {
     return Arrays.stream(RecombinationMode.class.getEnumConstants()).map(Enum::name).toList();
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("function", function.toString()).toString();
   }
 }

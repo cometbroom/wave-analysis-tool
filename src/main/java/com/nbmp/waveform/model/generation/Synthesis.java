@@ -13,19 +13,4 @@ public interface Synthesis {
    * @return a BiTimeSeries representing the generated waveform
    */
   void compute(int duration);
-
-  /**
-   * Calculates the sample count based on the given duration in milliseconds.
-   *
-   * @param durationInMs the duration in milliseconds
-   * @return the calculated sample count
-   */
-  default int getSampleCount(int durationInMs) {
-    try {
-      double sampleCountDouble = Generator.SAMPLE_RATE * durationInMs / 1000.0;
-      return Math.toIntExact(Math.round(sampleCountDouble));
-    } catch (ArithmeticException ex) {
-      throw new ArithmeticException("Error occurred while getting sample count");
-    }
-  }
 }

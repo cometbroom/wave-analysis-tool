@@ -7,6 +7,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.controller.SmartObservable;
 
 import lombok.Getter;
@@ -41,6 +42,11 @@ public class OutStream {
 
   public void setValue(int i, double channel1, double channel2, double channel3) {
     stream.setValue(new Pair<>(i, new Output(channel1, channel2, channel3)));
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("stream", stream).toString();
   }
 
   public record Output(double channel1, double channel2, double channel3) {}

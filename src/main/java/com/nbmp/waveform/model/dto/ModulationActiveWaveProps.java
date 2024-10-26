@@ -3,6 +3,8 @@ package com.nbmp.waveform.model.dto;
 
 import java.util.function.Function;
 
+import com.google.common.base.MoreObjects;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,5 +43,15 @@ public class ModulationActiveWaveProps extends WaveProps {
     this.frequencyModulation = (f) -> f;
     this.amplitudeModulation = (a) -> a;
     this.phaseModulation = (phi) -> phi;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("deltaFFmMod", deltaFFmMod)
+        .add("frequency", frequency)
+        .add("amplitude", amplitude)
+        .add("initialPhase", initialPhase)
+        .toString();
   }
 }

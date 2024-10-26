@@ -31,8 +31,7 @@ public class ChaosSynthesisTest extends SynthesisTest {
     openedMocks.close();
     streamReactor = Mockito.spy(new StreamReactor(SAMPLE_COUNT));
     openedMocks = MockitoAnnotations.openMocks(this);
-    TestUtils.mockGenerationProps(
-        stateMock, waveform1, waveform2, waveProps, resultSerise, MOD_INDEX, 0.0, 1.0);
+    TestUtils.mockGenerationProps(stateMock, waveform1, waveform2, waveProps, MOD_INDEX, 0.0, 1.0);
     TestUtils.mockReactor(stateMock, streamReactor);
     try (MockedStatic<AppConstants> appConstants = mockStatic(AppConstants.class)) {
       appConstants.when(AppConstants::getSampleCount).thenReturn(0);

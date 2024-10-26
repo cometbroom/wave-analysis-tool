@@ -33,7 +33,6 @@ public class GenerationState {
   @Autowired private ApplicationContext context;
   private Waveform wave1, wave2;
   private Synthesis synthesis;
-  private TimeSeries resultSeries = new TimeSeries();
   private BiFunction<Double, Double, Double> recombinationMode =
       RecombinationMode.ADD.getFunction();
   private double modulationIndex = 0.0;
@@ -65,5 +64,16 @@ public class GenerationState {
     wave2.reset();
     GenerationScope.refreshScope();
     synthesis.compute(duration);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("reactor", reactor.getObject())
+        .add("wave1", wave1)
+        .add("wave2", wave2)
+        .add("synthesis", synthesis.getClass().getCanonicalName())
+        .add("modulationIndex", modulationIndex)
+        .toString();
   }
 }
