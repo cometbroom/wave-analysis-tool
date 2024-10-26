@@ -4,6 +4,7 @@ package com.nbmp.waveform.model.generation;
 import java.util.function.BiFunction;
 import javax.annotation.PostConstruct;
 
+import com.nbmp.waveform.model.dto.TimeSeries;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
