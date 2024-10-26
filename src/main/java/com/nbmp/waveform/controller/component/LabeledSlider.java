@@ -74,6 +74,10 @@ public class LabeledSlider extends VBox {
             });
   }
 
+  public double getValue() {
+    return slider.getValue();
+  }
+
   /**
    * Initializes the component after all attributes have been loaded.
    *

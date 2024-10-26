@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nbmp</groupId>
     <artifactId>wave-analysis-tool</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>Archetype - waveform-experiments</name>
     <url>http://maven.apache.org</url>
 
@@ -84,6 +84,11 @@
             <groupId>com.github.psambit9791</groupId>
             <artifactId>jdsp</artifactId>
             <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.2.1-jre</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
