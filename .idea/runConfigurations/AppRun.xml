@@ -2,7 +2,7 @@
   <configuration default="false" name="AppRun" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.nbmp.waveform.application.AppRun" />
     <module name="wave-analysis-tool" />
-    <option name="VM_PARAMETERS" value="--module-path &quot;${JFX_PATH}\lib&quot; --add-modules javafx.controls,javafx.fxml -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG" />
+    <option name="VM_PARAMETERS" value="--module-path &quot;${JFX_PATH}\lib&quot; --add-modules javafx.controls,javafx.fxml" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.nbmp.waveform.view.*" />
