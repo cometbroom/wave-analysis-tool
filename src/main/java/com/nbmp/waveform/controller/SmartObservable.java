@@ -3,6 +3,8 @@ package com.nbmp.waveform.controller;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.google.common.base.MoreObjects;
+
 import lombok.Getter;
 
 /**
@@ -56,6 +58,14 @@ public class SmartObservable<T> {
 
   public void removeObserver(Observer<T> observer) {
     observers.remove(observer);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("value", value)
+        .add("observers", observers)
+        .toString();
   }
 
   /**

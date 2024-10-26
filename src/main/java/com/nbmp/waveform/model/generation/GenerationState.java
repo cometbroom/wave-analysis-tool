@@ -10,11 +10,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.application.GenerationScope;
 import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.SynthesisMode;
-import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.model.pipeline.StreamReactor;
 import com.nbmp.waveform.model.waveform.Waveform;
 
@@ -33,7 +33,6 @@ public class GenerationState {
   @Autowired private ApplicationContext context;
   private Waveform wave1, wave2;
   private Synthesis synthesis;
-  private TimeSeries resultSeries = new TimeSeries();
   private BiFunction<Double, Double, Double> recombinationMode =
       RecombinationMode.ADD.getFunction();
   private double modulationIndex = 0.0;
@@ -65,5 +64,16 @@ public class GenerationState {
     wave2.reset();
     GenerationScope.refreshScope();
     synthesis.compute(duration);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("reactor", reactor.getObject())
+        .add("wave1", wave1)
+        .add("wave2", wave2)
+        .add("synthesis", synthesis.getClass().getCanonicalName())
+        .add("modulationIndex", modulationIndex)
+        .toString();
   }
 }

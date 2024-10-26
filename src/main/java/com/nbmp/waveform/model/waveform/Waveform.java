@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.waveform;
 
+import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
 import com.nbmp.waveform.model.generation.Generator;
 
@@ -50,5 +51,16 @@ public abstract class Waveform {
     }
     // bound previous amplitude to radians from -pi to pi
     return 2 * Math.asin(boundedAmplitude);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("props", props)
+        .add("cumulativePhaseRadians", cumulativePhaseRadians)
+        .add("mavValue", mavValue)
+        .add("previousAmplitude", previousAmplitude)
+        .add("currentPhase", currentPhase)
+        .toString();
   }
 }

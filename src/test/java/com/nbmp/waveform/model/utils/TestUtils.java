@@ -10,7 +10,6 @@ import org.springframework.beans.factory.ObjectFactory;
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
 import com.nbmp.waveform.model.dto.RecombinationMode;
-import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.model.generation.GenerationState;
 import com.nbmp.waveform.model.pipeline.StreamReactor;
 import com.nbmp.waveform.model.waveform.Waveform;
@@ -36,7 +35,6 @@ public class TestUtils {
       Waveform waveform1,
       Waveform waveform2,
       ModulationActiveWaveProps waveProps,
-      TimeSeries resultSerise,
       double modIndex,
       double amplitudeWave1,
       double amplitudeWave2) {
@@ -48,7 +46,6 @@ public class TestUtils {
     when(waveform2.getProps()).thenReturn(waveProps);
     when(stateMock.getWave1()).thenReturn(waveform1);
     when(stateMock.getWave2()).thenReturn(waveform2);
-    when(stateMock.getResultSeries()).thenReturn(resultSerise);
     when(waveform1.compute(1.0 / AppConstants.SAMPLE_RATE)).thenReturn(amplitudeWave1);
     when(waveform2.compute(1.0 / AppConstants.SAMPLE_RATE)).thenReturn(amplitudeWave2);
   }

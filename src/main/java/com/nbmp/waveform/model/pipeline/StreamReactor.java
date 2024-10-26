@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.controller.SmartObservable;
 
 import lombok.Getter;
@@ -107,6 +108,19 @@ public class StreamReactor {
   private void start() {
     persistentInitObservers.forEach(Observer::onAction);
     nonPersistentInitObservers.forEach(Observer::onAction);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("clockStream", clockStream)
+        .add("outStream", outStream)
+        .add("persistentInitObservers", persistentInitObservers)
+        .add("nonPersistentInitObservers", nonPersistentInitObservers)
+        .add("completionObservers", completionObservers)
+        .add("postProcessDump", postProcessDump)
+        .add("range", range)
+        .toString();
   }
 
   public interface Observer {

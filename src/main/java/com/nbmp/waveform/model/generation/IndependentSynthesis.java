@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConstants;
-import com.nbmp.waveform.controller.ControllersState;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,8 +20,6 @@ import lombok.Setter;
 @Component("IndependentSynthesis")
 public class IndependentSynthesis implements Synthesis {
   @Autowired private GenerationState state;
-  @Autowired private ControllersState controllersState;
-
   private BiFunction<Double, Double, Double> recombinationMode;
 
   @PostConstruct
@@ -52,6 +49,6 @@ public class IndependentSynthesis implements Synthesis {
                   .getObject()
                   .addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
             });
-    state.getReactor().getObject().run();
+    state.getReactor().getObject().run(0, AppConstants.getSampleCount(duration));
   }
 }

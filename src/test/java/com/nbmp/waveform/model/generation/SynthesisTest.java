@@ -42,8 +42,7 @@ public class SynthesisTest {
   public void setUp() {
     streamReactor = Mockito.spy(new StreamReactor(SAMPLE_COUNT));
     openedMocks = MockitoAnnotations.openMocks(this);
-    TestUtils.mockGenerationProps(
-        stateMock, waveform1, waveform2, waveProps, resultSerise, MOD_INDEX, 0.0, 1.0);
+    TestUtils.mockGenerationProps(stateMock, waveform1, waveform2, waveProps, MOD_INDEX, 0.0, 1.0);
     TestUtils.mockReactor(stateMock, streamReactor);
     chaosSynthesis.setModulationFunction(modulationFunctionMock);
   }

@@ -20,11 +20,14 @@ import com.nbmp.waveform.model.dto.SynthesisMode;
 import com.nbmp.waveform.model.generation.GenerationState;
 import com.nbmp.waveform.model.waveform.SineWaveform;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller class for landing page of the application. Most waveforms are managed here.
  */
 @Component
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+@Scope(BeanDefinition.SCOPE_SINGLETON)
+@Slf4j
 public class WaveController implements Initializable {
   public Label statusLabel;
   public static final AtomicReference<Integer> duration = new AtomicReference<>(1000);
@@ -69,11 +72,16 @@ public class WaveController implements Initializable {
   }
 
   private void updateGenWithControllers(GenerationState genState) {
-    genState.setSynthesis(SynthesisMode.valueOf(synthesisModeControl.getComboBox().getValue()));
-    genState.setRecombinationMode(
-        RecombinationMode.valueOf(recombinatorControl.getComboBox().getValue()).getFunction());
-    genState.setDuration(durationTextField.getValue());
-    genState.setModulationIndex(modIndexSlider.getValue());
+    var synthMode = SynthesisMode.valueOf(synthesisModeControl.getComboBox().getValue());
+    var recombinatorMode = RecombinationMode.valueOf(recombinatorControl.getComboBox().getValue());
+    int duration = durationTextField.getValue();
+    double modIndex = modIndexSlider.getValue();
+
+    genState.setSynthesis(synthMode);
+    genState.setRecombinationMode(recombinatorMode.getFunction());
+    genState.setDuration(duration);
+    genState.setModulationIndex(modIndex);
+    log.debug("Updated GenerationState with: {}", genState);
   }
 
   /**

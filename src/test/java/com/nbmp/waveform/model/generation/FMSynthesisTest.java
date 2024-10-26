@@ -28,8 +28,7 @@ public class FMSynthesisTest extends SynthesisTest {
   @Test
   public void computeReturnsCorrectBiTimeSeries() {
     int duration = 1;
-    TestUtils.mockGenerationProps(
-        stateMock, waveform1, waveform2, waveProps, resultSerise, MOD_INDEX, 1.0, 2.0);
+    TestUtils.mockGenerationProps(stateMock, waveform1, waveform2, waveProps, MOD_INDEX, 1.0, 2.0);
     fmSynthesis.compute(duration);
     verify(streamReactor, times(1)).addOutputs(eq(0), eq(1.0), eq(2.0), eq(1.0));
   }
@@ -41,8 +40,7 @@ public class FMSynthesisTest extends SynthesisTest {
     openedMocks.close();
     streamReactor = Mockito.spy(new StreamReactor(duration));
     openedMocks = MockitoAnnotations.openMocks(this);
-    TestUtils.mockGenerationProps(
-        stateMock, waveform1, waveform2, waveProps, resultSerise, MOD_INDEX, 0.0, 1.0);
+    TestUtils.mockGenerationProps(stateMock, waveform1, waveform2, waveProps, MOD_INDEX, 0.0, 1.0);
     TestUtils.mockReactor(stateMock, streamReactor);
 
     try (MockedStatic<AppConstants> appConstants = mockStatic(AppConstants.class)) {
