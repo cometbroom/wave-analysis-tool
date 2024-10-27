@@ -1,16 +1,16 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.generation;
+package com.nbmp.waveform.model.generation.synth;
 
 import java.util.function.BiConsumer;
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.model.dto.Signal;
 import com.nbmp.waveform.model.filter.HighPassFilters;
 import com.nbmp.waveform.model.filter.LowPassFilters;
+import com.nbmp.waveform.model.generation.TwoPlusOneDSP;
 import com.nbmp.waveform.model.utils.GenConstants;
 import com.nbmp.waveform.model.utils.WaveStatUtils;
 import com.nbmp.waveform.model.waveform.Waveform;
@@ -24,10 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component("ChaosSynthesis")
 @Setter
-public class ChaosSynthesis implements Synthesis {
-  /** Modulation index, AKA magnitude of the modulation. */
-  @Autowired private GenerationState state;
-
+public class ChaosSynthesis extends BaseSynthesis {
   protected BiConsumer<Waveform, Waveform> modulationFunction;
 
   @PostConstruct
@@ -46,14 +43,13 @@ public class ChaosSynthesis implements Synthesis {
     Signal signal1 = new Signal(AppConstants.getSampleCount(duration)),
         signal2 = new Signal(AppConstants.getSampleCount(duration)),
         result = new Signal(AppConstants.getSampleCount(duration));
-
-    var reactor = state.getReactor().getObject();
+    var reactor = this.reactor.getObject();
 
     reactor.addObserver(
         (i) -> {
-          var recombinationMode = state.getRecombinationMode();
-          double wave1Amplitude = state.getWave1().compute(AppConstants.TIME_STEP);
-          double wave2Amplitude = state.getWave2().compute(AppConstants.TIME_STEP);
+          var recombinationMode = getRecombinationMode();
+          double wave1Amplitude = getWave1().compute(AppConstants.TIME_STEP);
+          double wave2Amplitude = getWave2().compute(AppConstants.TIME_STEP);
           double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
           reactor.addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
           signal1.addPoint(i, wave1Amplitude);
@@ -61,7 +57,7 @@ public class ChaosSynthesis implements Synthesis {
           result.addPoint(i, recombination);
         });
     reactor.runFor(GenConstants.boundValueTo(1, 0, AppConstants.getSampleCount(duration)));
-    modulationFunction.accept(state.getWave1(), state.getWave2());
+    modulationFunction.accept(getWave1(), getWave2());
     reactor.resume(AppConstants.getSampleCount(duration));
 
     var signalProcessor = new TwoPlusOneDSP(signal1, signal2, result);
@@ -89,11 +85,11 @@ public class ChaosSynthesis implements Synthesis {
     wave2
         .getProps()
         .setPhaseModulation(
-            (phi) -> phi + wave1.getCompressedPreviousAmplitude() * state.getModulationIndex());
+            (phi) -> phi + wave1.getCompressedPreviousAmplitude() * getModulationIndex());
     wave1
         .getProps()
         .setPhaseModulation(
-            (phi) -> phi + wave2.getCompressedPreviousAmplitude() * state.getModulationIndex());
+            (phi) -> phi + wave2.getCompressedPreviousAmplitude() * getModulationIndex());
   }
 
   /**
@@ -106,20 +102,20 @@ public class ChaosSynthesis implements Synthesis {
     wave2
         .getProps()
         .setPhaseModulation(
-            (phi) -> phi + wave2.getCompressedPreviousAmplitude() * state.getModulationIndex());
+            (phi) -> phi + wave2.getCompressedPreviousAmplitude() * getModulationIndex());
     wave1
         .getProps()
         .setPhaseModulation(
-            (phi) -> phi + wave1.getCompressedPreviousAmplitude() * state.getModulationIndex());
+            (phi) -> phi + wave1.getCompressedPreviousAmplitude() * getModulationIndex());
   }
 
   /**
-   * Resets the waveforms to their initial state.
+   * Resets the waveforms to their initial
    */
   private void resetWaveforms() {
-    state.getWave1().getProps().resetModulations();
-    state.getWave2().getProps().resetModulations();
-    state.getWave1().setCumulativePhaseRadians(0);
-    state.getWave2().setCumulativePhaseRadians(0);
+    getWave1().getProps().resetModulations();
+    getWave2().getProps().resetModulations();
+    getWave1().setCumulativePhaseRadians(0);
+    getWave2().setCumulativePhaseRadians(0);
   }
 }

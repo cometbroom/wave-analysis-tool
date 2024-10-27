@@ -1,7 +1,6 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.generation;
+package com.nbmp.waveform.model.generation.synth;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConstants;
@@ -16,21 +15,18 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Setter
 @Component("FMSynthesis")
-public class FMSynthesis implements Synthesis {
-  /** Modulation index. */
-  @Autowired private GenerationState state;
+public class FMSynthesis extends BaseSynthesis {
 
   /**
    * Computes the waveform for the given duration.
    *
    * @param duration the duration for which the waveform is to be generated
-   * @return a BiTimeSeries representing the generated waveform
    */
   @Override
   public void compute(int duration) {
-    double k = state.getModulationIndex();
-    var waveform1 = state.getWave1();
-    var waveform2 = state.getWave2();
+    double k = getModulationIndex();
+    var waveform1 = getWave1();
+    var waveform2 = getWave2();
 
     var signal1 = new Signal(AppConstants.getSampleCount(duration));
     var signal2 = new Signal(AppConstants.getSampleCount(duration));
@@ -38,10 +34,10 @@ public class FMSynthesis implements Synthesis {
 
     signal1.addPoint(0.0, waveform1.compute(AppConstants.TIME_STEP));
     signal2.addPoint(0.0, waveform2.compute(AppConstants.TIME_STEP));
-    var reactor = state.getReactor().getObject();
+    var reactor = getReactor().getObject();
     reactor.addObserver(
         (i) -> {
-          var recombinationMode = state.getRecombinationMode();
+          var recombinationMode = getRecombinationMode();
           double wave1Amplitude = waveform1.compute(AppConstants.TIME_STEP);
           waveform2.getProps().setDeltaFFmMod(wave1Amplitude * k);
           double wave2Amplitude = waveform2.compute(AppConstants.TIME_STEP);
@@ -57,12 +53,12 @@ public class FMSynthesis implements Synthesis {
   }
 
   /**
-   * Resets the waveforms to their initial state.
+   * Resets the waveforms to their initial
    */
   private void resetWaveforms() {
-    state.getWave1().getProps().resetModulations();
-    state.getWave2().getProps().resetModulations();
-    state.getWave1().setCumulativePhaseRadians(0);
-    state.getWave2().setCumulativePhaseRadians(0);
+    getWave1().getProps().resetModulations();
+    getWave2().getProps().resetModulations();
+    getWave1().setCumulativePhaseRadians(0);
+    getWave2().setCumulativePhaseRadians(0);
   }
 }

@@ -3,6 +3,7 @@ package com.nbmp.waveform.model.pipeline;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ class StreamReactorTest {
   private static final int RANGE = 10;
 
   @Mock SmartObservable.Observer<Integer> runnableMock;
+  @Mock Function<Integer, Integer> functionMock;
   @Mock GenerationListeners generationListenersMock;
   @Mock OutStream outStreamMock;
   @InjectMocks StreamReactor streamReactor = new StreamReactor(RANGE);
@@ -44,6 +46,21 @@ class StreamReactorTest {
     if (testIdx.intValue() != RANGE) {
       fail("Expected " + RANGE + " invocations, got " + testIdx.intValue());
     }
+  }
+
+  @Test
+  void run_testLimitedRange() {
+    MutableInt testIdx = new MutableInt(0);
+    streamReactor.addObserver(runnableMock);
+    Mockito.doAnswer(
+            invocation -> {
+              testIdx.increment();
+              return null;
+            })
+        .when(runnableMock)
+        .onUpdate(Mockito.anyInt());
+    streamReactor.run(5, 10);
+    assertEquals(5, testIdx.intValue());
   }
 
   @Test

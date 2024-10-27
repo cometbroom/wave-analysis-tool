@@ -3,6 +3,10 @@ package com.nbmp.waveform.view;
 
 import javafx.scene.chart.XYChart;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.controller.WaveController;
 import com.nbmp.waveform.model.generation.Generator;
@@ -12,6 +16,8 @@ import lombok.Getter;
 import lombok.experimental.Delegate;
 
 @Getter
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ChartView {
   @Delegate private XYChart.Series<Number, Number> series;
   // TODO: Have VIEW_RESOLUTION be a bit dependent on duration

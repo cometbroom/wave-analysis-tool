@@ -3,14 +3,14 @@ package com.nbmp.waveform.model.generation;
 
 import java.util.function.BiConsumer;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.*;
 import org.mockito.verification.VerificationMode;
+import org.springframework.beans.factory.ObjectFactory;
 
 import com.nbmp.waveform.application.AppConstants;
+import com.nbmp.waveform.controller.SmartObservable;
 import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
-import com.nbmp.waveform.model.dto.TimeSeries;
 import com.nbmp.waveform.model.pipeline.GenerationListeners;
 import com.nbmp.waveform.model.pipeline.OutStream;
 import com.nbmp.waveform.model.pipeline.StreamReactor;
@@ -22,34 +22,27 @@ import static org.mockito.ArgumentMatchers.doubleThat;
 import static org.mockito.ArgumentMatchers.intThat;
 import static org.mockito.Mockito.*;
 
-public class SynthesisTest {
+public abstract class SynthesisTest {
   static final int DURATION = 1;
   static final double MOD_INDEX = 0.0;
   static final int SAMPLE_COUNT = AppConstants.getSampleCount(DURATION);
-  @InjectMocks StreamReactor streamReactor = new StreamReactor(SAMPLE_COUNT);
-  @Mock Waveform waveform1;
-  @Mock Waveform waveform2;
+  @Mock GenerationListeners persistentInitObservers;
+  @Mock OutStream outStream;
+  @Mock SmartObservable<Integer> clockStream;
+  @Mock ObjectFactory<StreamReactor> reactor;
+  @Mock StreamReactor streamReactor;
+  @Mock Waveform wave1;
+  @Mock Waveform wave2;
   @Mock ModulationActiveWaveProps waveProps;
-  @Mock TimeSeries resultSerise;
   @Mock GenerationState stateMock;
   @Mock BiConsumer<Waveform, Waveform> modulationFunctionMock;
-  @Mock GenerationListeners generationListenersMock;
-  @Mock OutStream outStreamMock;
-  @InjectMocks ChaosSynthesis chaosSynthesis;
-  AutoCloseable openedMocks;
+
+  //  AutoCloseable openedMocks;
 
   @BeforeEach
   public void setUp() {
-    streamReactor = Mockito.spy(new StreamReactor(SAMPLE_COUNT));
-    openedMocks = MockitoAnnotations.openMocks(this);
-    TestUtils.mockGenerationProps(stateMock, waveform1, waveform2, waveProps, MOD_INDEX, 0.0, 1.0);
-    TestUtils.mockReactor(stateMock, streamReactor);
-    chaosSynthesis.setModulationFunction(modulationFunctionMock);
-  }
-
-  @AfterEach
-  public void tearDown() throws Exception {
-    openedMocks.close();
+    TestUtils.mockGenerationProps(stateMock, wave1, wave2, waveProps, MOD_INDEX, 0.0, 1.0);
+    TestUtils.mockReactor(reactor, streamReactor, outStream, persistentInitObservers, clockStream);
   }
 
   protected void verifyStreamReactorAddOutputs(

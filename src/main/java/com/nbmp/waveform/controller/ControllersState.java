@@ -23,15 +23,17 @@ import lombok.Setter;
 @Service
 @Scope("singleton")
 public class ControllersState {
-  @Autowired private ObjectFactory<StreamReactor> pipeline;
-  private ChartView view1 = new ChartView(), view2 = new ChartView(), resultView = new ChartView();
+  @Autowired private ObjectFactory<StreamReactor> reactor;
+  @Autowired private ChartView view1;
+  @Autowired private ChartView view2;
+  @Autowired private ChartView resultView;
 
   @PostConstruct
   public void init() {
     view1.init("sine1");
     view2.init("sine2");
     resultView.init("Combination Result");
-    pipeline
+    reactor
         .getObject()
         .onStart(
             () -> {
@@ -39,7 +41,7 @@ public class ControllersState {
               view2.getData().clear();
               resultView.getData().clear();
             });
-    pipeline.getObject().addOutStreamObserver(this::addPoints);
+    reactor.getObject().addOutStreamObserver(this::addPoints);
   }
 
   public void addPoints(int i, double value1, double value2, double result) {

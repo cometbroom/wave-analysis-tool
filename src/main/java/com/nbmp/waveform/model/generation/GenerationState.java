@@ -1,42 +1,39 @@
 /* (C)2024 */
 package com.nbmp.waveform.model.generation;
 
-import java.util.function.BiFunction;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.application.GenerationScope;
-import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.dto.SynthesisMode;
-import com.nbmp.waveform.model.pipeline.StreamReactor;
+import com.nbmp.waveform.model.generation.synth.BaseSynthesis;
 import com.nbmp.waveform.model.waveform.Waveform;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Delegate;
 
 /**
  * Class representing the generation and synthesis state for waveforms.
  */
-@Getter
-@Setter
 @Service
 @Scope("singleton")
 public class GenerationState {
-  @Autowired private ObjectFactory<StreamReactor> reactor;
-  @Autowired private ApplicationContext context;
-  private Waveform wave1, wave2;
-  private Synthesis synthesis;
-  private BiFunction<Double, Double, Double> recombinationMode =
-      RecombinationMode.ADD.getFunction();
-  private double modulationIndex = 0.0;
-  private Runnable resynthesizeTrigger = () -> {};
+  private Map<SynthesisMode, BaseSynthesis> synthesisMap;
+  @Delegate private BaseSynthesis synthesis;
+
+  @Autowired
+  public GenerationState(Map<SynthesisMode, BaseSynthesis> synthesisMap) {
+    this.synthesisMap = synthesisMap;
+  }
+
+  @Getter @Setter private Runnable resynthesizeTrigger = () -> {};
 
   @PostConstruct
   public void init() {
@@ -48,7 +45,15 @@ public class GenerationState {
   }
 
   public void setSynthesis(SynthesisMode mode) {
-    synthesis = context.getBean(mode.getClassName().getSimpleName(), Synthesis.class);
+    synthesis = synthesisMap.get(mode);
+  }
+
+  public void setWave1(Waveform wave1) {
+    synthesisMap.values().forEach(s -> s.setWave1(wave1));
+  }
+
+  public void setWave2(Waveform wave2) {
+    synthesisMap.values().forEach(s -> s.setWave2(wave2));
   }
 
   /**
@@ -60,8 +65,8 @@ public class GenerationState {
   }
 
   public void regen(int duration) {
-    wave1.reset();
-    wave2.reset();
+    synthesisMap.values().forEach(s -> s.getWave1().reset());
+    synthesisMap.values().forEach(s -> s.getWave2().reset());
     GenerationScope.refreshScope();
     synthesis.compute(duration);
   }
@@ -69,11 +74,7 @@ public class GenerationState {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("reactor", reactor.getObject())
-        .add("wave1", wave1)
-        .add("wave2", wave2)
         .add("synthesis", synthesis.getClass().getCanonicalName())
-        .add("modulationIndex", modulationIndex)
         .toString();
   }
 }

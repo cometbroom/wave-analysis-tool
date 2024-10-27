@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 ToDo.md
 jre/
+.notes/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

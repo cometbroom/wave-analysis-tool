@@ -1,10 +1,9 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.generation;
+package com.nbmp.waveform.model.generation.synth;
 
 import java.util.function.BiFunction;
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConstants;
@@ -18,13 +17,12 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Setter
 @Component("IndependentSynthesis")
-public class IndependentSynthesis implements Synthesis {
-  @Autowired private GenerationState state;
+public class IndependentSynthesis extends BaseSynthesis {
   private BiFunction<Double, Double, Double> recombinationMode;
 
   @PostConstruct
   public void init() {
-    this.recombinationMode = state.getRecombinationMode();
+    this.recombinationMode = getRecombinationMode();
   }
 
   /**
@@ -35,20 +33,16 @@ public class IndependentSynthesis implements Synthesis {
    */
   @Override
   public void compute(int duration) {
-    state
-        .getReactor()
+    getReactor()
         .getObject()
         .addObserver(
             (i) -> {
-              var recombinationMode = state.getRecombinationMode();
-              double wave1Amplitude = state.getWave1().compute(AppConstants.TIME_STEP);
-              double wave2Amplitude = state.getWave2().compute(AppConstants.TIME_STEP);
+              var recombinationMode = getRecombinationMode();
+              double wave1Amplitude = getWave1().compute(AppConstants.TIME_STEP);
+              double wave2Amplitude = getWave2().compute(AppConstants.TIME_STEP);
               double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
-              state
-                  .getReactor()
-                  .getObject()
-                  .addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
+              getReactor().getObject().addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
             });
-    state.getReactor().getObject().run(0, AppConstants.getSampleCount(duration));
+    getReactor().getObject().run(0, AppConstants.getSampleCount(duration));
   }
 }

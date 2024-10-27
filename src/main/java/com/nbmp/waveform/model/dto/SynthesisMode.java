@@ -4,16 +4,20 @@ package com.nbmp.waveform.model.dto;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nbmp.waveform.model.generation.*;
+import com.nbmp.waveform.model.generation.synth.ChaosSelfMod;
+import com.nbmp.waveform.model.generation.synth.ChaosSynthesis;
+import com.nbmp.waveform.model.generation.synth.FMSynthesis;
+import com.nbmp.waveform.model.generation.synth.IndependentSynthesis;
+import com.nbmp.waveform.model.generation.synth.Synthesis;
 
 import lombok.Getter;
 
 @Getter
 public enum SynthesisMode {
-  INDEPENDENT("Independent", 0.0, IndependentSynthesis.class),
-  CHAOS_TWO_WAY_FM("Chaos Two-Way FM", 0.3, ChaosSynthesis.class),
-  CHAOS_INDEPENDENT_SELF_MOD_FM("Chaos Independent Self-Modulation", 0.2, ChaosSelfMod.class),
-  FM_WAVE1MOD_WAVE2CARRIER("FM Modulation", 2, FMSynthesis.class);
+  IndependentSynthesis("Independent", 0.0, IndependentSynthesis.class),
+  ChaosSynthesis("Chaos Two-Way FM", 0.3, ChaosSynthesis.class),
+  ChaosSelfMod("Chaos Independent Self-Modulation", 0.2, ChaosSelfMod.class),
+  FMSynthesis("FM Modulation", 2, FMSynthesis.class);
   private final double modIndex;
   private final String title;
   private final Class<? extends Synthesis> className;
