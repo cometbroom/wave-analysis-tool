@@ -30,7 +30,6 @@ public class FMSynthesis extends BaseSynthesis {
     var reactor = getReactor().getObject();
     reactor.addObserver(
         (i) -> {
-          var recombinationMode = getRecombinationMode();
           double wave1Amplitude = waveform1.compute(AppConstants.TIME_STEP);
           waveform2.getProps().setDeltaFFmMod(wave1Amplitude * k);
           double wave2Amplitude = waveform2.compute(AppConstants.TIME_STEP);

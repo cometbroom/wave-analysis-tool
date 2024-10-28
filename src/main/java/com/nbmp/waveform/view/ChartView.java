@@ -4,13 +4,10 @@ package com.nbmp.waveform.view;
 import java.util.List;
 import javafx.scene.chart.XYChart;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.controller.WaveController;
 import com.nbmp.waveform.model.generation.Generator;
+import com.nbmp.waveform.model.generation.lifecycle.StartListener;
 import com.nbmp.waveform.model.generation.output.OutputStream;
 import com.nbmp.waveform.model.utils.GenConstants;
 
@@ -18,9 +15,7 @@ import lombok.Getter;
 import lombok.experimental.Delegate;
 
 @Getter
-@Component
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ChartView implements UiUpdateListener, UiStartListener {
+public class ChartView implements UiUpdateListener, StartListener {
   @Delegate private XYChart.Series<Number, Number> series;
   // TODO: Have VIEW_RESOLUTION be a bit dependent on duration
   public static final int VIEW_RESOLUTION = Math.min(500, Generator.SAMPLE_RATE / 2);
@@ -32,6 +27,10 @@ public class ChartView implements UiUpdateListener, UiStartListener {
 
   public void addPoint(double t, double value) {
     series.getData().add(new XYChart.Data<>(t, value));
+  }
+
+  public void addAllPoints(List<XYChart.Data<Number, Number>> points) {
+    series.getData().addAll(points);
   }
 
   public void addData(int i, double value) {

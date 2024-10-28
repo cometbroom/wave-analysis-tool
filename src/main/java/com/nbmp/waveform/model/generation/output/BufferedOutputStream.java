@@ -9,6 +9,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.nbmp.waveform.model.generation.lifecycle.EndListener;
+
 import lombok.Getter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -16,7 +18,7 @@ import reactor.core.publisher.Sinks;
 @Service
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 @Getter
-public class BufferedOutputStream extends OutputStream {
+public class BufferedOutputStream extends OutputStream implements EndListener {
 
   private final int BUFFER_SIZE = 4096;
   private final Map<Channel, List<Output>> buffers = new ConcurrentHashMap<>();
@@ -72,6 +74,11 @@ public class BufferedOutputStream extends OutputStream {
     if (sink != null) {
       sink.tryEmitNext(outputBuffer);
     }
+  }
+
+  @Override
+  public void onEnd() {
+    flushBuffers();
   }
 
   /**

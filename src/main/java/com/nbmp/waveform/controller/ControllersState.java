@@ -32,12 +32,6 @@ public class ControllersState {
 
   @PostConstruct
   public void init() {
-    view1.init("sine1");
-    view2.init("sine2");
-    resultView.init("Combination Result");
-    reactor.getObject().onStart(view1::onStart);
-    reactor.getObject().onStart(view2::onStart);
-    reactor.getObject().onStart(resultView::onStart);
     outputStream.getBufferedChannelFlux(OutputStream.Channel.CH1).subscribe(view1::onDataChunk);
     outputStream.getBufferedChannelFlux(OutputStream.Channel.CH2).subscribe(view2::onDataChunk);
     outputStream
