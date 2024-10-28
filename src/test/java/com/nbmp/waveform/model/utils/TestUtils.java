@@ -8,9 +8,13 @@ import org.mockito.ThrowingConsumer;
 import org.springframework.beans.factory.ObjectFactory;
 
 import com.nbmp.waveform.application.AppConstants;
+import com.nbmp.waveform.controller.ControllersState;
+import com.nbmp.waveform.controller.SmartObservable;
 import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
 import com.nbmp.waveform.model.dto.RecombinationMode;
 import com.nbmp.waveform.model.generation.GenerationState;
+import com.nbmp.waveform.model.pipeline.GenerationListeners;
+import com.nbmp.waveform.model.pipeline.OutStream;
 import com.nbmp.waveform.model.pipeline.StreamReactor;
 import com.nbmp.waveform.model.waveform.Waveform;
 
@@ -56,5 +60,27 @@ public class TestUtils {
     when(stateMock.getReactor()).thenReturn(reactorMock);
 
     when(reactorMock.getObject()).thenReturn(streamReactor);
+  }
+
+  public static void mockReactor(ControllersState stateMock, StreamReactor streamReactor) {
+
+    ObjectFactory<StreamReactor> reactorMock = Mockito.mock(ObjectFactory.class);
+    when(stateMock.getReactor()).thenReturn(reactorMock);
+
+    when(reactorMock.getObject()).thenReturn(streamReactor);
+  }
+
+  public static void mockReactor(
+      ObjectFactory<StreamReactor> reactor,
+      StreamReactor streamReactor,
+      OutStream outStream,
+      GenerationListeners persistentInitObservers,
+      SmartObservable<Integer> clockStream) {
+    var copyOnWriteArrayList = Mockito.mock(java.util.concurrent.CopyOnWriteArrayList.class);
+    when(clockStream.getObservers()).thenReturn(copyOnWriteArrayList);
+    when(reactor.getObject()).thenReturn(streamReactor);
+    when(streamReactor.getOutStream()).thenReturn(outStream);
+    when(streamReactor.getPersistentInitObservers()).thenReturn(persistentInitObservers);
+    when(streamReactor.getClockStream()).thenReturn(clockStream);
   }
 }

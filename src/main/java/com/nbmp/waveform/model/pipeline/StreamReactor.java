@@ -4,21 +4,34 @@ package com.nbmp.waveform.model.pipeline;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
+import org.reactivestreams.Subscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.controller.SmartObservable;
+import com.nbmp.waveform.model.dto.OutputDataType;
 
 import lombok.Getter;
 import lombok.experimental.Delegate;
+import reactor.core.CoreSubscriber;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 
 @Getter
 public class StreamReactor {
   @Delegate private SmartObservable<Integer> clockStream = new SmartObservable<>(0);
+
+  private Flux<Integer> clock;
+  private Flux<OutputDataType> outClock;
   @Autowired private OutStream outStream;
 
   @Autowired private GenerationListeners persistentInitObservers;
+  private CopyOnWriteArrayList<SmartObservable.Observer<Integer>> clockObservers =
+      new CopyOnWriteArrayList<>();
+
   private CopyOnWriteArrayList<Observer> nonPersistentInitObservers = new CopyOnWriteArrayList<>();
   private CopyOnWriteArrayList<Observer> completionObservers = new CopyOnWriteArrayList<>();
   private Queue<SmartObservable<Integer>> postProcessDump = new LinkedList<>();
@@ -26,6 +39,35 @@ public class StreamReactor {
 
   public StreamReactor(int range) {
     this.range = range;
+    clock = Flux.range(0, range);
+  }
+
+  public Disposable subscribe(Consumer<? super Integer> consumer) {
+    return clock.subscribe(consumer);
+  }
+
+  public <V> Flux<V> map(Function<? super Integer, ? extends V> mapper) {
+    return clock.map(mapper);
+  }
+
+  public Flux<OutputDataType> mapToOutput(Function<? super Integer, OutputDataType> mapper) {
+    return clock.map(mapper);
+  }
+
+  public Disposable subscribe() {
+    return clock.subscribe();
+  }
+
+  public void subscribe(CoreSubscriber<? super Integer> actual) {
+    clock.subscribe(actual);
+  }
+
+  public void subscribe(Subscriber<? super Integer> actual) {
+    clock.subscribe(actual);
+  }
+
+  public void addObserver(SmartObservable.Observer<Integer> observer) {
+    clockObservers.add(observer);
   }
 
   public void resume() {
@@ -93,11 +135,15 @@ public class StreamReactor {
     run(0, range);
   }
 
+  private int clockUpdateMapper(int i) {
+    clockObservers.forEach(observer -> observer.onUpdate(i));
+    return i;
+  }
+
   public void run(int start, int end) {
     start();
-    for (int i = start; i < end; i++) {
-      clockStream.setValue(i);
-    }
+    clock = Flux.range(start, end - start).map(this::clockUpdateMapper);
+    clock.subscribe();
     complete();
   }
 

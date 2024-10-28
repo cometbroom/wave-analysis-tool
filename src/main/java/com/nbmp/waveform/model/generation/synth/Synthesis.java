@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.nbmp.waveform.model.generation;
+package com.nbmp.waveform.model.generation.synth;
 
 /**
  * Interface representing the synthesis process for generating waveforms.

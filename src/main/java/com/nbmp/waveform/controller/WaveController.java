@@ -54,6 +54,12 @@ public class WaveController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
+    setupDurationField();
+    setupSynthesisModeChangeCombo();
+    setupRecombinatorCombo();
+    setupExportButton();
+    updateGenWithControllers(genState);
     genState.setWave1(new SineWaveform(5, 1));
     genState.setWave2(new SineWaveform(5, 1));
     waveSliders.setupSliders(genState.getWave1(), (x) -> genState.getResynthesizeTrigger().run());
@@ -63,11 +69,6 @@ public class WaveController implements Initializable {
           genState.setModulationIndex(value);
           genState.regen();
         });
-    setupDurationField();
-    setupSynthesisModeChangeCombo();
-    setupRecombinatorCombo();
-    setupExportButton();
-    updateGenWithControllers(genState);
     genState.getResynthesizeTrigger().run();
   }
 
@@ -104,7 +105,8 @@ public class WaveController implements Initializable {
     synthesisModeControl.addListener(
         (observableValue, s, t1) -> {
           genState.setSynthesis(SynthesisMode.valueOf(t1));
-          modIndexSlider.setDisable(SynthesisMode.INDEPENDENT.equals(SynthesisMode.valueOf(t1)));
+          modIndexSlider.setDisable(
+              SynthesisMode.IndependentSynthesis.equals(SynthesisMode.valueOf(t1)));
           statusLabel.setText(SynthesisMode.valueOf(t1).getTitle());
           updateGenWithControllers(genState);
           genState.regen();
