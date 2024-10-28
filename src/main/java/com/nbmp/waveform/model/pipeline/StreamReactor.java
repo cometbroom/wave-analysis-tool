@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.controller.SmartObservable;
-import com.nbmp.waveform.model.generation.lifecycle.EndListener;
-import com.nbmp.waveform.model.generation.lifecycle.StartListener;
+import com.nbmp.waveform.view.UiStartListener;
+import com.nbmp.waveform.view.UiUpdateListener;
 
 import lombok.Getter;
 import lombok.experimental.Delegate;
@@ -25,13 +25,13 @@ public class StreamReactor {
   public static final int BUFFER_SIZE = 1024;
   private Flux<Integer> clock;
   @Autowired private OutStream outStream;
-  @Autowired private List<StartListener> uiStartListeners;
-  @Autowired private List<EndListener> endListeners;
 
   @Autowired private GenerationListeners persistentInitObservers;
   private CopyOnWriteArrayList<SmartObservable.Observer<Integer>> clockObservers =
       new CopyOnWriteArrayList<>();
 
+  private List<UiUpdateListener> uiUpdateListeners = new LinkedList<>();
+  private List<UiStartListener> uiStartListeners = new LinkedList<>();
   private CopyOnWriteArrayList<Observer> nonPersistentInitObservers = new CopyOnWriteArrayList<>();
   private CopyOnWriteArrayList<Observer> completionObservers = new CopyOnWriteArrayList<>();
   private Queue<SmartObservable<Integer>> postProcessDump = new LinkedList<>();
@@ -81,6 +81,10 @@ public class StreamReactor {
     persistentInitObservers.add(runnable::run);
   }
 
+  public <T extends UiStartListener> void registerUi(T listener) {
+    uiStartListeners.add(listener);
+  }
+
   public void onComplete(Runnable runnable) {
     completionObservers.add(runnable::run);
   }
@@ -123,11 +127,10 @@ public class StreamReactor {
 
   private void complete() {
     completionObservers.reversed().forEach(Observer::onAction);
-    endListeners.forEach(EndListener::onEnd);
   }
 
   private void start() {
-    uiStartListeners.forEach(StartListener::onStart);
+    persistentInitObservers.forEach(Observer::onAction);
     nonPersistentInitObservers.forEach(Observer::onAction);
   }
 
@@ -147,4 +150,6 @@ public class StreamReactor {
   public interface Observer {
     void onAction();
   }
+
+
 }

@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="AppRun with GPU" type="Application" factoryName="Application">
+  <configuration default="false" name="AppRun" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.nbmp.waveform.application.AppRun" />
     <module name="wave-analysis-tool" />
-    <option name="VM_PARAMETERS" value="--module-path &quot;${JFX_PATH}\lib&quot; --add-modules javafx.controls,javafx.fxml -Dprism.verbose=true -Dprism.forceGPU -Dprism.order=d3d" />
+    <option name="VM_PARAMETERS" value="--module-path &quot;${JFX_PATH}\lib&quot; --add-modules javafx.controls,javafx.fxml" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.nbmp.waveform.model.generation.lifecycle.StartListener" />
+        <option name="PATTERN" value="com.nbmp.waveform.view.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
