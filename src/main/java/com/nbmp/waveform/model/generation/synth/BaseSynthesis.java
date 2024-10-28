@@ -25,4 +25,8 @@ public abstract class BaseSynthesis implements Synthesis {
   protected double modulationIndex = 0.0;
 
   public abstract void compute(int duration);
+
+  public void refresh() {
+    outStream.flushBuffers();
+  }
 }
