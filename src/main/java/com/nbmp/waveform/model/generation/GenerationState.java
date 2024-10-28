@@ -69,7 +69,6 @@ public class GenerationState {
   public void regen(int duration) {
     synthesisMap.values().forEach(s -> s.getWave1().reset());
     synthesisMap.values().forEach(s -> s.getWave2().reset());
-    synthesis.refresh();
     reactor.getObject().refresh();
     synthesis.compute(duration);
   }

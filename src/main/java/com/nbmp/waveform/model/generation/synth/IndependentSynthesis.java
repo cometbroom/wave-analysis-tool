@@ -37,7 +37,6 @@ public class IndependentSynthesis extends BaseSynthesis {
         .getObject()
         .addObserver(
             (i) -> {
-              var recombinationMode = getRecombinationMode();
               double wave1Amplitude = getWave1().compute(AppConstants.TIME_STEP);
               double wave2Amplitude = getWave2().compute(AppConstants.TIME_STEP);
               double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
