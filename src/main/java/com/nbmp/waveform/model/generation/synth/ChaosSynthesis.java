@@ -51,7 +51,7 @@ public class ChaosSynthesis extends BaseSynthesis {
           double wave1Amplitude = getWave1().compute(AppConstants.TIME_STEP);
           double wave2Amplitude = getWave2().compute(AppConstants.TIME_STEP);
           double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
-          reactor.addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
+          outStream.addOutputs3Channel(i, wave1Amplitude, wave2Amplitude, recombination);
           signal1.addPoint(i, wave1Amplitude);
           signal2.addPoint(i, wave2Amplitude);
           result.addPoint(i, recombination);
@@ -65,10 +65,11 @@ public class ChaosSynthesis extends BaseSynthesis {
     signalProcessor.applyEffect(HighPassFilters::removeDcOffset);
     signalProcessor.applyEffect(LowPassFilters::applyButterWorth, 500);
     signalProcessor.applyEffect(WaveStatUtils::oneToOneNormalize);
-    reactor.getClockStream().getObservers().clear();
+    //    reactor.getClockStream().getObservers().clear();
+    reactor.refresh();
     reactor.addObserver(
         (i) -> {
-          reactor.addOutputs(
+          outStream.addOutputs3Channel(
               i, signal1.getAmplitude(i), signal2.getAmplitude(i), result.getAmplitude(i));
         });
     reactor.run(0, AppConstants.getSampleCount(duration));

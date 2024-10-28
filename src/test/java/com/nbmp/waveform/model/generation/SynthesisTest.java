@@ -11,6 +11,8 @@ import org.springframework.beans.factory.ObjectFactory;
 import com.nbmp.waveform.application.AppConstants;
 import com.nbmp.waveform.controller.SmartObservable;
 import com.nbmp.waveform.model.dto.ModulationActiveWaveProps;
+import com.nbmp.waveform.model.generation.output.BufferedOutputStream;
+import com.nbmp.waveform.model.generation.output.OutputStream;
 import com.nbmp.waveform.model.pipeline.GenerationListeners;
 import com.nbmp.waveform.model.pipeline.OutStream;
 import com.nbmp.waveform.model.pipeline.StreamReactor;
@@ -31,6 +33,7 @@ public abstract class SynthesisTest {
   @Mock SmartObservable<Integer> clockStream;
   @Mock ObjectFactory<StreamReactor> reactor;
   @Mock StreamReactor streamReactor;
+  @Mock BufferedOutputStream outputStream;
   @Mock Waveform wave1;
   @Mock Waveform wave2;
   @Mock ModulationActiveWaveProps waveProps;
@@ -46,9 +49,9 @@ public abstract class SynthesisTest {
   }
 
   protected void verifyStreamReactorAddOutputs(
-      StreamReactor streamReactor, VerificationMode verificationMode) {
-    verify(streamReactor, verificationMode)
-        .addOutputs(
+      OutputStream outputStream, VerificationMode verificationMode) {
+    verify(outputStream, verificationMode)
+        .addOutputs3Channel(
             intThat((x) -> both(greaterThanOrEqualTo(0)).and(lessThan(SAMPLE_COUNT)).matches(x)),
             doubleThat(
                 (x) -> both(greaterThanOrEqualTo(-1.0)).and(lessThanOrEqualTo(1.0)).matches(x)),
