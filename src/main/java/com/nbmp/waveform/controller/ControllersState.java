@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.nbmp.waveform.application.AppConstants;
+import com.nbmp.waveform.model.generation.output.BufferedOutputStream;
+import com.nbmp.waveform.model.generation.output.OutputStream;
 import com.nbmp.waveform.model.pipeline.StreamReactor;
 import com.nbmp.waveform.view.ChartView;
 
@@ -27,28 +28,20 @@ public class ControllersState {
   @Autowired private ChartView view1;
   @Autowired private ChartView view2;
   @Autowired private ChartView resultView;
+  @Autowired private BufferedOutputStream outputStream;
 
   @PostConstruct
   public void init() {
     view1.init("sine1");
     view2.init("sine2");
     resultView.init("Combination Result");
-    reactor
-        .getObject()
-        .onStart(
-            () -> {
-              view1.getData().clear();
-              view2.getData().clear();
-              resultView.getData().clear();
-            });
-    reactor.getObject().addOutStreamObserver(this::addPoints);
-  }
-
-  public void addPoints(int i, double value1, double value2, double result) {
-    if (i % AppConstants.VIEW_STEP == 0) {
-      view1.addPoint(i, value1);
-      view2.addPoint(i, value2);
-      resultView.addPoint(i, result);
-    }
+    reactor.getObject().onStart(view1::onStart);
+    reactor.getObject().onStart(view2::onStart);
+    reactor.getObject().onStart(resultView::onStart);
+    outputStream.getBufferedChannelFlux(OutputStream.Channel.CH1).subscribe(view1::onDataChunk);
+    outputStream.getBufferedChannelFlux(OutputStream.Channel.CH2).subscribe(view2::onDataChunk);
+    outputStream
+        .getBufferedChannelFlux(OutputStream.Channel.CH3)
+        .subscribe(resultView::onDataChunk);
   }
 }

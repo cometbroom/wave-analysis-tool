@@ -34,7 +34,7 @@ public class FMSynthesisTest extends SynthesisTest {
     fmSynthesis.compute(DURATION);
     verify(streamReactor, atLeastOnce()).addObserver(captor.capture());
     captor.getValue().onUpdate(0);
-    verifyStreamReactorAddOutputs(streamReactor, times(1));
+    verifyStreamReactorAddOutputs(outputStream, times(1));
   }
 
   @Test
@@ -45,7 +45,7 @@ public class FMSynthesisTest extends SynthesisTest {
     fmSynthesis.compute(duration);
     verify(streamReactor, atLeastOnce()).addObserver(captor.capture());
     captor.getValue().onUpdate(0);
-    verify(streamReactor, times(1)).addOutputs(eq(0), eq(0.0), eq(1.0), eq(1.0));
+    verify(outputStream, times(1)).addOutputs3Channel(eq(0), eq(0.0), eq(1.0), eq(1.0));
   }
 
   @Test

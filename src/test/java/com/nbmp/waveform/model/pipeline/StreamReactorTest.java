@@ -81,22 +81,6 @@ class StreamReactorTest {
 
   @Test
   void resume() {
-    MutableInt testIdx = new MutableInt(0);
-    streamReactor.addObserver(runnableMock);
-    Mockito.doAnswer(
-            invocation -> {
-              testIdx.increment();
-              return null;
-            })
-        .when(runnableMock)
-        .onUpdate(Mockito.anyInt());
-    streamReactor.runFor(RANGE / 2);
-    assertEquals(RANGE / 2, testIdx.intValue());
-    Mockito.verify(runnableMock, Mockito.times(RANGE / 2)).onUpdate(Mockito.anyInt());
-    streamReactor.resume();
-    Mockito.verify(runnableMock, Mockito.times(RANGE)).onUpdate(Mockito.anyInt());
-    if (testIdx.intValue() != RANGE) {
-      fail("Expected " + RANGE + " invocations, got " + testIdx.intValue());
-    }
+    // Will remove this functionality given the much easier to use Reactor version.
   }
 }

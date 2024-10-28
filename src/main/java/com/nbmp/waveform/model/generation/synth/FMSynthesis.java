@@ -4,7 +4,6 @@ package com.nbmp.waveform.model.generation.synth;
 import org.springframework.stereotype.Component;
 
 import com.nbmp.waveform.application.AppConstants;
-import com.nbmp.waveform.model.dto.Signal;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,12 +27,6 @@ public class FMSynthesis extends BaseSynthesis {
     var waveform1 = getWave1();
     var waveform2 = getWave2();
 
-    var signal1 = new Signal(AppConstants.getSampleCount(duration));
-    var signal2 = new Signal(AppConstants.getSampleCount(duration));
-    var result = new Signal(AppConstants.getSampleCount(duration));
-
-    signal1.addPoint(0.0, waveform1.compute(AppConstants.TIME_STEP));
-    signal2.addPoint(0.0, waveform2.compute(AppConstants.TIME_STEP));
     var reactor = getReactor().getObject();
     reactor.addObserver(
         (i) -> {
@@ -42,11 +35,7 @@ public class FMSynthesis extends BaseSynthesis {
           waveform2.getProps().setDeltaFFmMod(wave1Amplitude * k);
           double wave2Amplitude = waveform2.compute(AppConstants.TIME_STEP);
           double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
-
-          reactor.addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
-          signal1.addPoint(i, wave1Amplitude);
-          signal2.addPoint(i, wave2Amplitude);
-          result.addPoint(i, recombination);
+          outStream.addOutputs3Channel(i, wave1Amplitude, wave2Amplitude, recombination);
         });
     reactor.run(0, AppConstants.getSampleCount());
     resetWaveforms();

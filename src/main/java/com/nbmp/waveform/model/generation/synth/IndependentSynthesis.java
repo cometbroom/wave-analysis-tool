@@ -41,7 +41,7 @@ public class IndependentSynthesis extends BaseSynthesis {
               double wave1Amplitude = getWave1().compute(AppConstants.TIME_STEP);
               double wave2Amplitude = getWave2().compute(AppConstants.TIME_STEP);
               double recombination = recombinationMode.apply(wave1Amplitude, wave2Amplitude);
-              getReactor().getObject().addOutputs(i, wave1Amplitude, wave2Amplitude, recombination);
+              outStream.addOutputs3Channel(i, wave1Amplitude, wave2Amplitude, recombination);
             });
     getReactor().getObject().run(0, AppConstants.getSampleCount(duration));
   }

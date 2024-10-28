@@ -4,15 +4,16 @@ package com.nbmp.waveform.model.generation;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.MoreObjects;
 import com.nbmp.waveform.application.AppConstants;
-import com.nbmp.waveform.application.GenerationScope;
 import com.nbmp.waveform.model.dto.SynthesisMode;
 import com.nbmp.waveform.model.generation.synth.BaseSynthesis;
+import com.nbmp.waveform.model.pipeline.StreamReactor;
 import com.nbmp.waveform.model.waveform.Waveform;
 
 import lombok.Getter;
@@ -25,6 +26,7 @@ import lombok.experimental.Delegate;
 @Service
 @Scope("singleton")
 public class GenerationState {
+  @Autowired private ObjectFactory<StreamReactor> reactor;
   private Map<SynthesisMode, BaseSynthesis> synthesisMap;
   @Delegate private BaseSynthesis synthesis;
 
@@ -67,7 +69,8 @@ public class GenerationState {
   public void regen(int duration) {
     synthesisMap.values().forEach(s -> s.getWave1().reset());
     synthesisMap.values().forEach(s -> s.getWave2().reset());
-    GenerationScope.refreshScope();
+    synthesis.refresh();
+    reactor.getObject().refresh();
     synthesis.compute(duration);
   }
 

@@ -42,7 +42,7 @@ public class ChaosSynthesisTest extends SynthesisTest {
 
     computeFunc.onUpdate(0);
     computeFunc.onUpdate(1);
-    verifyStreamReactorAddOutputs(streamReactor, times(2));
+    verifyStreamReactorAddOutputs(outputStream, times(2));
   }
 
   @Test
